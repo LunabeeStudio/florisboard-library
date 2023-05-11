@@ -18,10 +18,9 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 plugins {
-    alias(libs.plugins.agp.application)
+    id("com.android.library")
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
@@ -50,15 +49,18 @@ android {
     }
 
     defaultConfig {
-        applicationId = "dev.patrickgold.florisboard"
         minSdk = 24
         targetSdk = 33
-        versionCode = 90
-        versionName = "0.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        val appId = "dev.patrickgold.florisboard"
+        manifestPlaceholders["applicationId"] = appId
+
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash()}\"")
+        buildConfigField("String", "APPLICATION_ID", "\"$appId\"")
+        buildConfigField("int", "VERSION_CODE", "90")
+        buildConfigField("String", "VERSION_NAME", "\"0.4.0\"")
 
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
@@ -95,15 +97,6 @@ android {
         }
     }
 
-    bundle {
-        language {
-            // We disable language split because FlorisBoard does not use
-            // runtime Google Play Service APIs and thus cannot dynamically
-            // request to download the language resources for a specific locale.
-            enableSplit = false
-        }
-    }
-
     buildFeatures {
         compose = true
     }
@@ -120,10 +113,6 @@ android {
 
     buildTypes {
         named("debug") {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug-${getGitCommitHash(short = true)}"
-
-            isDebuggable = true
             isJniDebuggable = false
 
             ndk {
@@ -138,12 +127,7 @@ android {
         }
 
         create("beta") {
-            applicationIdSuffix = ".beta"
-            versionNameSuffix = "-alpha04"
-
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            isMinifyEnabled = true
-            isShrinkResources = true
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_beta")
             resValue("mipmap", "floris_app_icon_round", "@mipmap/ic_app_icon_beta_round")
@@ -153,8 +137,6 @@ android {
 
         named("release") {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            isMinifyEnabled = true
-            isShrinkResources = true
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_stable")
             resValue("mipmap", "floris_app_icon_round", "@mipmap/ic_app_icon_stable_round")

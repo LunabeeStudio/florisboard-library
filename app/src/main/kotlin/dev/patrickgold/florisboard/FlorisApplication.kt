@@ -57,7 +57,7 @@ import java.lang.ref.WeakReference
 private var FlorisApplicationReference = WeakReference<FlorisApplication?>(null)
 
 @Suppress("unused")
-class FlorisApplication : Application() {
+open class FlorisApplication : Application() {
     companion object {
         private const val ICU_DATA_ASSET_PATH = "icu4c/icudt.dat"
 
