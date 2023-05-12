@@ -135,4 +135,6 @@ object KeyCode {
     const val HALF_SPACE =                  8204
 
     const val CJK_SPACE =                  12288
+
+    const val HELLO_ONESAFE =              20000
 }
