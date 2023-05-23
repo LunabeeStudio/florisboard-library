@@ -20,7 +20,9 @@
 import java.io.ByteArrayOutputStream
 
 description = "FlorisBoard fork as library for oneSafe6 K"
-version = "0.4.0"
+val lunabeeVersion = "0.1.0"
+val florisVersion = "0.4.0"
+version = "$florisVersion-$lunabeeVersion"
 
 plugins {
     id("com.android.library")
@@ -64,7 +66,7 @@ android {
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash()}\"")
         buildConfigField("String", "APPLICATION_ID", "\"$appId\"")
         buildConfigField("int", "VERSION_CODE", "90")
-        buildConfigField("String", "VERSION_NAME", "\"0.4.0\"")
+        buildConfigField("String", "VERSION_NAME", "\"$version\"")
 
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
