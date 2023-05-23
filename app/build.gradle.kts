@@ -19,13 +19,17 @@
 
 import java.io.ByteArrayOutputStream
 
+description = "FlorisBoard fork as library for oneSafe6 K"
+version = "0.4.0"
+
 plugins {
     id("com.android.library")
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.mannodermaus.android.junit5)
-    alias(libs.plugins.mikepenz.aboutlibraries)
+    `onesafe-publish`
+    id(libs.plugins.kotlin.android.get().pluginId)
+    id(libs.plugins.kotlin.serialization.get().pluginId)
+    id(libs.plugins.ksp.get().pluginId)
+    id(libs.plugins.mannodermaus.android.junit5.get().pluginId)
+    id(libs.plugins.mikepenz.aboutlibraries.get().pluginId)
 }
 
 android {
