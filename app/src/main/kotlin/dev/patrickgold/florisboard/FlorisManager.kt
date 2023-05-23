@@ -16,7 +16,6 @@
 
 package dev.patrickgold.florisboard
 
-import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.ContextWrapper
@@ -24,6 +23,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Handler
 import androidx.core.os.UserManagerCompat
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.ime.clipboard.ClipboardManager
 import dev.patrickgold.florisboard.ime.core.SubtypeManager
@@ -51,13 +52,13 @@ import dev.patrickgold.jetpref.datastore.JetPref
 import java.lang.ref.WeakReference
 
 /**
- * Global weak reference for the [FlorisApplication] class. This is needed as in certain scenarios an application
+ * Global weak reference for the [FlorisManager] class. This is needed as in certain scenarios an application
  * reference is needed, but the Android framework hasn't finished setting up
  */
-private var FlorisApplicationReference = WeakReference<FlorisApplication?>(null)
+private var FlorisManagerReference = WeakReference<FlorisManager?>(null)
 
 @Suppress("unused")
-open class FlorisApplication : Application() {
+abstract class FlorisManager(private val appContext: Context) : DefaultLifecycleObserver {
     companion object {
         private const val ICU_DATA_ASSET_PATH = "icu4c/icudt.dat"
 
@@ -72,38 +73,39 @@ open class FlorisApplication : Application() {
     }
 
     private val prefs by florisPreferenceModel()
-    private val mainHandler by lazy { Handler(mainLooper) }
+    private val mainHandler by lazy { Handler(appContext.mainLooper) }
 
-    val assetManager = lazy { AssetManager(this) }
-    val cacheManager = lazy { CacheManager(this) }
-    val clipboardManager = lazy { ClipboardManager(this) }
-    val editorInstance = lazy { EditorInstance(this) }
-    val extensionManager = lazy { ExtensionManager(this) }
-    val glideTypingManager = lazy { GlideTypingManager(this) }
-    val keyboardManager = lazy { KeyboardManager(this) }
-    val nlpManager = lazy { NlpManager(this) }
-    val subtypeManager = lazy { SubtypeManager(this) }
-    val themeManager = lazy { ThemeManager(this) }
+    val assetManager = lazy { AssetManager(appContext) }
+    val cacheManager = lazy { CacheManager(appContext) }
+    val clipboardManager = lazy { ClipboardManager(appContext) }
+    val editorInstance = lazy { EditorInstance(appContext) }
+    val extensionManager = lazy { ExtensionManager(appContext) }
+    val glideTypingManager = lazy { GlideTypingManager(appContext) }
+    val keyboardManager = lazy { KeyboardManager(appContext) }
+    val nlpManager = lazy { NlpManager(appContext) }
+    val subtypeManager = lazy { SubtypeManager(appContext) }
+    val themeManager = lazy { ThemeManager(appContext) }
 
-    override fun onCreate() {
-        super.onCreate()
-        FlorisApplicationReference = WeakReference(this)
+
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+        FlorisManagerReference = WeakReference(this)
         try {
             JetPref.configure(saveIntervalMs = 500)
             Flog.install(
-                context = this,
+                context = appContext,
                 isFloggingEnabled = BuildConfig.DEBUG,
                 flogTopics = LogTopic.ALL,
                 flogLevels = Flog.LEVEL_ALL,
                 flogOutputs = Flog.OUTPUT_CONSOLE,
             )
-            CrashUtility.install(this)
-            FlorisEmojiCompat.init(this)
+            CrashUtility.install(appContext)
+            FlorisEmojiCompat.init(appContext)
 
-            if (!UserManagerCompat.isUserUnlocked(this)) {
-                cacheDir?.deleteContentsRecursively()
+            if (!UserManagerCompat.isUserUnlocked(appContext)) {
+                appContext.cacheDir?.deleteContentsRecursively()
                 extensionManager.value.init()
-                registerReceiver(BootComplete(), IntentFilter(Intent.ACTION_USER_UNLOCKED))
+                appContext.registerReceiver(BootComplete(), IntentFilter(Intent.ACTION_USER_UNLOCKED))
                 return
             }
 
@@ -115,12 +117,12 @@ open class FlorisApplication : Application() {
     }
 
     fun init() {
-        initICU(this)
-        cacheDir?.deleteContentsRecursively()
-        prefs.initializeBlocking(this)
+        initICU(appContext)
+        appContext.cacheDir?.deleteContentsRecursively()
+        prefs.initializeBlocking(appContext)
         extensionManager.value.init()
-        clipboardManager.value.initializeForContext(this)
-        DictionaryManager.init(this)
+        clipboardManager.value.initializeForContext(appContext)
+        DictionaryManager.init(appContext)
     }
 
     fun initICU(context: Context): Boolean {
@@ -150,7 +152,7 @@ open class FlorisApplication : Application() {
             if (intent == null) return
             if (intent.action == Intent.ACTION_USER_UNLOCKED) {
                 try {
-                    unregisterReceiver(this)
+                    appContext.unregisterReceiver(this)
                 } catch (e: Exception) {
                     flogError { e.toString() }
                 }
@@ -160,14 +162,15 @@ open class FlorisApplication : Application() {
     }
 }
 
-private tailrec fun Context.florisApplication(): FlorisApplication {
+private tailrec fun Context.florisApplication(): FlorisManager {
     return when (this) {
-        is FlorisApplication -> this
+        is FlorisManager -> this
         is ContextWrapper -> when {
             this.baseContext != null -> this.baseContext.florisApplication()
-            else -> FlorisApplicationReference.get()!!
+            else -> FlorisManagerReference.get()!!
         }
-        else -> tryOrNull { this.applicationContext as FlorisApplication } ?: FlorisApplicationReference.get()!!
+
+        else -> tryOrNull { this.applicationContext as FlorisManager } ?: FlorisManagerReference.get()!!
     }
 }
 

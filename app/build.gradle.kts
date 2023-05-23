@@ -19,7 +19,7 @@
 
 import java.io.ByteArrayOutputStream
 
-val lunabeeVersion = "0.1.0"
+val lunabeeVersion = "0.1.0-1"
 val florisVersion = "0.4.0-alpha04"
 val usePrebuilt = true
 version = "$florisVersion-$lunabeeVersion"

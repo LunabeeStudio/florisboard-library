@@ -26,7 +26,7 @@
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_dev_patrickgold_florisboard_FlorisApplication_00024Companion_nativeInitICUData(
+Java_dev_patrickgold_florisboard_FlorisManager_00024Companion_nativeInitICUData(
         JNIEnv *env, jobject thiz, jobject path)
 {
     auto path_str = utils::j2std_string(env, path);
