@@ -23,8 +23,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Handler
 import androidx.core.os.UserManagerCompat
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.ime.clipboard.ClipboardManager
 import dev.patrickgold.florisboard.ime.core.SubtypeManager
@@ -58,7 +56,7 @@ import java.lang.ref.WeakReference
 private var FlorisManagerReference = WeakReference<FlorisManager?>(null)
 
 @Suppress("unused")
-abstract class FlorisManager(private val appContext: Context) : DefaultLifecycleObserver {
+class FlorisManager(val appContext: Context) {
     companion object {
         private const val ICU_DATA_ASSET_PATH = "icu4c/icudt.dat"
 
@@ -86,9 +84,7 @@ abstract class FlorisManager(private val appContext: Context) : DefaultLifecycle
     val subtypeManager = lazy { SubtypeManager(appContext) }
     val themeManager = lazy { ThemeManager(appContext) }
 
-
-    override fun onCreate(owner: LifecycleOwner) {
-        super.onCreate(owner)
+    init {
         FlorisManagerReference = WeakReference(this)
         try {
             JetPref.configure(saveIntervalMs = 500)
@@ -106,13 +102,11 @@ abstract class FlorisManager(private val appContext: Context) : DefaultLifecycle
                 appContext.cacheDir?.deleteContentsRecursively()
                 extensionManager.value.init()
                 appContext.registerReceiver(BootComplete(), IntentFilter(Intent.ACTION_USER_UNLOCKED))
-                return
+            } else {
+                init()
             }
-
-            init()
         } catch (e: Exception) {
             CrashUtility.stageException(e)
-            return
         }
     }
 
@@ -162,11 +156,11 @@ abstract class FlorisManager(private val appContext: Context) : DefaultLifecycle
     }
 }
 
-private tailrec fun Context.florisApplication(): FlorisManager {
+private tailrec fun Context.florisManager(): FlorisManager {
     return when (this) {
-        is FlorisManager -> this
+        is FlorisManagerProvider -> this.florisManager()
         is ContextWrapper -> when {
-            this.baseContext != null -> this.baseContext.florisApplication()
+            this.baseContext != null -> this.baseContext.florisManager()
             else -> FlorisManagerReference.get()!!
         }
 
@@ -174,24 +168,24 @@ private tailrec fun Context.florisApplication(): FlorisManager {
     }
 }
 
-fun Context.appContext() = lazyOf(this.florisApplication())
+fun Context.appContext() = lazyOf(this.applicationContext)
 
-fun Context.assetManager() = this.florisApplication().assetManager
+fun Context.assetManager() = this.florisManager().assetManager
 
-fun Context.cacheManager() = this.florisApplication().cacheManager
+fun Context.cacheManager() = this.florisManager().cacheManager
 
-fun Context.clipboardManager() = this.florisApplication().clipboardManager
+fun Context.clipboardManager() = this.florisManager().clipboardManager
 
-fun Context.editorInstance() = this.florisApplication().editorInstance
+fun Context.editorInstance() = this.florisManager().editorInstance
 
-fun Context.extensionManager() = this.florisApplication().extensionManager
+fun Context.extensionManager() = this.florisManager().extensionManager
 
-fun Context.glideTypingManager() = this.florisApplication().glideTypingManager
+fun Context.glideTypingManager() = this.florisManager().glideTypingManager
 
-fun Context.keyboardManager() = this.florisApplication().keyboardManager
+fun Context.keyboardManager() = this.florisManager().keyboardManager
 
-fun Context.nlpManager() = this.florisApplication().nlpManager
+fun Context.nlpManager() = this.florisManager().nlpManager
 
-fun Context.subtypeManager() = this.florisApplication().subtypeManager
+fun Context.subtypeManager() = this.florisManager().subtypeManager
 
-fun Context.themeManager() = this.florisApplication().themeManager
+fun Context.themeManager() = this.florisManager().themeManager
