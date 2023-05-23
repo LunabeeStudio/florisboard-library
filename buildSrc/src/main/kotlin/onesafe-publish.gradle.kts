@@ -69,14 +69,14 @@ fun PublicationContainer.setPublication() {
 
 /**
  * Set project details:
- * - groupId will be [ProjectConfig.GROUP_ID]
+ * - groupId will take the group of the [project]
  * - artifactId will take the name of the current [project]
  * - version will be set in each submodule gradle file
  *
  * @param project project current project
  */
 fun MavenPublication.setProjectDetails() {
-    groupId = ProjectConfig.GROUP_ID
+    groupId = project.group.toString()
     artifactId = project.name
     version = project.version.toString()
 }
@@ -90,12 +90,12 @@ fun MavenPublication.setPom() {
     pom {
         name.set(project.name.capitalized())
         description.set(project.description)
-        url.set(ProjectConfig.LIBRARY_URL)
+        url.set("https://github.com/LunabeeStudio/florisboard-library")
 
         scm {
-            connection.set("git@github.com:LunabeeStudio/oneSafeRevival_Android.git")
-            developerConnection.set("git@github.com:LunabeeStudio/oneSafeRevival_Android.git")
-            url.set("https://github.com/LunabeeStudio/oneSafeRevival_Android")
+            connection.set("git@github.com:LunabeeStudio/florisboard-library.git")
+            developerConnection.set("git@github.com:LunabeeStudio/florisboard-library.git")
+            url.set("https://github.com/LunabeeStudio/florisboard-library")
         }
 
         developers {

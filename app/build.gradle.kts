@@ -19,10 +19,11 @@
 
 import java.io.ByteArrayOutputStream
 
-description = "FlorisBoard fork as library for oneSafe6 K"
 val lunabeeVersion = "0.1.0"
 val florisVersion = "0.4.0-alpha04"
 version = "$florisVersion-$lunabeeVersion"
+description = "FlorisBoard fork as library for oneSafe6 K"
+group = "studio.lunabee.florisboard"
 
 plugins {
     id("com.android.library")
