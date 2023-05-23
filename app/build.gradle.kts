@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream
 
 val lunabeeVersion = "0.1.0"
 val florisVersion = "0.4.0-alpha04"
+val usePrebuilt = true
 version = "$florisVersion-$lunabeeVersion"
 description = "FlorisBoard fork as library for oneSafe6 K"
 group = "studio.lunabee.florisboard"
@@ -75,16 +76,18 @@ android {
             arg("room.expandProjection", "true")
         }
 
-        externalNativeBuild {
-            cmake {
-                targets("florisboard-native")
-                cppFlags("-std=c++20", "-stdlib=libc++")
-                arguments(
-                    "-DCMAKE_ANDROID_API=" + minSdk.toString(),
-                    "-DICU_ASSET_EXPORT_DIR=" + project.file("src/main/assets/icu4c").absolutePath,
-                    "-DBUILD_SHARED_LIBS=false",
-                    "-DANDROID_STL=c++_static",
-                )
+        if (!usePrebuilt) {
+            externalNativeBuild {
+                cmake {
+                    targets("florisboard-native")
+                    cppFlags("-std=c++20", "-stdlib=libc++")
+                    arguments(
+                        "-DCMAKE_ANDROID_API=" + minSdk.toString(),
+                        "-DICU_ASSET_EXPORT_DIR=" + project.file("src/main/assets/icu4c").absolutePath,
+                        "-DBUILD_SHARED_LIBS=false",
+                        "-DANDROID_STL=c++_static",
+                    )
+                }
             }
         }
 
@@ -112,9 +115,11 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
-    externalNativeBuild {
-        cmake {
-            path("src/main/cpp/CMakeLists.txt")
+    if (!usePrebuilt) {
+        externalNativeBuild {
+            cmake {
+                path("src/main/cpp/CMakeLists.txt")
+            }
         }
     }
 
