@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
  * This is sometimes called by the UI thread, so all functions are non blocking.
  * Database accesses are performed async.
  */
-class ClipboardMediaProvider : ContentProvider() {
+open class ClipboardMediaProvider : ContentProvider() {
     private var clipboardFilesDao: ClipboardFilesDao? = null
     private val cachedFileInfos: HashMap<Long, ClipboardFileInfo> = hashMapOf()
     private val ioScope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
