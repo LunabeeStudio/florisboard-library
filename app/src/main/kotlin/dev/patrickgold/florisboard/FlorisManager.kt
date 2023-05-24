@@ -55,8 +55,7 @@ import java.lang.ref.WeakReference
  */
 private var FlorisManagerReference = WeakReference<FlorisManager?>(null)
 
-@Suppress("unused")
-class FlorisManager(val appContext: Context) {
+class FlorisManager {
     companion object {
         private const val ICU_DATA_ASSET_PATH = "icu4c/icudt.dat"
 
@@ -69,6 +68,8 @@ class FlorisManager(val appContext: Context) {
             }
         }
     }
+
+    lateinit var appContext: Context
 
     private val prefs by florisPreferenceModel()
     private val mainHandler by lazy { Handler(appContext.mainLooper) }
@@ -84,7 +85,8 @@ class FlorisManager(val appContext: Context) {
     val subtypeManager = lazy { SubtypeManager(appContext) }
     val themeManager = lazy { ThemeManager(appContext) }
 
-    init {
+    fun initialize(appContext: Context) {
+        this.appContext = appContext
         FlorisManagerReference = WeakReference(this)
         try {
             JetPref.configure(saveIntervalMs = 500)
@@ -100,7 +102,7 @@ class FlorisManager(val appContext: Context) {
 
             if (!UserManagerCompat.isUserUnlocked(appContext)) {
                 appContext.cacheDir?.deleteContentsRecursively()
-                extensionManager.value.init()
+                appContext.extensionManager().value.init()
                 appContext.registerReceiver(BootComplete(), IntentFilter(Intent.ACTION_USER_UNLOCKED))
             } else {
                 init()
@@ -110,16 +112,16 @@ class FlorisManager(val appContext: Context) {
         }
     }
 
-    fun init() {
+    private fun init() {
         initICU(appContext)
         appContext.cacheDir?.deleteContentsRecursively()
         prefs.initializeBlocking(appContext)
-        extensionManager.value.init()
-        clipboardManager.value.initializeForContext(appContext)
+        appContext.extensionManager().value.init()
+        appContext.clipboardManager().value.initializeForContext(appContext)
         DictionaryManager.init(appContext)
     }
 
-    fun initICU(context: Context): Boolean {
+    private fun initICU(context: Context): Boolean {
         try {
             val androidAssetManager = context.assets ?: return false
             val icuTmpDataFile = context.cacheDir.subFile("icudt.dat")
@@ -141,7 +143,7 @@ class FlorisManager(val appContext: Context) {
         }
     }
 
-    private inner class BootComplete : BroadcastReceiver() {
+    inner class BootComplete : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent == null) return
             if (intent.action == Intent.ACTION_USER_UNLOCKED) {
@@ -164,7 +166,8 @@ private tailrec fun Context.florisManager(): FlorisManager {
             else -> FlorisManagerReference.get()!!
         }
 
-        else -> tryOrNull { this.applicationContext as FlorisManager } ?: FlorisManagerReference.get()!!
+        else -> tryOrNull { (this.applicationContext as FlorisManagerProvider).florisManager() }
+            ?: FlorisManagerReference.get()!!
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Patrick Goldinger
+ * Copyright (C) 2021 Patrick Goldinger
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,17 @@
  * limitations under the License.
  */
 
-rootProject.name = "FlorisBoard"
+package dev.patrickgold.florisboard
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
+import android.app.Application
+
+class FlorisApplication : Application(), FlorisManagerProvider {
+    private val florisManager = FlorisManager()
+
+    override fun onCreate() {
+        super.onCreate()
+        florisManager.initialize(this)
     }
-}
 
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-        // Uncomment the following if testing snapshots from Maven Central
-        // maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
-    }
+    override fun florisManager(): FlorisManager = florisManager
 }
-
-include(":florisboard-library")
-project(":florisboard-library").projectDir = file("app")
-include(":benchmark")
-include(":demo")
