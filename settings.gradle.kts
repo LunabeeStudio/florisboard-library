@@ -33,6 +33,7 @@ dependencyResolutionManagement {
     }
 }
 
-include(":app")
+include(":florisboard-library")
+project(":florisboard-library").projectDir = file("app")
 include(":benchmark")
 include(":lib:kotlin")

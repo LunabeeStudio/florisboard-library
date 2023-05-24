@@ -231,10 +231,16 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
     }
 
     fun toggleOneHandedMode(isRight: Boolean) {
-        prefs.keyboard.oneHandedMode.set(when (prefs.keyboard.oneHandedMode.get()) {
-            OneHandedMode.OFF -> if (isRight) { OneHandedMode.END } else { OneHandedMode.START }
-            else -> OneHandedMode.OFF
-        })
+        prefs.keyboard.oneHandedMode.set(
+            when (prefs.keyboard.oneHandedMode.get()) {
+                OneHandedMode.OFF -> if (isRight) {
+                    OneHandedMode.END
+                } else {
+                    OneHandedMode.START
+                }
+                else -> OneHandedMode.OFF
+            }
+        )
     }
 
     fun executeSwipeAction(swipeAction: SwipeAction) {
@@ -299,7 +305,7 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
      *    otherwise            , abc -> abc
      */
     fun fixCase(word: String): String {
-        return when(activeState.inputShiftState) {
+        return when (activeState.inputShiftState) {
             InputShiftState.CAPS_LOCK -> {
                 word.uppercase(subtypeManager.activeSubtype.primaryLocale)
             }
@@ -533,7 +539,8 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
         // Skip handling changing to characters keyboard and double space periods
         // TODO: this is whether we commit space after selecting candidate. Should be determined by SuggestionProvider
         if (!subtypeManager.activeSubtype.primaryLocale.supportsAutoSpace &&
-                candidate != null) { /* Do nothing */ } else {
+            candidate != null) { /* Do nothing */
+        } else {
             editorInstance.commitText(KeyCode.SPACE.toChar().toString())
         }
     }
@@ -552,7 +559,8 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
                 KeyboardMode.SYMBOLS2 -> {
                     activeState.keyboardMode = KeyboardMode.CHARACTERS
                 }
-                else -> { /* Do nothing */ }
+                else -> { /* Do nothing */
+                }
             }
         }
         if (prefs.correction.doubleSpacePeriod.get()) {
@@ -567,7 +575,8 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
         }
         // TODO: this is whether we commit space after selecting candidate. Should be determined by SuggestionProvider
         if (!subtypeManager.activeSubtype.primaryLocale.supportsAutoSpace &&
-                candidate != null) { /* Do nothing */ } else {
+            candidate != null) { /* Do nothing */
+        } else {
             editorInstance.commitText(KeyCode.SPACE.toChar().toString())
         }
     }
@@ -603,6 +612,15 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
         lastToastReference = WeakReference(
             appContext.showLongToast("Autocorrect toggle is a placeholder and not yet implemented")
         )
+    }
+
+    /**
+     * Handles a [KeyCode.HELLO_ONESAFE] event.
+     */
+    private fun handleHelloOneSafe() {
+        appContext.packageManager.getLaunchIntentForPackage(appContext.packageName)?.let { intent ->
+            appContext.startActivity(intent)
+        }
     }
 
     /**
@@ -757,6 +775,7 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
             KeyCode.VIEW_PHONE2 -> activeState.keyboardMode = KeyboardMode.PHONE2
             KeyCode.VIEW_SYMBOLS -> activeState.keyboardMode = KeyboardMode.SYMBOLS
             KeyCode.VIEW_SYMBOLS2 -> activeState.keyboardMode = KeyboardMode.SYMBOLS2
+            KeyCode.HELLO_ONESAFE -> handleHelloOneSafe()
             else -> {
                 if (activeState.imeUiMode == ImeUiMode.MEDIA) {
                     nlpManager.getAutoCommitCandidate()?.let { commitCandidate(it) }
@@ -782,7 +801,7 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
                         }
                     }
                     else -> when (data.type) {
-                        KeyType.CHARACTER, KeyType.NUMERIC ->{
+                        KeyType.CHARACTER, KeyType.NUMERIC -> {
                             val text = data.asString(isForDisplay = false)
                             if (!UCharacter.isUAlphabetic(UCharacter.codePointAt(text, 0))) {
                                 nlpManager.getAutoCommitCandidate()?.let { commitCandidate(it) }
@@ -894,10 +913,16 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
                     }
                 }
                 keyboardExtension.popupMappings.forEach { popupMapping ->
-                    localPopupMappings[ExtensionComponentName(keyboardExtension.meta.id, popupMapping.id)] = popupMapping
+                    localPopupMappings[ExtensionComponentName(
+                        keyboardExtension.meta.id,
+                        popupMapping.id
+                    )] = popupMapping
                 }
                 keyboardExtension.punctuationRules.forEach { punctuationRule ->
-                    localPunctuationRules[ExtensionComponentName(keyboardExtension.meta.id, punctuationRule.id)] = punctuationRule
+                    localPunctuationRules[ExtensionComponentName(
+                        keyboardExtension.meta.id,
+                        punctuationRule.id
+                    )] = punctuationRule
                 }
                 localSubtypePresets.addAll(keyboardExtension.subtypePresets)
             }
