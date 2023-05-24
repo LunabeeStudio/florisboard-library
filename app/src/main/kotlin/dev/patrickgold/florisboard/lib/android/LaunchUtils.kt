@@ -77,7 +77,7 @@ inline fun Context.launchActivity(intentModifier: (Intent) -> Unit) {
         val intent = Intent()
         intentModifier(intent)
         this.startActivity(intent)
-    } catch (e: ActivityNotFoundException) {
+    } catch (e: Exception) {
         flogError { e.toString() }
         Toast.makeText(this, e.localizedMessage, Toast.LENGTH_LONG).show()
     }
