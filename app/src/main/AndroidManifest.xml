@@ -48,7 +48,7 @@
             <intent-filter>
                 <action android:name="android.view.InputMethod"/>
             </intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/method"/>
+            <meta-data android:name="android.view.im" android:resource="@xml/floris_method"/>
         </service>
 
         <!-- Spellchecker service -->
@@ -60,7 +60,7 @@
             <intent-filter>
                 <action android:name="android.service.textservice.SpellCheckerService"/>
             </intent-filter>
-            <meta-data android:name="android.view.textservice.scs" android:resource="@xml/spellchecker"/>
+            <meta-data android:name="android.view.textservice.scs" android:resource="@xml/floris_spellchecker"/>
         </service>
 
         <!-- Main App Activity -->
@@ -135,7 +135,7 @@
             android:exported="false">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/floris_file_paths"/>
         </provider>
 
         <!-- Disable default EmojiCompat initializer -->
