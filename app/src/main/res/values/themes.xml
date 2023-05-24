@@ -29,6 +29,7 @@
     <style name="FlorisImeTheme" parent="android:Theme.Material.InputMethod">
         <!-- Need this to prevent Xiaomi devices from messing with our beautiful UI -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 
     <style name="FlorisAppTheme.Transparent" parent="android:style/Theme.Material.NoActionBar">

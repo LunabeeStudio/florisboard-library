@@ -26,6 +26,7 @@ import android.util.Size
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -42,10 +43,15 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -139,7 +145,7 @@ private var FlorisImeServiceReference = WeakReference<FlorisImeService?>(null)
  * Core class responsible for linking together all managers and UI compose-ables to provide an IME service. Sets
  * up the window and context to be lifecycle-aware, so LiveData and Jetpack Compose can be used without issues.
  */
-class FlorisImeService : LifecycleInputMethodService() {
+abstract class FlorisImeService : LifecycleInputMethodService() {
     companion object {
         private val InlineSuggestionUiSmallestSize = Size(0, 0)
         private val InlineSuggestionUiBiggestSize = Size(Int.MAX_VALUE, Int.MAX_VALUE)
@@ -231,7 +237,7 @@ class FlorisImeService : LifecycleInputMethodService() {
             val imm = ims.systemServiceOrNull(InputMethodManager::class) ?: return false
             val list: List<InputMethodInfo> = imm.enabledInputMethodList
             for (el in list) {
-                for (i in 0 until el.subtypeCount){
+                for (i in 0 until el.subtypeCount) {
                     if (el.getSubtypeAt(i).mode != "voice") continue
                     if (AndroidVersion.ATLEAST_API28_P) {
                         ims.switchInputMethod(el.id)
@@ -284,6 +290,10 @@ class FlorisImeService : LifecycleInputMethodService() {
         super.installViewTreeOwners()
         // Instantiate and install bottom sheet host UI view
         val bottomSheetView = FlorisBottomSheetHostUiView()
+        window.window!!.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+        )
         window.window!!.findViewById<ViewGroup>(android.R.id.content).addView(bottomSheetView)
         // Instantiate and return input view
         val composeView = ComposeInputView()
@@ -487,9 +497,7 @@ class FlorisImeService : LifecycleInputMethodService() {
         outInsets.visibleTopInsets = visibleTopY
         outInsets.touchableInsets = Insets.TOUCHABLE_INSETS_REGION
         val left = 0
-        val top = if (keyboardManager.activeState.isBottomSheetShowing()) { 0 } else {
-            visibleTopY - if (needAdditionalOverlay) FlorisImeSizing.Static.smartbarHeightPx else 0
-        }
+        val top = calculateTouchableTopY(visibleTopY, needAdditionalOverlay)
         val right = inputViewSize.width
         val bottom = inputWindowView.height
         outInsets.touchableRegion.set(left, top, right, bottom)
@@ -500,7 +508,7 @@ class FlorisImeService : LifecycleInputMethodService() {
      */
     private fun updateSoftInputWindowLayoutParameters() {
         val w = window?.window ?: return
-        WindowCompat.setDecorFitsSystemWindows(w, true)
+        WindowCompat.setDecorFitsSystemWindows(w, false)
         ViewUtils.updateLayoutHeightOf(w, WindowManager.LayoutParams.MATCH_PARENT)
         val layoutHeight = if (isFullscreenUiMode) {
             WindowManager.LayoutParams.WRAP_CONTENT
@@ -556,6 +564,28 @@ class FlorisImeService : LifecycleInputMethodService() {
         }
     }
 
+    @Composable
+    protected open fun AboveImeView(
+        ImeUi: @Composable () -> Unit,
+    ) {
+        ImeUi()
+    }
+
+    @Composable
+    protected open fun ThemeImeView() {
+    }
+
+    protected open fun calculateTouchableTopY(
+        visibleTopY: Int,
+        needAdditionalOverlay: Boolean,
+    ): Int {
+        return if (keyboardManager.activeState.isBottomSheetShowing()) {
+            0
+        } else {
+            visibleTopY - if (needAdditionalOverlay) FlorisImeSizing.Static.smartbarHeightPx else 0
+        }
+    }
+
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     private fun ImeUi() {
@@ -570,60 +600,73 @@ class FlorisImeService : LifecycleInputMethodService() {
                 keyboardManager.activeState.layoutDirection = layoutDirection
             }
         }
+
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-            SnyggSurface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .onGloballyPositioned { coords -> inputViewSize = coords.size }
-                    // Do not remove below line or touch input may get stuck
-                    .pointerInteropFilter { false },
-                style = keyboardStyle,
-            ) {
-                val configuration = LocalConfiguration.current
-                val bottomOffset by if (configuration.isOrientationPortrait()) {
-                    prefs.keyboard.bottomOffsetPortrait
-                } else {
-                    prefs.keyboard.bottomOffsetLandscape
-                }.observeAsTransformingState { it.dp }
-                Row(
+
+            val configuration = LocalConfiguration.current
+            val bottomOffset by if (configuration.isOrientationPortrait()) {
+                prefs.keyboard.bottomOffsetPortrait
+            } else {
+                prefs.keyboard.bottomOffsetLandscape
+            }.observeAsTransformingState { it.dp }
+            AboveImeView {
+                SnyggSurface(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        // FIXME: removing this fixes the Smartbar sizing but breaks one-handed-mode
-                        //.height(IntrinsicSize.Min)
-                        .padding(bottom = bottomOffset),
+                        .onGloballyPositioned { coords ->
+                            inputViewSize = IntSize(
+                                coords.size.width,
+                                coords.size.height
+                            )
+                        }
+                        // Do not remove below line or touch input may get stuck
+                        .pointerInteropFilter { false },
+                    style = keyboardStyle,
                 ) {
-                    val oneHandedMode by prefs.keyboard.oneHandedMode.observeAsState()
-                    val oneHandedModeScaleFactor by prefs.keyboard.oneHandedModeScaleFactor.observeAsState()
-                    val keyboardWeight = when {
-                        oneHandedMode == OneHandedMode.OFF || configuration.isOrientationLandscape() -> 1f
-                        else -> oneHandedModeScaleFactor / 100f
-                    }
-                    if (oneHandedMode == OneHandedMode.END && configuration.isOrientationPortrait()) {
-                        OneHandedPanel(
-                            panelSide = OneHandedMode.START,
-                            weight = 1f - keyboardWeight,
-                        )
-                    }
-                    CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
-                        Box(
+                    Column {
+                        ThemeImeView()
+                        Row(
                             modifier = Modifier
-                                .weight(keyboardWeight)
-                                .wrapContentHeight(),
+                                .fillMaxWidth()
+                                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
+                                .wrapContentHeight()
+                                // FIXME: removing this fixes the Smartbar sizing but breaks one-handed-mode
+                                //.height(IntrinsicSize.Min)
+                                .padding(bottom = bottomOffset),
                         ) {
-                            when (state.imeUiMode) {
-                                ImeUiMode.TEXT -> TextInputLayout()
-                                ImeUiMode.MEDIA -> MediaInputLayout()
-                                ImeUiMode.CLIPBOARD -> ClipboardInputLayout()
+                            val oneHandedMode by prefs.keyboard.oneHandedMode.observeAsState()
+                            val oneHandedModeScaleFactor by prefs.keyboard.oneHandedModeScaleFactor.observeAsState()
+                            val keyboardWeight = when {
+                                oneHandedMode == OneHandedMode.OFF || configuration.isOrientationLandscape() -> 1f
+                                else -> oneHandedModeScaleFactor / 100f
+                            }
+                            if (oneHandedMode == OneHandedMode.END && configuration.isOrientationPortrait()) {
+                                OneHandedPanel(
+                                    panelSide = OneHandedMode.START,
+                                    weight = 1f - keyboardWeight,
+                                )
+                            }
+                            CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
+                                Box(
+                                    modifier = Modifier
+                                        .weight(keyboardWeight)
+                                        .wrapContentHeight(),
+                                ) {
+                                    when (state.imeUiMode) {
+                                        ImeUiMode.TEXT -> TextInputLayout()
+                                        ImeUiMode.MEDIA -> MediaInputLayout()
+                                        ImeUiMode.CLIPBOARD -> ClipboardInputLayout()
+                                    }
+                                }
+                            }
+                            if (oneHandedMode == OneHandedMode.START && configuration.isOrientationPortrait()) {
+                                OneHandedPanel(
+                                    panelSide = OneHandedMode.END,
+                                    weight = 1f - keyboardWeight,
+                                )
                             }
                         }
-                    }
-                    if (oneHandedMode == OneHandedMode.START && configuration.isOrientationPortrait()) {
-                        OneHandedPanel(
-                            panelSide = OneHandedMode.END,
-                            weight = 1f - keyboardWeight,
-                        )
                     }
                 }
             }
@@ -641,7 +684,6 @@ class FlorisImeService : LifecycleInputMethodService() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean =
         if (keyboardManager.onHardwareKeyDown(keyCode, event)) true
         else super.onKeyDown(keyCode, event)
-
 
     private inner class ComposeInputView : AbstractComposeView(this) {
         init {
@@ -662,7 +704,15 @@ class FlorisImeService : LifecycleInputMethodService() {
             super.onAttachedToWindow()
             updateSoftInputWindowLayoutParameters()
         }
+
+        override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+            val handled = super.dispatchTouchEvent(ev)
+            onComposeViewTouchEvent(ev)
+            return handled
+        }
     }
+
+    protected abstract fun onComposeViewTouchEvent(ev: MotionEvent?)
 
     private inner class FlorisBottomSheetHostUiView : AbstractComposeView(this) {
         init {

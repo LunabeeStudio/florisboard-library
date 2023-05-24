@@ -32,7 +32,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.florisboard.lib.kotlin.map
 
-class FlorisSpellCheckerService : SpellCheckerService() {
+open class FlorisSpellCheckerService : SpellCheckerService() {
     private val prefs by florisPreferenceModel()
     private val dictionaryManager get() = DictionaryManager.default()
     private val nlpManager by nlpManager()

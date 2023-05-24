@@ -15,8 +15,8 @@
  */
 
 plugins {
-    alias(libs.plugins.agp.test)
-    alias(libs.plugins.kotlin.android)
+    id(libs.plugins.agp.test.get().pluginId)
+    id(libs.plugins.kotlin.android.get().pluginId)
 }
 
 android {
@@ -58,7 +58,7 @@ android {
         }
     }
 
-    targetProjectPath = ":app"
+    targetProjectPath = ":florisboard-library"
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 

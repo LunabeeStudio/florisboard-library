@@ -1,7 +1,12 @@
 plugins {
-    alias(libs.plugins.agp.library)
-    alias(libs.plugins.kotlin.android)
+    id("com.android.library")
+    id("kotlin-android")
+    `lunabee-publish`
 }
+
+version = Versions.fullVersion
+description = "FlorisBoard native library"
+group = "studio.lunabee.florisboard"
 
 val projectMinSdk: String by project
 val projectCompileSdk: String by project
@@ -25,7 +30,7 @@ android {
         }
 
         ndk {
-            //abiFilters += listOf("armeabi-v7a", "arm64-v8a")
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
         }
     }
 

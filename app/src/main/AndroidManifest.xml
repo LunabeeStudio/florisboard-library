@@ -36,15 +36,6 @@
     </queries>
 
     <application
-        android:name="dev.patrickgold.florisboard.FlorisApplication"
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/backup_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/floris_app_icon"
-        android:label="@string/floris_app_name"
-        android:roundIcon="@mipmap/floris_app_icon_round"
-        android:supportsRtl="true"
-        android:theme="@style/FlorisAppTheme"
         tools:targetApi="s">
 
         <!-- Allow app to be profiled for benchmarking and baseline profile generation -->
@@ -60,7 +51,7 @@
             <intent-filter>
                 <action android:name="android.view.InputMethod"/>
             </intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/method"/>
+            <meta-data android:name="android.view.im" android:resource="@xml/floris_method"/>
         </service>
 
         <!-- Spellchecker service -->
@@ -72,7 +63,7 @@
             <intent-filter>
                 <action android:name="android.service.textservice.SpellCheckerService"/>
             </intent-filter>
-            <meta-data android:name="android.view.textservice.scs" android:resource="@xml/spellchecker"/>
+            <meta-data android:name="android.view.textservice.scs" android:resource="@xml/floris_spellchecker"/>
         </service>
 
         <!-- Main App Activity -->
@@ -159,7 +150,7 @@
             android:exported="false">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/floris_file_paths"/>
         </provider>
 
         <!-- Disable default EmojiCompat initializer -->

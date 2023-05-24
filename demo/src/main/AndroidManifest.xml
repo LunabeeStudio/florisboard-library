@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2020-2022 Patrick Goldinger
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:name="dev.patrickgold.florisboard.FlorisDemoApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/floris_backup_rules"
+        android:fullBackupContent="@xml/floris_backup_rules"
+        android:icon="@mipmap/floris_app_icon"
+        android:label="@string/floris_app_name"
+        android:roundIcon="@mipmap/floris_app_icon_round"
+        android:supportsRtl="true"
+        android:theme="@style/FlorisAppTheme"
+        tools:targetApi="s">
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+                android:value="androidx.startup" />
+        </provider>
+
+        <!-- remove floris IME service -->
+        <service
+            android:name="dev.patrickgold.florisboard.FlorisImeService"
+            android:directBootAware="true"
+            android:exported="true"
+            android:label="@string/floris_app_name"
+            android:permission="android.permission.BIND_INPUT_METHOD"
+            tools:node="remove" />
+
+        <!-- IME service subclass -->
+        <service
+            android:name=".DemoFlorisImeService"
+            android:directBootAware="true"
+            android:exported="true"
+            android:label="@string/floris_app_name"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/floris_method" />
+        </service>
+    </application>
+
+</manifest>

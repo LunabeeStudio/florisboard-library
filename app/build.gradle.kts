@@ -16,13 +16,18 @@
 
 import java.io.ByteArrayOutputStream
 
+version = Versions.fullVersion
+description = "FlorisBoard fork as library for oneSafe6 K"
+group = "studio.lunabee.florisboard"
+
 plugins {
-    alias(libs.plugins.agp.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.mannodermaus.android.junit5)
-    alias(libs.plugins.mikepenz.aboutlibraries)
+    id("com.android.library")
+    `lunabee-publish`
+    id(libs.plugins.kotlin.android.get().pluginId)
+    id(libs.plugins.kotlin.serialization.get().pluginId)
+    id(libs.plugins.ksp.get().pluginId)
+    id(libs.plugins.mannodermaus.android.junit5.get().pluginId)
+    id(libs.plugins.mikepenz.aboutlibraries.get().pluginId)
 }
 
 val projectMinSdk: String by project
@@ -36,9 +41,9 @@ val projectVersionNameSuffix: String by project
 
 android {
     namespace = "dev.patrickgold.florisboard"
-    compileSdk = projectCompileSdk.toInt()
-    buildToolsVersion = projectBuildToolsVersion
-    ndkVersion = projectNdkVersion
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
+    ndkVersion = "25.2.9519653"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -55,15 +60,17 @@ android {
     }
 
     defaultConfig {
-        applicationId = "dev.patrickgold.florisboard"
-        minSdk = projectMinSdk.toInt()
-        targetSdk = projectTargetSdk.toInt()
-        versionCode = projectVersionCode.toInt()
-        versionName = projectVersionName
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        val appId = "dev.patrickgold.florisboard"
+        manifestPlaceholders["applicationId"] = appId
+
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash()}\"")
+        buildConfigField("String", "APPLICATION_ID", "\"$appId\"")
+        buildConfigField("int", "VERSION_CODE", "90")
+        buildConfigField("String", "VERSION_NAME", "\"$version\"")
 
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
@@ -83,15 +90,6 @@ android {
         }
     }
 
-    bundle {
-        language {
-            // We disable language split because FlorisBoard does not use
-            // runtime Google Play Service APIs and thus cannot dynamically
-            // request to download the language resources for a specific locale.
-            enableSplit = false
-        }
-    }
-
     buildFeatures {
         buildConfig = true
         compose = true
@@ -103,10 +101,6 @@ android {
 
     buildTypes {
         named("debug") {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug-${getGitCommitHash(short = true)}"
-
-            isDebuggable = true
             isJniDebuggable = false
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_debug")
@@ -116,12 +110,7 @@ android {
         }
 
         create("beta") {
-            applicationIdSuffix = ".beta"
-            versionNameSuffix = projectVersionNameSuffix
-
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            isMinifyEnabled = true
-            isShrinkResources = true
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_beta")
             resValue("mipmap", "floris_app_icon_round", "@mipmap/ic_app_icon_beta_round")
@@ -130,11 +119,7 @@ android {
         }
 
         named("release") {
-            versionNameSuffix = projectVersionNameSuffix
-
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            isMinifyEnabled = true
-            isShrinkResources = true
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_stable")
             resValue("mipmap", "floris_app_icon_round", "@mipmap/ic_app_icon_stable_round")
