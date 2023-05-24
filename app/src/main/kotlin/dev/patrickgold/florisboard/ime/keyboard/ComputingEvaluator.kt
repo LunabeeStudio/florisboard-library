@@ -278,6 +278,9 @@ fun ComputingEvaluator.computeIconResId(data: KeyData): Int? {
         KeyCode.NOOP -> {
             R.drawable.ic_close
         }
+        KeyCode.HELLO_ONESAFE -> {
+            R.drawable.floris_app_icon_foreground
+        }
         else -> null
     }
 }

@@ -18,17 +18,24 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
 import java.io.ByteArrayOutputStream
-import java.io.File
+
+val lunabeeVersion = "0.1.0-5"
+val florisVersion = "0.4.0-alpha04"
+val usePrebuilt = true
+version = "$florisVersion-$lunabeeVersion"
+description = "FlorisBoard fork as library for oneSafe6 K"
+group = "studio.lunabee.florisboard"
 
 val usePrebuilt = true
 
 plugins {
-    alias(libs.plugins.agp.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.mannodermaus.android.junit5)
-    alias(libs.plugins.mikepenz.aboutlibraries)
+    id("com.android.library")
+    `onesafe-publish`
+    id(libs.plugins.kotlin.android.get().pluginId)
+    id(libs.plugins.kotlin.serialization.get().pluginId)
+    id(libs.plugins.ksp.get().pluginId)
+    id(libs.plugins.mannodermaus.android.junit5.get().pluginId)
+    id(libs.plugins.mikepenz.aboutlibraries.get().pluginId)
 }
 
 android {
@@ -52,15 +59,18 @@ android {
     }
 
     defaultConfig {
-        applicationId = "dev.patrickgold.florisboard"
         minSdk = 24
         targetSdk = 33
-        versionCode = 90
-        versionName = "0.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        val appId = "dev.patrickgold.florisboard"
+        manifestPlaceholders["applicationId"] = appId
+
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash()}\"")
+        buildConfigField("String", "APPLICATION_ID", "\"$appId\"")
+        buildConfigField("int", "VERSION_CODE", "90")
+        buildConfigField("String", "VERSION_NAME", "\"$version\"")
 
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
@@ -99,15 +109,6 @@ android {
         }
     }
 
-    bundle {
-        language {
-            // We disable language split because FlorisBoard does not use
-            // runtime Google Play Service APIs and thus cannot dynamically
-            // request to download the language resources for a specific locale.
-            enableSplit = false
-        }
-    }
-
     buildFeatures {
         compose = true
     }
@@ -126,10 +127,6 @@ android {
 
     buildTypes {
         named("debug") {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug-${getGitCommitHash(short = true)}"
-
-            isDebuggable = true
             isJniDebuggable = false
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_debug")
@@ -139,12 +136,7 @@ android {
         }
 
         create("beta") {
-            applicationIdSuffix = ".beta"
-            versionNameSuffix = "-alpha04"
-
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            isMinifyEnabled = true
-            isShrinkResources = true
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_beta")
             resValue("mipmap", "floris_app_icon_round", "@mipmap/ic_app_icon_beta_round")
@@ -154,8 +146,6 @@ android {
 
         named("release") {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            isMinifyEnabled = true
-            isShrinkResources = true
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_stable")
             resValue("mipmap", "floris_app_icon_round", "@mipmap/ic_app_icon_stable_round")
