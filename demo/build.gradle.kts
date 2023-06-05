@@ -18,7 +18,6 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 plugins {
     id(libs.plugins.agp.application.get().pluginId)
@@ -70,7 +69,14 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
@@ -80,7 +86,14 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 dependencies {
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+
     implementation(project(":florisboard-library"))
+
     androidTestImplementation(libs.androidx.test.espresso.core)
 }
 

@@ -46,7 +46,7 @@ import dev.patrickgold.florisboard.subtypeManager
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.atomic.AtomicInteger
 
-class EditorInstance(context: Context) : AbstractEditorInstance(context) {
+open class EditorInstance(context: Context) : AbstractEditorInstance(context) {
     companion object {
         private const val SPACE = " "
     }
@@ -346,7 +346,7 @@ class EditorInstance(context: Context) : AbstractEditorInstance(context) {
      *
      * @return True on success, false if an error occurred or the input connection is invalid.
      */
-    fun deleteBackwards(): Boolean {
+    open fun deleteBackwards(): Boolean {
         val content = activeContent
         if (phantomSpace.isActive && content.currentWord.isValid && prefs.glide.immediateBackspaceDeletesWord.get()) {
             return deleteWordBackwards()

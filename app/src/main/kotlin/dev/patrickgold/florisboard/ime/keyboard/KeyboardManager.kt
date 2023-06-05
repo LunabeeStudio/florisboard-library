@@ -81,7 +81,7 @@ import java.lang.ref.WeakReference
 
 private val DoubleSpacePeriodMatcher = """([^.!?‽\s]\s)""".toRegex()
 
-class KeyboardManager(context: Context) : InputKeyEventReceiver {
+open class KeyboardManager(context: Context) : InputKeyEventReceiver {
     private val prefs by florisPreferenceModel()
     private val appContext by context.appContext()
     private val clipboardManager by context.clipboardManager()
@@ -615,15 +615,6 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
     }
 
     /**
-     * Handles a [KeyCode.HELLO_ONESAFE] event.
-     */
-    private fun handleHelloOneSafe() {
-        appContext.packageManager.getLaunchIntentForPackage(appContext.packageName)?.let { intent ->
-            appContext.startActivity(intent)
-        }
-    }
-
-    /**
      * Handles a [KeyCode.KANA_SWITCHER] event
      */
     private fun handleKanaSwitch() {
@@ -775,7 +766,6 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
             KeyCode.VIEW_PHONE2 -> activeState.keyboardMode = KeyboardMode.PHONE2
             KeyCode.VIEW_SYMBOLS -> activeState.keyboardMode = KeyboardMode.SYMBOLS
             KeyCode.VIEW_SYMBOLS2 -> activeState.keyboardMode = KeyboardMode.SYMBOLS2
-            KeyCode.HELLO_ONESAFE -> handleHelloOneSafe()
             else -> {
                 if (activeState.imeUiMode == ImeUiMode.MEDIA) {
                     nlpManager.getAutoCommitCandidate()?.let { commitCandidate(it) }

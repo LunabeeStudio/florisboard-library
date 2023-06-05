@@ -15,7 +15,7 @@
  */
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    id(libs.plugins.kotlin.jvm.get().pluginId)
 }
 
 val projectGroupId: String by project
