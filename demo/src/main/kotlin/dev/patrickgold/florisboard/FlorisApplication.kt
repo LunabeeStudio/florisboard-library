@@ -19,11 +19,17 @@ package dev.patrickgold.florisboard
 import android.app.Application
 
 class FlorisApplication : Application(), FlorisManagerProvider {
-    private val florisManager = FlorisManager()
+    private val florisManager = FlorisManager(
+        context = lazy { this },
+        editorInstance = lazy { InterceptEditorInstance(this) },
+        keyboardManager = lazy { InterceptKeyboardManager(this) },
+    )
 
     override fun onCreate() {
         super.onCreate()
-        florisManager.initialize(this)
+        florisManager.initialize(
+            installCrashUtility = true,
+        )
     }
 
     override fun florisManager(): FlorisManager = florisManager

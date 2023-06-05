@@ -28,6 +28,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import dev.patrickgold.florisboard.R
 import dev.patrickgold.florisboard.BuildConfig
 import dev.patrickgold.florisboard.lib.android.AndroidSettings
 import dev.patrickgold.florisboard.lib.android.AndroidVersion
@@ -102,13 +103,17 @@ object InputMethodUtils {
         flogDebug { activeImeIds }
         return activeImeIds.split(DELIMITER).map { componentStr ->
             ComponentName.unflattenFromString(componentStr)
-        }.any { it?.packageName == context.packageName && it?.className == IME_SERVICE_CLASS_NAME }
+        }.any {
+            it?.packageName == context.packageName &&
+                it?.className == context.getString(R.string.florisboard__service_classname)
+        }
     }
 
     fun parseIsFlorisboardSelected(context: Context, selectedImeId: String): Boolean {
         flogDebug { selectedImeId }
         val component = ComponentName.unflattenFromString(selectedImeId)
-        return component?.packageName == context.packageName && component?.className == IME_SERVICE_CLASS_NAME
+        return component?.packageName == context.packageName &&
+            component?.className == context.getString(R.string.florisboard__service_classname)
     }
 
     fun showImeEnablerActivity(context: Context) {

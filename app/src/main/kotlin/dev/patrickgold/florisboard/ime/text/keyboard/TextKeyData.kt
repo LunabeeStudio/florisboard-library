@@ -515,12 +515,6 @@ class TextKeyData(
             code = KeyCode.TOGGLE_AUTOCORRECT,
             label = "toggle_autocorrect",
         )
-        /** Hello world oneSafe */
-        val HELLO_ONESAFE = TextKeyData(
-            type = KeyType.FUNCTION,
-            code = KeyCode.HELLO_ONESAFE,
-            label = "hello_onesafe",
-        )
     }
 }
 

@@ -140,7 +140,6 @@ fun QuickAction.computeTooltip(evaluator: ComputingEvaluator): String {
                 R.string.general__empty_string
             }
             KeyCode.NOOP -> R.string.quick_action__noop__tooltip
-            KeyCode.HELLO_ONESAFE -> R.string.floris_app_name
             else -> R.string.general__invalid_fatal
         })
         is QuickAction.InsertText -> "Insert text '$data'"

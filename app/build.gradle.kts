@@ -16,13 +16,12 @@
 
 import java.io.ByteArrayOutputStream
 
-val lunabeeVersion = "0.1.0-6"
+val lunabeeVersion = "0.1.0-10"
 val florisVersion = "0.4.0-alpha04"
+val usePrebuilt = true
 version = "$florisVersion-$lunabeeVersion"
 description = "FlorisBoard fork as library for oneSafe6 K"
 group = "studio.lunabee.florisboard"
-
-val usePrebuilt = true
 
 plugins {
     id("com.android.library")
@@ -65,7 +64,7 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -151,8 +150,6 @@ android {
         }
 
         named("release") {
-            versionNameSuffix = projectVersionNameSuffix
-
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_stable")

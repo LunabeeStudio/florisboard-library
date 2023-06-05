@@ -55,7 +55,19 @@ import java.lang.ref.WeakReference
  */
 private var FlorisManagerReference = WeakReference<FlorisManager?>(null)
 
-class FlorisManager {
+class FlorisManager(
+    val context: Lazy<Context>,
+    val assetManager: Lazy<AssetManager> = lazy { AssetManager(context.value) },
+    val cacheManager: Lazy<CacheManager> = lazy { CacheManager(context.value) },
+    val clipboardManager: Lazy<ClipboardManager> = lazy { ClipboardManager(context.value) },
+    var editorInstance: Lazy<EditorInstance> = lazy { EditorInstance(context.value) },
+    val extensionManager: Lazy<ExtensionManager> = lazy { ExtensionManager(context.value) },
+    val glideTypingManager: Lazy<GlideTypingManager> = lazy { GlideTypingManager(context.value) },
+    val keyboardManager: Lazy<KeyboardManager> = lazy { KeyboardManager(context.value) },
+    val nlpManager: Lazy<NlpManager> = lazy { NlpManager(context.value) },
+    val subtypeManager: Lazy<SubtypeManager> = lazy { SubtypeManager(context.value) },
+    val themeManager: Lazy<ThemeManager> = lazy { ThemeManager(context.value) },
+) {
     companion object {
         private const val ICU_DATA_ASSET_PATH = "icu4c/icudt73l.dat"
 
@@ -69,24 +81,13 @@ class FlorisManager {
         }
     }
 
-    lateinit var appContext: Context
-
     private val prefs by florisPreferenceModel()
-    private val mainHandler by lazy { Handler(appContext.mainLooper) }
+    private val mainHandler by lazy { Handler(context.value.mainLooper) }
 
-    val assetManager = lazy { AssetManager(appContext) }
-    val cacheManager = lazy { CacheManager(appContext) }
-    val clipboardManager = lazy { ClipboardManager(appContext) }
-    val editorInstance = lazy { EditorInstance(appContext) }
-    val extensionManager = lazy { ExtensionManager(appContext) }
-    val glideTypingManager = lazy { GlideTypingManager(appContext) }
-    val keyboardManager = lazy { KeyboardManager(appContext) }
-    val nlpManager = lazy { NlpManager(appContext) }
-    val subtypeManager = lazy { SubtypeManager(appContext) }
-    val themeManager = lazy { ThemeManager(appContext) }
-
-    fun initialize(appContext: Context) {
-        this.appContext = appContext
+    fun initialize(
+        installCrashUtility: Boolean = false,
+    ) {
+        val appContext = context.value
         FlorisManagerReference = WeakReference(this)
         try {
             JetPref.configure(saveIntervalMs = 500)
@@ -97,7 +98,9 @@ class FlorisManager {
                 flogLevels = Flog.LEVEL_ALL,
                 flogOutputs = Flog.OUTPUT_CONSOLE,
             )
-            CrashUtility.install(appContext)
+            if (installCrashUtility) {
+                CrashUtility.install(appContext)
+            }
             FlorisEmojiCompat.init(appContext)
 
             if (!UserManagerCompat.isUserUnlocked(appContext)) {
@@ -108,11 +111,14 @@ class FlorisManager {
                 init()
             }
         } catch (e: Exception) {
-            CrashUtility.stageException(e)
+            if (installCrashUtility) {
+                CrashUtility.stageException(e)
+            }
         }
     }
 
     private fun init() {
+        val appContext = context.value
         initICU(appContext)
         appContext.cacheDir?.deleteContentsRecursively()
         prefs.initializeBlocking(appContext)
@@ -148,7 +154,7 @@ class FlorisManager {
             if (intent == null) return
             if (intent.action == Intent.ACTION_USER_UNLOCKED) {
                 try {
-                    appContext.unregisterReceiver(this)
+                    this@FlorisManager.context.value.unregisterReceiver(this)
                 } catch (e: Exception) {
                     flogError { e.toString() }
                 }
