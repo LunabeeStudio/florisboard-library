@@ -23,12 +23,12 @@ import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import dev.patrickgold.florisboard.R
 import dev.patrickgold.florisboard.lib.android.AndroidSettings
 import dev.patrickgold.florisboard.lib.android.systemServiceOrNull
 import dev.patrickgold.florisboard.lib.devtools.flogDebug
 
 private const val DELIMITER = ':'
-private const val IME_SERVICE_CLASS_NAME = "dev.patrickgold.florisboard.FlorisImeService"
 
 object InputMethodUtils {
     fun isFlorisboardEnabled(context: Context): Boolean {
@@ -65,13 +65,17 @@ object InputMethodUtils {
         flogDebug { activeImeIds }
         return activeImeIds.split(DELIMITER).map { componentStr ->
             ComponentName.unflattenFromString(componentStr)
-        }.any { it?.packageName == context.packageName && it?.className == IME_SERVICE_CLASS_NAME }
+        }.any {
+            it?.packageName == context.packageName &&
+                it?.className == context.getString(R.string.florisboard__service_classname)
+        }
     }
 
     fun parseIsFlorisboardSelected(context: Context, selectedImeId: String): Boolean {
         flogDebug { selectedImeId }
         val component = ComponentName.unflattenFromString(selectedImeId)
-        return component?.packageName == context.packageName && component?.className == IME_SERVICE_CLASS_NAME
+        return component?.packageName == context.packageName &&
+            component?.className == context.getString(R.string.florisboard__service_classname)
     }
 
     fun showImeEnablerActivity(context: Context) {
