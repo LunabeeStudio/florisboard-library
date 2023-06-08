@@ -17,7 +17,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name="dev.patrickgold.florisboard.FlorisApplication"
+        android:name="dev.patrickgold.florisboard.FlorisDemoApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/floris_backup_rules"
         android:fullBackupContent="@xml/floris_backup_rules"
