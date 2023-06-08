@@ -16,7 +16,7 @@
 
 import java.io.ByteArrayOutputStream
 
-val usePrebuilt = false
+val usePrebuilt = true
 
 plugins {
     alias(libs.plugins.agp.application)
