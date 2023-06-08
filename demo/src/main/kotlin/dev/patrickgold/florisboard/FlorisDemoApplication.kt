@@ -18,7 +18,7 @@ package dev.patrickgold.florisboard
 
 import android.app.Application
 
-class FlorisApplication : Application(), FlorisManagerProvider {
+class FlorisDemoApplication : Application(), FlorisManagerProvider {
     private val florisManager = FlorisManager(
         context = lazy { this },
         editorInstance = lazy { InterceptEditorInstance(this) },
