@@ -119,7 +119,7 @@ class ThemeManager(context: Context) {
      *
      * @param forceNight see [evaluateActiveThemeName]
      */
-    fun updateActiveTheme(action: () -> Unit = { }, forceNight: Boolean = false) = scope.launch {
+    fun updateActiveTheme(forceNight: Boolean = false, action: () -> Unit = { }) = scope.launch {
         activeThemeGuard.withLock {
             action()
             previewThemeInfo?.let { previewThemeInfo ->
