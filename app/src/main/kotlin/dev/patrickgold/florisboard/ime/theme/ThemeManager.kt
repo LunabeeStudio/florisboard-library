@@ -116,15 +116,17 @@ class ThemeManager(context: Context) {
     /**
      * Updates the current theme ref and loads the corresponding theme, as well as notifies all
      * callback receivers about the new theme.
+     *
+     * @param forceNight see [evaluateActiveThemeName]
      */
-    fun updateActiveTheme(action: () -> Unit = { }) = scope.launch {
+    fun updateActiveTheme(forceNight: Boolean = false, action: () -> Unit = { }) = scope.launch {
         activeThemeGuard.withLock {
             action()
             previewThemeInfo?.let { previewThemeInfo ->
                 _activeThemeInfo.postValue(previewThemeInfo)
                 return@withLock
             }
-            val activeName = evaluateActiveThemeName()
+            val activeName = evaluateActiveThemeName(forceNight)
             val cachedInfo = cachedThemeInfos.find { it.name == activeName }
             if (cachedInfo != null) {
                 _activeThemeInfo.postValue(cachedInfo)
@@ -150,8 +152,14 @@ class ThemeManager(context: Context) {
         }
     }
 
-    private fun evaluateActiveThemeName(): ExtensionComponentName {
+    /**
+     * @param forceNight bypass theme mode pref and returns the night theme
+     */
+    private fun evaluateActiveThemeName(forceNight: Boolean = false): ExtensionComponentName {
         previewThemeId?.let { return it }
+        if (forceNight) {
+            return prefs.theme.nightThemeId.get()
+        }
         return when (prefs.theme.mode.get()) {
             ThemeMode.ALWAYS_DAY -> {
                 prefs.theme.dayThemeId.get()
