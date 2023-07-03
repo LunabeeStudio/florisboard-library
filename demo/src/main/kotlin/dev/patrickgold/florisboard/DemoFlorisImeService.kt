@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -129,12 +130,16 @@ class DemoFlorisImeService : FlorisImeService() {
                     }
                 }
                 Row(
-                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    Button(onClick = {
-                        focusManager.clearFocus()
-                    }) {
+                    Button(
+                        modifier = Modifier.padding(start = 8.dp),
+                        onClick = {
+                            focusManager.clearFocus()
+                        },
+                    ) {
                         Text(text = "Release focus")
                     }
                     Button(onClick = {
@@ -152,9 +157,12 @@ class DemoFlorisImeService : FlorisImeService() {
                     }) {
                         Text(text = "Force night")
                     }
-                    Button(onClick = {
-                        themeManager.updateActiveTheme()
-                    }) {
+                    Button(
+                        modifier = Modifier.padding(end = 8.dp),
+                        onClick = {
+                            themeManager.updateActiveTheme()
+                        },
+                    ) {
                         Text(text = "Update theme")
                     }
                 }
