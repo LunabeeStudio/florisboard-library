@@ -117,7 +117,7 @@ class ThemeManager(context: Context) {
      * Updates the current theme ref and loads the corresponding theme, as well as notifies all
      * callback receivers about the new theme.
      *
-     * @param forceNight see [evaluateActiveThemeName]
+     * @param forceNight bypass active theme and use a night theme (even if user choose a day theme as night theme)
      */
     fun updateActiveTheme(forceNight: Boolean = false, action: () -> Unit = { }) = scope.launch {
         activeThemeGuard.withLock {
@@ -126,15 +126,29 @@ class ThemeManager(context: Context) {
                 _activeThemeInfo.postValue(previewThemeInfo)
                 return@withLock
             }
-            val activeName = evaluateActiveThemeName(forceNight)
-            val cachedInfo = cachedThemeInfos.find { it.name == activeName }
+            var activeName = if (forceNight) prefs.theme.nightThemeId.get() else evaluateActiveThemeName()
+            var cachedInfo = cachedThemeInfos.find { it.name == activeName }
+
+            // Force default night theme in case where the user use a day theme as night theme
+            if (cachedInfo != null && forceNight && !cachedInfo.config.isNightTheme) {
+                activeName = extCoreTheme("floris_night")
+                cachedInfo = cachedThemeInfos.find { it.name == activeName }
+            }
+
             if (cachedInfo != null) {
                 _activeThemeInfo.postValue(cachedInfo)
             } else {
                 val themeExt = extensionManager.getExtensionById(activeName.extensionId) as? ThemeExtension
                 val themeExtRef = themeExt?.sourceRef
                 if (themeExtRef != null) {
-                    val themeConfig = themeExt.themes.find { it.id == activeName.componentId }
+                    var themeConfig = themeExt.themes.find { it.id == activeName.componentId }
+
+                    // Force default night theme in case where the user use a day theme as night theme
+                    if (forceNight && themeConfig?.isNightTheme == false) {
+                        activeName = extCoreTheme("floris_night")
+                        themeConfig = themeExt.themes.find { it.id == activeName.componentId }
+                    }
+
                     if (themeConfig != null) {
                         val newStylesheet = ZipUtils.readFileFromArchive(
                             appContext, themeExtRef, themeConfig.stylesheetPath(),
@@ -152,14 +166,8 @@ class ThemeManager(context: Context) {
         }
     }
 
-    /**
-     * @param forceNight bypass theme mode pref and returns the night theme
-     */
-    private fun evaluateActiveThemeName(forceNight: Boolean = false): ExtensionComponentName {
+    private fun evaluateActiveThemeName(): ExtensionComponentName {
         previewThemeId?.let { return it }
-        if (forceNight) {
-            return prefs.theme.nightThemeId.get()
-        }
         return when (prefs.theme.mode.get()) {
             ThemeMode.ALWAYS_DAY -> {
                 prefs.theme.dayThemeId.get()
