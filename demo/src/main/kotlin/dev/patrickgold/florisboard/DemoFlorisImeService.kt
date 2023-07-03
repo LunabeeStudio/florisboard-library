@@ -1,15 +1,18 @@
 package dev.patrickgold.florisboard
 
 import android.view.KeyEvent
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -32,10 +35,12 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.ime.editor.EditorInstance
+import dev.patrickgold.florisboard.ime.theme.ThemeManager
 import dev.patrickgold.florisboard.lib.devtools.flogDebug
 
 class DemoFlorisImeService : FlorisImeService() {
 
+    private val themeManager: ThemeManager by themeManager()
     private val _editorInstance: EditorInstance by editorInstance()
     private val editorInstance: InterceptEditorInstance
         get() = _editorInstance as InterceptEditorInstance
@@ -124,20 +129,42 @@ class DemoFlorisImeService : FlorisImeService() {
                         )
                     }
                 }
-                Button(onClick = {
-                    focusManager.clearFocus()
-                }) {
-                    Text(text = "Release focus")
-                }
-                Button(onClick = {
-                    isExpanded = !isExpanded
-                }) {
-                    Text(text = if (isExpanded) "Wrap" else "Full height")
-                }
-                Button(onClick = {
-                    toggleKeyboardVisibility()
-                }) {
-                    Text(text = if (isKeyboardVisible) "Hide keyboard" else "Show keyboard")
+                Row(
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Button(
+                        modifier = Modifier.padding(start = 8.dp),
+                        onClick = {
+                            focusManager.clearFocus()
+                        },
+                    ) {
+                        Text(text = "Release focus")
+                    }
+                    Button(onClick = {
+                        isExpanded = !isExpanded
+                    }) {
+                        Text(text = if (isExpanded) "Wrap" else "Full height")
+                    }
+                    Button(onClick = {
+                        toggleKeyboardVisibility()
+                    }) {
+                        Text(text = if (isKeyboardVisible) "Hide keyboard" else "Show keyboard")
+                    }
+                    Button(onClick = {
+                        themeManager.updateActiveTheme(forceNight = true)
+                    }) {
+                        Text(text = "Force night")
+                    }
+                    Button(
+                        modifier = Modifier.padding(end = 8.dp),
+                        onClick = {
+                            themeManager.updateActiveTheme()
+                        },
+                    ) {
+                        Text(text = "Update theme")
+                    }
                 }
                 if (!isKeyboardVisible) {
                     Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom)))
