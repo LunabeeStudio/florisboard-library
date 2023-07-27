@@ -492,7 +492,7 @@ open class EditorInstance(context: Context) : AbstractEditorInstance(context) {
      *
      * @return True on success, false if an error occurred or the input connection is invalid.
      */
-    fun performEnterAction(action: ImeOptions.Action): Boolean {
+    open fun performEnterAction(action: ImeOptions.Action): Boolean {
         autoSpace.setInactive()
         phantomSpace.setInactive()
         val ic = currentInputConnection() ?: return false
