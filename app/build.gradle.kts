@@ -38,8 +38,8 @@ plugins {
 
 android {
     namespace = "dev.patrickgold.florisboard"
-    compileSdk = 33
-    buildToolsVersion = "33.0.2"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
     ndkVersion = "25.2.9519653"
 
     compileOptions {
@@ -58,7 +58,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
