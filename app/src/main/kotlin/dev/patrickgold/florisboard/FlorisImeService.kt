@@ -496,11 +496,7 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
         outInsets.visibleTopInsets = visibleTopY
         outInsets.touchableInsets = Insets.TOUCHABLE_INSETS_REGION
         val left = 0
-        val top = if (keyboardManager.activeState.isBottomSheetShowing()) {
-            0
-        } else {
-            visibleTopY - if (needAdditionalOverlay) FlorisImeSizing.Static.smartbarHeightPx else 0
-        }
+        val top = calculateTouchableTopY(visibleTopY, needAdditionalOverlay)
         val right = inputViewSize.width
         val bottom = inputWindowView.height
         outInsets.touchableRegion.set(left, top, right, bottom)
@@ -568,8 +564,25 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
     }
 
     @Composable
-    protected open fun DecoratedIme(ImeUi: @Composable () -> Unit) {
+    protected open fun AboveImeView(
+        ImeUi: @Composable () -> Unit,
+    ) {
         ImeUi()
+    }
+
+    @Composable
+    protected open fun ThemeImeView() {
+    }
+
+    protected open fun calculateTouchableTopY(
+        visibleTopY: Int,
+        needAdditionalOverlay: Boolean,
+    ): Int {
+        return if (keyboardManager.activeState.isBottomSheetShowing()) {
+            0
+        } else {
+            visibleTopY - if (needAdditionalOverlay) FlorisImeSizing.Static.smartbarHeightPx else 0
+        }
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -588,61 +601,70 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
         }
 
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-            SnyggSurface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .onGloballyPositioned { coords -> inputViewSize = coords.size }
-                    // Do not remove below line or touch input may get stuck
-                    .pointerInteropFilter { false },
-                style = keyboardStyle,
-            ) {
-                val configuration = LocalConfiguration.current
-                val bottomOffset by if (configuration.isOrientationPortrait()) {
-                    prefs.keyboard.bottomOffsetPortrait
-                } else {
-                    prefs.keyboard.bottomOffsetLandscape
-                }.observeAsTransformingState { it.dp }
-                DecoratedIme {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
-                            .wrapContentHeight()
-                            // FIXME: removing this fixes the Smartbar sizing but breaks one-handed-mode
-                            //.height(IntrinsicSize.Min)
-                            .padding(bottom = bottomOffset),
-                    ) {
-                        val oneHandedMode by prefs.keyboard.oneHandedMode.observeAsState()
-                        val oneHandedModeScaleFactor by prefs.keyboard.oneHandedModeScaleFactor.observeAsState()
-                        val keyboardWeight = when {
-                            oneHandedMode == OneHandedMode.OFF || configuration.isOrientationLandscape() -> 1f
-                            else -> oneHandedModeScaleFactor / 100f
-                        }
-                        if (oneHandedMode == OneHandedMode.END && configuration.isOrientationPortrait()) {
-                            OneHandedPanel(
-                                panelSide = OneHandedMode.START,
-                                weight = 1f - keyboardWeight,
+
+            val configuration = LocalConfiguration.current
+            val bottomOffset by if (configuration.isOrientationPortrait()) {
+                prefs.keyboard.bottomOffsetPortrait
+            } else {
+                prefs.keyboard.bottomOffsetLandscape
+            }.observeAsTransformingState { it.dp }
+            AboveImeView {
+                SnyggSurface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .onGloballyPositioned { coords ->
+                            inputViewSize = IntSize(
+                                coords.size.width,
+                                coords.size.height
                             )
                         }
-                        CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
-                            Box(
-                                modifier = Modifier
-                                    .weight(keyboardWeight)
-                                    .wrapContentHeight(),
-                            ) {
-                                when (state.imeUiMode) {
-                                    ImeUiMode.TEXT -> TextInputLayout()
-                                    ImeUiMode.MEDIA -> MediaInputLayout()
-                                    ImeUiMode.CLIPBOARD -> ClipboardInputLayout()
+                        // Do not remove below line or touch input may get stuck
+                        .pointerInteropFilter { false },
+                    style = keyboardStyle,
+                ) {
+                    Column {
+                        ThemeImeView()
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
+                                .wrapContentHeight()
+                                // FIXME: removing this fixes the Smartbar sizing but breaks one-handed-mode
+                                //.height(IntrinsicSize.Min)
+                                .padding(bottom = bottomOffset),
+                        ) {
+                            val oneHandedMode by prefs.keyboard.oneHandedMode.observeAsState()
+                            val oneHandedModeScaleFactor by prefs.keyboard.oneHandedModeScaleFactor.observeAsState()
+                            val keyboardWeight = when {
+                                oneHandedMode == OneHandedMode.OFF || configuration.isOrientationLandscape() -> 1f
+                                else -> oneHandedModeScaleFactor / 100f
+                            }
+                            if (oneHandedMode == OneHandedMode.END && configuration.isOrientationPortrait()) {
+                                OneHandedPanel(
+                                    panelSide = OneHandedMode.START,
+                                    weight = 1f - keyboardWeight,
+                                )
+                            }
+                            CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
+                                Box(
+                                    modifier = Modifier
+                                        .weight(keyboardWeight)
+                                        .wrapContentHeight(),
+                                ) {
+                                    when (state.imeUiMode) {
+                                        ImeUiMode.TEXT -> TextInputLayout()
+                                        ImeUiMode.MEDIA -> MediaInputLayout()
+                                        ImeUiMode.CLIPBOARD -> ClipboardInputLayout()
+                                    }
                                 }
                             }
-                        }
-                        if (oneHandedMode == OneHandedMode.START && configuration.isOrientationPortrait()) {
-                            OneHandedPanel(
-                                panelSide = OneHandedMode.END,
-                                weight = 1f - keyboardWeight,
-                            )
+                            if (oneHandedMode == OneHandedMode.START && configuration.isOrientationPortrait()) {
+                                OneHandedPanel(
+                                    panelSide = OneHandedMode.END,
+                                    weight = 1f - keyboardWeight,
+                                )
+                            }
                         }
                     }
                 }
