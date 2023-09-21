@@ -1,6 +1,7 @@
 package dev.patrickgold.florisboard
 
 import android.view.KeyEvent
+import android.view.MotionEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -194,6 +195,12 @@ class DemoFlorisImeService : FlorisImeService() {
                     }
                 }
             }
+        }
+    }
+
+    override fun onComposeViewTouchEvent(ev: MotionEvent?) {
+        if (ev?.action == MotionEvent.ACTION_DOWN) {
+            flogDebug { "Touch down at ${ev.x}, ${ev.y}" }
         }
     }
 }
