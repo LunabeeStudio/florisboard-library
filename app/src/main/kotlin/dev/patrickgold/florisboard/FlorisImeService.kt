@@ -26,6 +26,7 @@ import android.util.Size
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -702,7 +703,15 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
             super.onAttachedToWindow()
             updateSoftInputWindowLayoutParameters()
         }
+
+        override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+            val handled = super.dispatchTouchEvent(ev)
+            onComposeViewTouchEvent(ev)
+            return handled
+        }
     }
+
+    protected abstract fun onComposeViewTouchEvent(ev: MotionEvent?)
 
     private inner class FlorisBottomSheetHostUiView : AbstractComposeView(this) {
         init {
