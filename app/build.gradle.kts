@@ -44,9 +44,9 @@ val projectVersionNameSuffix: String by project
 
 android {
     namespace = "dev.patrickgold.florisboard"
-    compileSdk = projectCompileSdk.toInt()
-    buildToolsVersion = projectBuildToolsVersion
-    ndkVersion = projectNdkVersion
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
+    ndkVersion = "25.2.9519653"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -64,7 +64,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

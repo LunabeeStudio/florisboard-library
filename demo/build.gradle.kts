@@ -26,7 +26,7 @@ plugins {
 
 android {
     namespace = "dev.patrickgold.florisboard"
-    compileSdk = 33
+    compileSdk = 34
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId = "dev.patrickgold.florisboard"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 90
         versionName = "0.4.0"
 
