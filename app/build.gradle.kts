@@ -17,7 +17,7 @@
 import java.io.ByteArrayOutputStream
 
 val lunabeeVersion: String = "0.1.18"
-val florisVersion: String = "0.4.0-alpha04"
+val florisVersion: String = "0.4.0-alpha06"
 val usePrebuilt: Boolean = true
 version = "$florisVersion-$lunabeeVersion"
 description = "FlorisBoard fork as library for oneSafe6 K"
