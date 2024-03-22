@@ -16,10 +16,8 @@
 
 import java.io.ByteArrayOutputStream
 
-val lunabeeVersion: String = "1.0.0"
-val florisVersion = "0.4.0-beta01"
-val usePrebuilt = true
-version = "$florisVersion-$lunabeeVersion"
+val usePrebuilt: Boolean = true
+version = Versions.fullVersion
 description = "FlorisBoard fork as library for oneSafe6 K"
 group = "studio.lunabee.florisboard"
 
@@ -81,7 +79,7 @@ android {
             arg("room.expandProjection", "true")
         }
 
-        if(!usePrebuilt) {
+        if (!usePrebuilt) {
             externalNativeBuild {
                 cmake {
                     targets("florisboard-native")
@@ -121,7 +119,7 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
-    if(!usePrebuilt) {
+    if (!usePrebuilt) {
         externalNativeBuild {
             cmake {
                 path("src/main/cpp/CMakeLists.txt")

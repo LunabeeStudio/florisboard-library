@@ -15,12 +15,14 @@
  */
 
 plugins {
-    id(libs.plugins.kotlin.jvm.get().pluginId)
+    id("java-library")
+    id("kotlin")
+    `onesafe-publish`
 }
 
-val projectGroupId: String by project
-val artifactId = "florisboard-lib-kotlin"
-val projectVersion: String by project
+version = Versions.fullVersion
+description = "FlorisBoard Kotlin utilities"
+group = "studio.lunabee.florisboard"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
