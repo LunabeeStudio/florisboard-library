@@ -19,7 +19,6 @@ package dev.patrickgold.florisboard.ime.keyboard
 import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRightAlt
-import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ContentCut
@@ -42,12 +41,11 @@ import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.SentimentSatisfiedAlt
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material.icons.filled.SpaceBar
 import androidx.compose.material.icons.filled.Undo
 import androidx.compose.material.icons.outlined.Assignment
+import androidx.compose.material.icons.outlined.Backspace
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import dev.patrickgold.florisboard.R
 import dev.patrickgold.florisboard.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.florisboard.ime.core.Subtype
@@ -209,14 +207,13 @@ fun ComputingEvaluator.computeImageVector(data: KeyData): ImageVector? {
         }
         KeyCode.COMPACT_LAYOUT_TO_LEFT,
         KeyCode.COMPACT_LAYOUT_TO_RIGHT -> {
-            // TODO: find a better icon for compact mode
-            Icons.Default.Smartphone
+            context()?.vectorResource(id = R.drawable.ic_accessibility_one_handed)
         }
         KeyCode.VOICE_INPUT -> {
             Icons.Default.KeyboardVoice
         }
         KeyCode.DELETE -> {
-            Icons.Default.Backspace
+            Icons.Outlined.Backspace
         }
         KeyCode.ENTER -> {
             val imeOptions = evaluator.editorInfo.imeOptions
@@ -276,9 +273,9 @@ fun ComputingEvaluator.computeImageVector(data: KeyData): ImageVector? {
         }
         KeyCode.TOGGLE_INCOGNITO_MODE -> {
             if (evaluator.state.isIncognitoMode) {
-                ImageVector.vectorResource(theme = null, resId = R.drawable.ic_incognito, res = this.context()?.resources!!)
+                this.context()?.vectorResource(id = R.drawable.ic_incognito)
             } else {
-                ImageVector.vectorResource(theme = null, resId = R.drawable.ic_incognito_off, res = this.context()?.resources!!)
+                this.context()?.vectorResource(id = R.drawable.ic_incognito_off)
             }
         }
         KeyCode.TOGGLE_AUTOCORRECT -> {

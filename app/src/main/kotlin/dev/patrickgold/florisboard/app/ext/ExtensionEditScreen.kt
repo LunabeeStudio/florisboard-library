@@ -28,14 +28,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.outlined.LibraryBooks
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,7 +47,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.R
 import dev.patrickgold.florisboard.app.LocalNavController
-import dev.patrickgold.florisboard.app.apptheme.outline
 import dev.patrickgold.florisboard.app.settings.advanced.RadioListItem
 import dev.patrickgold.florisboard.app.settings.theme.DialogProperty
 import dev.patrickgold.florisboard.app.settings.theme.ThemeEditorScreen
@@ -60,7 +59,6 @@ import dev.patrickgold.florisboard.ime.theme.ThemeExtensionComponentEditor
 import dev.patrickgold.florisboard.ime.theme.ThemeExtensionComponentImpl
 import dev.patrickgold.florisboard.ime.theme.ThemeExtensionEditor
 import dev.patrickgold.florisboard.lib.ValidationResult
-import dev.patrickgold.florisboard.lib.android.showLongToast
 import dev.patrickgold.florisboard.lib.cache.CacheManager
 import dev.patrickgold.florisboard.lib.compose.FlorisButtonBar
 import dev.patrickgold.florisboard.lib.compose.FlorisIconButton
@@ -69,7 +67,6 @@ import dev.patrickgold.florisboard.lib.compose.FlorisOutlinedBox
 import dev.patrickgold.florisboard.lib.compose.FlorisOutlinedTextField
 import dev.patrickgold.florisboard.lib.compose.FlorisScreen
 import dev.patrickgold.florisboard.lib.compose.FlorisUnsavedChangesDialog
-import dev.patrickgold.florisboard.lib.compose.autoMirrorForRtl
 import dev.patrickgold.florisboard.lib.compose.defaultFlorisOutlinedBox
 import dev.patrickgold.florisboard.lib.compose.stringRes
 import dev.patrickgold.florisboard.lib.ext.Extension
@@ -85,15 +82,16 @@ import dev.patrickgold.florisboard.lib.ext.ExtensionValidation
 import dev.patrickgold.florisboard.lib.ext.validate
 import dev.patrickgold.florisboard.lib.io.FlorisRef
 import dev.patrickgold.florisboard.lib.io.ZipUtils
-import dev.patrickgold.florisboard.lib.io.subFile
-import dev.patrickgold.florisboard.lib.io.writeJson
 import dev.patrickgold.florisboard.lib.rememberValidationResult
-import dev.patrickgold.florisboard.lib.snygg.SnyggStylesheetJsonConfig
+import org.florisboard.lib.snygg.SnyggStylesheetJsonConfig
 import dev.patrickgold.florisboard.themeManager
 import dev.patrickgold.jetpref.datastore.ui.Preference
 import dev.patrickgold.jetpref.datastore.ui.vectorResource
 import dev.patrickgold.jetpref.material.ui.JetPrefAlertDialog
-import java.util.*
+import org.florisboard.lib.android.showLongToast
+import org.florisboard.lib.kotlin.io.subFile
+import org.florisboard.lib.kotlin.io.writeJson
+import java.util.UUID
 import kotlin.reflect.KClass
 
 private val TextFieldVerticalPadding = 8.dp
@@ -300,8 +298,7 @@ private fun EditScreen(
     navigationIcon {
         FlorisIconButton(
             onClick = { handleBackPress() },
-            modifier = Modifier.autoMirrorForRtl(),
-            icon = Icons.Default.ArrowBack,
+            icon = Icons.AutoMirrored.Filled.ArrowBack,
         )
     }
 
@@ -863,7 +860,7 @@ private fun EditorSheetTextField(
     showValidationError: Boolean = false,
     validationResult: ValidationResult? = null,
 ) {
-    val borderColor = MaterialTheme.colors.outline
+    val borderColor = MaterialTheme.colorScheme.outline
     Column(modifier = Modifier.padding(vertical = TextFieldVerticalPadding)) {
         Row(
             modifier = Modifier
@@ -872,14 +869,14 @@ private fun EditorSheetTextField(
         ) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.subtitle2,
+                style = MaterialTheme.typography.titleSmall,
             )
             if (isRequired) {
                 Text(
                     modifier = Modifier.padding(start = 2.dp),
                     text = "*",
-                    style = MaterialTheme.typography.subtitle2,
-                    color = MaterialTheme.colors.error,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.error,
                 )
             }
         }
@@ -891,7 +888,7 @@ private fun EditorSheetTextField(
             singleLine = singleLine,
             showValidationError = showValidationError,
             validationResult = validationResult,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
+            colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = borderColor,
                 disabledBorderColor = borderColor,
             )

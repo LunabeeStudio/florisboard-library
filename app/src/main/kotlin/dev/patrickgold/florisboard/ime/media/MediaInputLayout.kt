@@ -28,11 +28,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.material.icons.outlined.Backspace
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -45,23 +44,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import dev.patrickgold.florisboard.R
 import dev.patrickgold.florisboard.ime.input.InputEventDispatcher
 import dev.patrickgold.florisboard.ime.input.LocalInputFeedbackController
 import dev.patrickgold.florisboard.ime.keyboard.FlorisImeSizing
 import dev.patrickgold.florisboard.ime.keyboard.KeyData
+import dev.patrickgold.florisboard.ime.media.emoji.EmojiData
 import dev.patrickgold.florisboard.ime.media.emoji.EmojiPaletteView
-import dev.patrickgold.florisboard.ime.media.emoji.PlaceholderLayoutDataMap
-import dev.patrickgold.florisboard.ime.media.emoji.parseRawEmojiSpecsFile
 import dev.patrickgold.florisboard.ime.text.keyboard.TextKeyData
 import dev.patrickgold.florisboard.ime.theme.FlorisImeTheme
 import dev.patrickgold.florisboard.ime.theme.FlorisImeUi
 import dev.patrickgold.florisboard.keyboardManager
-import dev.patrickgold.florisboard.lib.snygg.ui.SnyggSurface
+import org.florisboard.lib.snygg.ui.SnyggSurface
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
@@ -71,9 +67,9 @@ fun MediaInputLayout(
     val context = LocalContext.current
     val keyboardManager by context.keyboardManager()
 
-    var emojiLayoutDataMap by remember { mutableStateOf(PlaceholderLayoutDataMap) }
+    var emojiLayoutDataMap by remember { mutableStateOf(EmojiData.Fallback) }
     LaunchedEffect(Unit) {
-        emojiLayoutDataMap = parseRawEmojiSpecsFile(context, "ime/media/emoji/root.txt")
+        emojiLayoutDataMap = EmojiData.get(context, "ime/media/emoji/root.txt")
     }
 
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {

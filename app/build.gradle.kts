@@ -21,7 +21,7 @@ description = "FlorisBoard fork as library for oneSafe6 K"
 group = "studio.lunabee.florisboard"
 
 plugins {
-    id("com.android.library")
+    id(libs.plugins.agp.library.get().pluginId)
     `lunabee-publish`
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.kotlin.serialization.get().pluginId)
@@ -68,6 +68,8 @@ android {
         manifestPlaceholders["applicationId"] = appId
 
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash()}\"")
+        buildConfigField("String", "FLADDONS_API_VERSION", "\"v~draft2\"")
+        buildConfigField("String", "FLADDONS_STORE_URL", "\"beta.addons.florisboard.org\"")
         buildConfigField("String", "APPLICATION_ID", "\"$appId\"")
         buildConfigField("int", "VERSION_CODE", "90")
         buildConfigField("String", "VERSION_NAME", "\"$version\"")
@@ -159,12 +161,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 dependencies {
-    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.autofill)
     implementation(libs.androidx.collection.ktx)
-    implementation(libs.androidx.compose.material)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.ui)
@@ -189,8 +189,10 @@ dependencies {
     implementation(libs.patrickgold.jetpref.datastore.ui)
     implementation(libs.patrickgold.jetpref.material.ui)
 
+    implementation(project(":lib:android"))
     implementation(project(":lib:kotlin"))
     implementation(project(":lib:native"))
+    implementation(project(":lib:snygg"))
 
     testImplementation(libs.equalsverifier)
     testImplementation(libs.kotest.assertions.core)

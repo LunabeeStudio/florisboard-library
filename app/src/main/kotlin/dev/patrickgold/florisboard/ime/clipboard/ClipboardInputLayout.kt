@@ -46,18 +46,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ToggleOff
 import androidx.compose.material.icons.filled.ToggleOn
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,7 +80,6 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.R
-import dev.patrickgold.florisboard.app.apptheme.Green500
 import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.clipboardManager
 import dev.patrickgold.florisboard.ime.ImeUiMode
@@ -92,10 +90,6 @@ import dev.patrickgold.florisboard.ime.keyboard.FlorisImeSizing
 import dev.patrickgold.florisboard.ime.theme.FlorisImeTheme
 import dev.patrickgold.florisboard.ime.theme.FlorisImeUi
 import dev.patrickgold.florisboard.keyboardManager
-import dev.patrickgold.florisboard.lib.android.AndroidKeyguardManager
-import dev.patrickgold.florisboard.lib.android.AndroidVersion
-import dev.patrickgold.florisboard.lib.android.showShortToast
-import dev.patrickgold.florisboard.lib.android.systemService
 import dev.patrickgold.florisboard.lib.compose.FlorisIconButtonWithInnerPadding
 import dev.patrickgold.florisboard.lib.compose.FlorisStaggeredVerticalGrid
 import dev.patrickgold.florisboard.lib.compose.FlorisTextButton
@@ -105,16 +99,21 @@ import dev.patrickgold.florisboard.lib.compose.rippleClickable
 import dev.patrickgold.florisboard.lib.compose.safeTimes
 import dev.patrickgold.florisboard.lib.compose.stringRes
 import dev.patrickgold.florisboard.lib.observeAsNonNullState
-import dev.patrickgold.florisboard.lib.snygg.SnyggPropertySet
-import dev.patrickgold.florisboard.lib.snygg.ui.SnyggSurface
-import dev.patrickgold.florisboard.lib.snygg.ui.snyggBackground
-import dev.patrickgold.florisboard.lib.snygg.ui.snyggBorder
-import dev.patrickgold.florisboard.lib.snygg.ui.snyggClip
-import dev.patrickgold.florisboard.lib.snygg.ui.snyggShadow
-import dev.patrickgold.florisboard.lib.snygg.ui.solidColor
-import dev.patrickgold.florisboard.lib.snygg.ui.spSize
 import dev.patrickgold.florisboard.lib.util.NetworkUtils
 import dev.patrickgold.jetpref.datastore.model.observeAsState
+import org.florisboard.lib.android.AndroidKeyguardManager
+import org.florisboard.lib.android.AndroidVersion
+import org.florisboard.lib.android.showShortToast
+import org.florisboard.lib.android.systemService
+import org.florisboard.lib.snygg.SnyggPropertySet
+import org.florisboard.lib.snygg.ui.SnyggButton
+import org.florisboard.lib.snygg.ui.SnyggSurface
+import org.florisboard.lib.snygg.ui.snyggBackground
+import org.florisboard.lib.snygg.ui.snyggBorder
+import org.florisboard.lib.snygg.ui.snyggClip
+import org.florisboard.lib.snygg.ui.snyggShadow
+import org.florisboard.lib.snygg.ui.solidColor
+import org.florisboard.lib.snygg.ui.spSize
 
 private val ContentPadding = PaddingValues(horizontal = 4.dp)
 private val ItemMargin = PaddingValues(all = 6.dp)
@@ -144,6 +143,7 @@ fun ClipboardInputLayout(
     val headerStyle = FlorisImeTheme.style.get(FlorisImeUi.ClipboardHeader)
     val itemStyle = FlorisImeTheme.style.get(FlorisImeUi.ClipboardItem)
     val popupStyle = FlorisImeTheme.style.get(FlorisImeUi.ClipboardItemPopup)
+    val enableHistoryButtonStyle = FlorisImeTheme.style.get(FlorisImeUi.ClipboardEnableHistoryButton)
 
     fun isPopupSurfaceActive() = popupItem != null || showClearAllHistory
 
@@ -158,8 +158,7 @@ fun ClipboardInputLayout(
         ) {
             FlorisIconButtonWithInnerPadding(
                 onClick = { keyboardManager.activeState.imeUiMode = ImeUiMode.TEXT },
-                modifier = Modifier.autoMirrorForRtl(),
-                icon = Icons.Default.ArrowBack,
+                icon = Icons.AutoMirrored.Filled.ArrowBack,
                 iconColor = headerStyle.foreground.solidColor(context),
             )
             Text(
@@ -537,21 +536,14 @@ fun ClipboardInputLayout(
                         color = itemStyle.foreground.solidColor(context),
                         fontSize = itemStyle.fontSize.spSize(),
                     )
-                    Button(
+                    SnyggButton(
                         modifier = Modifier
                             .padding(top = 8.dp)
                             .align(Alignment.End),
                         onClick = { prefs.clipboard.historyEnabled.set(true) },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Green500,
-                            contentColor = Color.White,
-                        ),
-                    ) {
-                        Text(
-                            text = stringRes(R.string.clipboard__disabled__enable_button),
-                            fontSize = itemStyle.fontSize.spSize(),
-                        )
-                    }
+                        style = enableHistoryButtonStyle,
+                        text = stringRes(R.string.clipboard__disabled__enable_button)
+                    )
                 }
             }
         }

@@ -37,6 +37,7 @@ import dev.patrickgold.florisboard.ime.nlp.SpellingLanguageMode
 import dev.patrickgold.florisboard.ime.onehanded.OneHandedMode
 import dev.patrickgold.florisboard.ime.smartbar.CandidatesDisplayMode
 import dev.patrickgold.florisboard.ime.smartbar.ExtendedActionsPlacement
+import dev.patrickgold.florisboard.ime.smartbar.IncognitoDisplayMode
 import dev.patrickgold.florisboard.ime.smartbar.SmartbarLayout
 import dev.patrickgold.florisboard.ime.smartbar.quickaction.QuickActionArrangement
 import dev.patrickgold.florisboard.ime.text.gestures.SwipeAction
@@ -45,10 +46,10 @@ import dev.patrickgold.florisboard.ime.text.key.KeyHintMode
 import dev.patrickgold.florisboard.ime.text.key.UtilityKeyAction
 import dev.patrickgold.florisboard.ime.theme.ThemeMode
 import dev.patrickgold.florisboard.ime.theme.extCoreTheme
-import dev.patrickgold.florisboard.lib.android.isOrientationPortrait
+import org.florisboard.lib.android.isOrientationPortrait
 import dev.patrickgold.florisboard.lib.ext.ExtensionComponentName
 import dev.patrickgold.florisboard.lib.observeAsTransformingState
-import dev.patrickgold.florisboard.lib.snygg.SnyggLevel
+import org.florisboard.lib.snygg.SnyggLevel
 import dev.patrickgold.florisboard.lib.util.VersionName
 import dev.patrickgold.jetpref.datastore.JetPref
 import dev.patrickgold.jetpref.datastore.model.PreferenceMigrationEntry
@@ -64,6 +65,10 @@ class AppPrefs : PreferenceModel("florisboard-app-prefs") {
         val settingsTheme = enum(
             key = "advanced__settings_theme",
             default = AppTheme.AUTO,
+        )
+        val useMaterialYou = boolean(
+            key = "advanced__use_material_you",
+            default = true,
         )
         val settingsLanguage = string(
             key = "advanced__settings_language",
@@ -471,6 +476,10 @@ class AppPrefs : PreferenceModel("florisboard-app-prefs") {
             key = "keyboard__space_bar_switches_to_characters",
             default = true,
         )
+        val incognitoDisplayMode = enum(
+            key = "keyboard__incognito_indicator",
+            default = IncognitoDisplayMode.DISPLAY_BEHIND_KEYBOARD,
+        )
 
         fun keyHintConfiguration(): KeyHintConfiguration {
             return KeyHintConfiguration(
@@ -633,18 +642,10 @@ class AppPrefs : PreferenceModel("florisboard-app-prefs") {
             key = "theme__mode",
             default = ThemeMode.FOLLOW_SYSTEM,
         )
-        val dayThemeAdaptToApp = boolean(
-            key = "theme__day_theme_adapt_to_app",
-            default = false,
-        )
         val dayThemeId = custom(
             key = "theme__day_theme_id",
             default = extCoreTheme("floris_day"),
             serializer = ExtensionComponentName.Serializer,
-        )
-        val nightThemeAdaptToApp = boolean(
-            key = "theme__night_theme_adapt_to_app",
-            default = false,
         )
         val nightThemeId = custom(
             key = "theme__night_theme_id",

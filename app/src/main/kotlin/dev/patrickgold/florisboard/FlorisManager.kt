@@ -32,6 +32,7 @@ import dev.patrickgold.florisboard.ime.keyboard.KeyboardManager
 import dev.patrickgold.florisboard.ime.media.emoji.FlorisEmojiCompat
 import dev.patrickgold.florisboard.ime.nlp.NlpManager
 import dev.patrickgold.florisboard.ime.text.gestures.GlideTypingManager
+import dev.patrickgold.florisboard.ime.theme.FlorisImeTheme
 import dev.patrickgold.florisboard.ime.theme.ThemeManager
 import dev.patrickgold.florisboard.lib.cache.CacheManager
 import dev.patrickgold.florisboard.lib.crashutility.CrashUtility
@@ -39,9 +40,8 @@ import dev.patrickgold.florisboard.lib.devtools.Flog
 import dev.patrickgold.florisboard.lib.devtools.LogTopic
 import dev.patrickgold.florisboard.lib.devtools.flogError
 import dev.patrickgold.florisboard.lib.ext.ExtensionManager
-import dev.patrickgold.florisboard.lib.io.AssetManager
-import dev.patrickgold.florisboard.lib.io.deleteContentsRecursively
 import dev.patrickgold.jetpref.datastore.JetPref
+import org.florisboard.lib.kotlin.io.deleteContentsRecursively
 import org.florisboard.lib.kotlin.tryOrNull
 import org.florisboard.libnative.dummyAdd
 import java.lang.ref.WeakReference
@@ -54,7 +54,6 @@ private var FlorisManagerReference = WeakReference<FlorisManager?>(null)
 
 class FlorisManager(
     val context: Lazy<Context>,
-    val assetManager: Lazy<AssetManager> = lazy { AssetManager(context.value) },
     val cacheManager: Lazy<CacheManager> = lazy { CacheManager(context.value) },
     val clipboardManager: Lazy<ClipboardManager> = lazy { ClipboardManager(context.value) },
     var editorInstance: Lazy<EditorInstance> = lazy { EditorInstance(context.value) },
@@ -71,6 +70,7 @@ class FlorisManager(
                 System.loadLibrary("fl_native")
             } catch (_: Exception) {
             }
+            FlorisImeTheme.init()
         }
     }
 
@@ -149,8 +149,6 @@ private tailrec fun Context.florisManager(): FlorisManager {
 }
 
 fun Context.appContext() = lazyOf(this.applicationContext)
-
-fun Context.assetManager() = this.florisManager().assetManager
 
 fun Context.cacheManager() = this.florisManager().cacheManager
 

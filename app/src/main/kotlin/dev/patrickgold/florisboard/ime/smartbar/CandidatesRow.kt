@@ -30,8 +30,8 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,7 +45,6 @@ import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -56,16 +55,17 @@ import dev.patrickgold.florisboard.ime.nlp.SuggestionCandidate
 import dev.patrickgold.florisboard.ime.theme.FlorisImeTheme
 import dev.patrickgold.florisboard.ime.theme.FlorisImeUi
 import dev.patrickgold.florisboard.keyboardManager
-import dev.patrickgold.florisboard.lib.android.AndroidVersion
+import dev.patrickgold.florisboard.lib.compose.conditional
 import dev.patrickgold.florisboard.lib.compose.florisHorizontalScroll
 import dev.patrickgold.florisboard.lib.compose.safeTimes
 import dev.patrickgold.florisboard.lib.observeAsNonNullState
-import dev.patrickgold.florisboard.lib.snygg.ui.snyggBackground
-import dev.patrickgold.florisboard.lib.snygg.ui.solidColor
-import dev.patrickgold.florisboard.lib.snygg.ui.spSize
 import dev.patrickgold.florisboard.nlpManager
 import dev.patrickgold.florisboard.subtypeManager
 import dev.patrickgold.jetpref.datastore.model.observeAsState
+import org.florisboard.lib.android.AndroidVersion
+import org.florisboard.lib.snygg.ui.snyggBackground
+import org.florisboard.lib.snygg.ui.solidColor
+import org.florisboard.lib.snygg.ui.spSize
 
 private val CandidatesRowScrollbarHeight = 2.dp
 
@@ -99,13 +99,9 @@ fun CandidatesRow(modifier: Modifier = Modifier) {
             modifier = modifier
                 .fillMaxSize()
                 .snyggBackground(context, rowStyle)
-                .then(
-                    if (displayMode == CandidatesDisplayMode.DYNAMIC_SCROLLABLE && candidates.size > 1) {
-                        Modifier.florisHorizontalScroll(scrollbarHeight = CandidatesRowScrollbarHeight)
-                    } else {
-                        Modifier
-                    }
-                ),
+                .conditional(displayMode == CandidatesDisplayMode.DYNAMIC_SCROLLABLE && candidates.size > 1) {
+                    florisHorizontalScroll(scrollbarHeight = CandidatesRowScrollbarHeight)
+                },
             horizontalArrangement = if (candidates.size > 1) {
                 Arrangement.Start
             } else {
@@ -120,13 +116,12 @@ fun CandidatesRow(modifier: Modifier = Modifier) {
                 } else {
                     Modifier
                         .fillMaxHeight()
-                        .then(
-                            if (displayMode == CandidatesDisplayMode.CLASSIC) {
-                                Modifier.weight(1f)
-                            } else {
-                                Modifier.wrapContentWidth().widthIn(max = 160.dp)
-                            }
-                        )
+                        .conditional(displayMode == CandidatesDisplayMode.CLASSIC) {
+                            weight(1f)
+                        }
+                        .conditional(displayMode != CandidatesDisplayMode.CLASSIC) {
+                            wrapContentWidth().widthIn(max = 160.dp)
+                        }
                 }
                 val list = when (displayMode) {
                     CandidatesDisplayMode.CLASSIC -> candidates.subList(0, 3.coerceAtMost(candidates.size))

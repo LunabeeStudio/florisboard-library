@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    id(libs.plugins.agp.library.get().pluginId)
+    id(libs.plugins.kotlin.android.get().pluginId)
     `lunabee-publish`
 }
 
@@ -47,7 +47,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
             )
         }
-
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

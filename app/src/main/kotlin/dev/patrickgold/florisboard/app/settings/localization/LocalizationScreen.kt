@@ -17,11 +17,12 @@
 package dev.patrickgold.florisboard.app.settings.localization
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExtendedFloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.R
 import dev.patrickgold.florisboard.app.LocalNavController
 import dev.patrickgold.florisboard.app.Routes
+import dev.patrickgold.florisboard.app.enumDisplayEntriesOf
 import dev.patrickgold.florisboard.cacheManager
 import dev.patrickgold.florisboard.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.florisboard.ime.keyboard.LayoutType
@@ -70,16 +72,16 @@ fun LocalizationScreen() = FlorisScreen {
                     text = stringRes(R.string.settings__localization__subtype_add_title),
                 )
             },
+            shape = FloatingActionButtonDefaults.extendedFabShape,
             onClick = { navController.navigate(Routes.Settings.SubtypeAdd) },
         )
     }
-
 
     content {
         ListPreference(
             prefs.localization.displayLanguageNamesIn,
             title = stringRes(R.string.settings__localization__display_language_names_in__label),
-            entries = DisplayLanguageNamesIn.listEntries(),
+            entries = enumDisplayEntriesOf(DisplayLanguageNamesIn::class),
         )
         Preference(
 //            icon = R.drawable.ic_edit,

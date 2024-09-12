@@ -20,13 +20,14 @@
         android:name="dev.patrickgold.florisboard.FlorisDemoApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/floris_backup_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/floris_backup_rules"
         android:icon="@mipmap/floris_app_icon"
         android:label="@string/floris_app_name"
         android:roundIcon="@mipmap/floris_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/FlorisAppTheme"
-        tools:targetApi="s">
+        tools:targetApi="tiramisu">
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

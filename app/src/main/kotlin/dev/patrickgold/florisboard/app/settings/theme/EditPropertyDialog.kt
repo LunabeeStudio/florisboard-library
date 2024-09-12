@@ -30,12 +30,11 @@ import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HelpOutline
-import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -49,7 +48,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -72,29 +70,29 @@ import dev.patrickgold.florisboard.lib.compose.rippleClickable
 import dev.patrickgold.florisboard.lib.compose.stringRes
 import dev.patrickgold.florisboard.lib.ext.ExtensionValidation
 import dev.patrickgold.florisboard.lib.rememberValidationResult
-import dev.patrickgold.florisboard.lib.snygg.SnyggLevel
-import dev.patrickgold.florisboard.lib.snygg.SnyggPropertySetSpec
-import dev.patrickgold.florisboard.lib.snygg.value.MaterialYouColor
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggCutCornerDpShapeValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggCutCornerPercentShapeValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggDefinedVarValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggDpShapeValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggDpSizeValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggImplicitInheritValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggMaterialYouDarkColorValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggMaterialYouLightColorValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggMaterialYouValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggPercentShapeValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggRoundedCornerDpShapeValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggRoundedCornerPercentShapeValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggShapeValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggSolidColorValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggSpSizeValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggValue
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggValueEncoder
-import dev.patrickgold.florisboard.lib.snygg.value.SnyggVarValueEncoders
+import org.florisboard.lib.snygg.SnyggLevel
+import org.florisboard.lib.snygg.SnyggPropertySetSpec
+import org.florisboard.lib.snygg.value.MaterialYouColor
+import org.florisboard.lib.snygg.value.SnyggCutCornerDpShapeValue
+import org.florisboard.lib.snygg.value.SnyggCutCornerPercentShapeValue
+import org.florisboard.lib.snygg.value.SnyggDefinedVarValue
+import org.florisboard.lib.snygg.value.SnyggDpShapeValue
+import org.florisboard.lib.snygg.value.SnyggDpSizeValue
+import org.florisboard.lib.snygg.value.SnyggImplicitInheritValue
+import org.florisboard.lib.snygg.value.SnyggMaterialYouDarkColorValue
+import org.florisboard.lib.snygg.value.SnyggMaterialYouLightColorValue
+import org.florisboard.lib.snygg.value.SnyggMaterialYouValue
+import org.florisboard.lib.snygg.value.SnyggPercentShapeValue
+import org.florisboard.lib.snygg.value.SnyggRoundedCornerDpShapeValue
+import org.florisboard.lib.snygg.value.SnyggRoundedCornerPercentShapeValue
+import org.florisboard.lib.snygg.value.SnyggShapeValue
+import org.florisboard.lib.snygg.value.SnyggSolidColorValue
+import org.florisboard.lib.snygg.value.SnyggSpSizeValue
+import org.florisboard.lib.snygg.value.SnyggValue
+import org.florisboard.lib.snygg.value.SnyggValueEncoder
+import org.florisboard.lib.snygg.value.SnyggVarValueEncoders
 import dev.patrickgold.florisboard.lib.stripUnicodeCtrlChars
-import dev.patrickgold.jetpref.material.ui.ExperimentalJetPrefMaterialUi
+import dev.patrickgold.jetpref.material.ui.ExperimentalJetPrefMaterial3Ui
 import dev.patrickgold.jetpref.material.ui.JetPrefAlertDialog
 import dev.patrickgold.jetpref.material.ui.JetPrefColorPicker
 import dev.patrickgold.jetpref.material.ui.rememberJetPrefColorPickerState
@@ -220,7 +218,7 @@ internal fun EditPropertyDialog(
         },
         onNeutral = onDelete,
         neutralColors = ButtonDefaults.textButtonColors(
-            contentColor = MaterialTheme.colors.error,
+            contentColor = MaterialTheme.colorScheme.error,
         ),
     ) {
         Column {
@@ -228,7 +226,7 @@ internal fun EditPropertyDialog(
                 Text(
                     modifier = Modifier.padding(bottom = 16.dp),
                     text = stringRes(R.string.settings__theme_editor__property_already_exists),
-                    color = MaterialTheme.colors.error,
+                    color = MaterialTheme.colorScheme.error,
                 )
             }
 
@@ -353,7 +351,7 @@ private fun PropertyValueEncoderDropdown(
     )
 }
 
-@OptIn(ExperimentalJetPrefMaterialUi::class)
+@OptIn(ExperimentalJetPrefMaterial3Ui::class)
 @Composable
 private fun PropertyValueEditor(
     value: SnyggValue,
@@ -417,7 +415,7 @@ private fun PropertyValueEditor(
                                 .padding(end = 12.dp)
                                 .weight(1f),
                             text = colorPickerStr,
-                            style = MaterialTheme.typography.body2,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontFamily = FontFamily.Monospace,
                         )
                         SnyggValueIcon(
@@ -477,7 +475,7 @@ private fun PropertyValueEditor(
                                         rgb(r,g,b)
                                          -> r,g,b in 0..255
                                     """.trimIndent(),
-                                    style = MaterialTheme.typography.body2,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     fontFamily = FontFamily.Monospace,
                                 )
                             }
@@ -680,7 +678,7 @@ private fun PropertyValueEditor(
                     Box(
                         modifier = Modifier
                             .requiredSize(40.dp)
-                            .border(1.dp, MaterialTheme.colors.onBackground, shape),
+                            .border(1.dp, MaterialTheme.colorScheme.onBackground, shape),
                     )
                     Column {
                         FlorisChip(
@@ -849,7 +847,7 @@ private fun PropertyValueEditor(
                     Box(
                         modifier = Modifier
                             .requiredSize(40.dp)
-                            .border(1.dp, MaterialTheme.colors.onBackground, shape),
+                            .border(1.dp, MaterialTheme.colorScheme.onBackground, shape),
                     )
                     Column {
                         FlorisChip(
@@ -938,7 +936,7 @@ private fun PropertyValueEditor(
                     Box(
                         modifier = Modifier
                             .requiredSize(40.dp)
-                            .border(1.dp, MaterialTheme.colors.onBackground, value.shape),
+                            .border(1.dp, MaterialTheme.colorScheme.onBackground, value.shape),
                     )
                 }
             }
