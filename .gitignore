@@ -1,3 +1,5 @@
+/.kotlin/sessions/*.salive
+
 # Built application files
 *.apk
 *.aab
