@@ -140,7 +140,7 @@ object ExtensionValidation {
         }
     }
 
-    val ThemeComponentVariableName = ValidationRule<String> {
+    val ThemeComponentVariableName: ValidationRule<String> = ValidationRule {
         forKlass = SnyggStylesheet::class
         forProperty = "propertyName"
         validator { input ->
@@ -157,7 +157,7 @@ object ExtensionValidation {
     }
 
     val SnyggSolidColorValue = ValidationRule<String> {
-        forKlass = SnyggSolidColorValue::class
+        forKlass = org.florisboard.lib.snygg.value.SnyggSolidColorValue::class
         forProperty = "color"
         validator { input ->
             val str = input.trim()
@@ -172,7 +172,7 @@ object ExtensionValidation {
     }
 
     val SnyggDpShapeValue = ValidationRule<String> {
-        forKlass = SnyggDpShapeValue::class
+        forKlass = org.florisboard.lib.snygg.value.SnyggDpShapeValue::class
         forProperty = "corner"
         validator { str ->
             val floatValue = str.toFloatOrNull()
@@ -186,7 +186,7 @@ object ExtensionValidation {
     }
 
     val SnyggPercentShapeValue = ValidationRule<String> {
-        forKlass = SnyggPercentShapeValue::class
+        forKlass = org.florisboard.lib.snygg.value.SnyggPercentShapeValue::class
         forProperty = "corner"
         validator { str ->
             val intValue = str.toIntOrNull()

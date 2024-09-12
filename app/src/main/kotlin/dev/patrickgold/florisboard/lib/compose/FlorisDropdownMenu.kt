@@ -72,9 +72,9 @@ fun <T : Any> FlorisDropdownMenu(
         OutlinedButton(
             modifier = Modifier.fillMaxWidth(),
             border = if (isError && enabled) {
-                BorderStroke(ButtonDefaults.outlinedButtonBorder.width, MaterialTheme.colorScheme.error)
+                BorderStroke(ButtonDefaults.outlinedButtonBorder(true).width, MaterialTheme.colorScheme.error)
             } else {
-                ButtonDefaults.outlinedButtonBorder
+                ButtonDefaults.outlinedButtonBorder(true)
             },
             shape = ShapeDefaults.ExtraSmall,
             enabled = enabled,
@@ -136,9 +136,9 @@ fun FlorisDropdownLikeButton(
             modifier = Modifier
                 .fillMaxWidth(),
             border = if (isError) {
-                BorderStroke(ButtonDefaults.outlinedButtonBorder.width, MaterialTheme.colorScheme.error)
+                BorderStroke(ButtonDefaults.outlinedButtonBorder(true).width, MaterialTheme.colorScheme.error)
             } else {
-                ButtonDefaults.outlinedButtonBorder
+                ButtonDefaults.outlinedButtonBorder(true)
             },
             shape = ShapeDefaults.ExtraSmall,
             onClick = onClick,

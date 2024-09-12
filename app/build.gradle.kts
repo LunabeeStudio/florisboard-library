@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.ByteArrayOutputStream
 
 version = Versions.fullVersion
@@ -28,6 +29,7 @@ plugins {
     id(libs.plugins.ksp.get().pluginId)
     id(libs.plugins.mannodermaus.android.junit5.get().pluginId)
     id(libs.plugins.mikepenz.aboutlibraries.get().pluginId)
+    alias(libs.plugins.compose.compiler)
 }
 
 val projectMinSdk: String by project
@@ -48,15 +50,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs = listOf(
-            "-Xallow-result-return-type",
-            "-opt-in=kotlin.contracts.ExperimentalContracts",
-            "-Xjvm-default=all-compatibility",
-        )
     }
 
     defaultConfig {
@@ -95,10 +88,6 @@ android {
     buildFeatures {
         buildConfig = true
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     buildTypes {
@@ -149,16 +138,20 @@ android {
         }
     }
 }
-
 tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+        freeCompilerArgs = listOf(
+            "-opt-in=kotlin.contracts.ExperimentalContracts",
+            "-Xjvm-default=all-compatibility",
+        )
     }
 }
+
 
 dependencies {
     implementation(libs.androidx.activity.compose)

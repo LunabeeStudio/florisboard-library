@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(libs.plugins.agp.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
@@ -52,9 +54,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 
     sourceSets {
         maybeCreate("main").apply {
@@ -68,6 +67,12 @@ android {
         cmake {
             path("src/main/rust/CMakeLists.txt")
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
     }
 }
 

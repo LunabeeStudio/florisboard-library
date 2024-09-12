@@ -177,11 +177,11 @@ fun FlorisOutlinedTextField(
                                 colors.disabledContainerColor
                             },
                     border = if (isErrorState && enabled) {
-                        BorderStroke(ButtonDefaults.outlinedButtonBorder.width, MaterialTheme.colorScheme.error)
+                        BorderStroke(ButtonDefaults.outlinedButtonBorder(true).width, MaterialTheme.colorScheme.error)
                     } else if (isFocused) {
-                        BorderStroke(ButtonDefaults.outlinedButtonBorder.width, MaterialTheme.colorScheme.primary)
+                        BorderStroke(ButtonDefaults.outlinedButtonBorder(true).width, MaterialTheme.colorScheme.primary)
                     } else {
-                        ButtonDefaults.outlinedButtonBorder
+                        ButtonDefaults.outlinedButtonBorder(true)
                     },
                     shape = shape,
                 ) {

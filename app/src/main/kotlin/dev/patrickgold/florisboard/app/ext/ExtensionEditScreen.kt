@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.LibraryBooks
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.outlined.LibraryBooks
@@ -329,7 +330,7 @@ private fun EditScreen(
             )
             this@content.Preference(
                 onClick = { workspace.currentAction = EditorAction.ManageDependencies },
-                icon = Icons.Outlined.LibraryBooks,
+                icon = Icons.AutoMirrored.Outlined.LibraryBooks,
                 title = stringRes(R.string.ext__editor__dependencies__title),
             )
             this@content.Preference(

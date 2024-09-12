@@ -1,5 +1,5 @@
-import org.gradle.configurationcache.extensions.capitalized
 import java.net.URI
+import java.util.Locale
 
 plugins {
     `maven-publish`
@@ -125,4 +125,10 @@ fun MavenPublication.setPom() {
             }
         }
     }
+}
+
+private fun String.capitalized(): String = if (this.isEmpty()) {
+    this
+} else {
+    this[0].titlecase(Locale.getDefault()) + this.substring(1)
 }

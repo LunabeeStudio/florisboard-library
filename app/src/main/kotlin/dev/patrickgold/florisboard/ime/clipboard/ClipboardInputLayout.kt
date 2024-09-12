@@ -53,10 +53,10 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ToggleOff
 import androidx.compose.material.icons.filled.ToggleOn
 import androidx.compose.material.icons.filled.Videocam
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -212,7 +212,7 @@ fun ClipboardInputLayout(
             clip = true,
             clickAndSemanticsModifier = Modifier.combinedClickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(),
+                indication = ripple(),
                 enabled = popupItem == null,
                 onLongClick = {
                     popupItem = item
@@ -265,7 +265,10 @@ fun ClipboardInputLayout(
                             ThumbnailUtils.createVideoThumbnail(file, Size(width!!.toInt(), height!!.toInt()), null)
                         } else {
                             @Suppress("DEPRECATION")
-                            ThumbnailUtils.createVideoThumbnail(file.absolutePath, MediaStore.Video.Thumbnails.MINI_KIND)
+                            ThumbnailUtils.createVideoThumbnail(
+                                file.absolutePath,
+                                MediaStore.Video.Thumbnails.MINI_KIND
+                            )
                         }
                         checkNotNull(rawBitmap) { "Unable to decode video at ${file.absolutePath}" }
                         rawBitmap.asImageBitmap()
@@ -395,11 +398,13 @@ fun ClipboardInputLayout(
                     ) {
                         PopupAction(
                             iconId = R.drawable.ic_pin,
-                            text = stringRes(if (popupItem!!.isPinned) {
-                                R.string.clip__unpin_item
-                            } else {
-                                R.string.clip__pin_item
-                            }),
+                            text = stringRes(
+                                if (popupItem!!.isPinned) {
+                                    R.string.clip__unpin_item
+                                } else {
+                                    R.string.clip__pin_item
+                                }
+                            ),
                             style = popupStyle,
                         ) {
                             if (popupItem!!.isPinned) {
@@ -463,7 +468,11 @@ fun ClipboardInputLayout(
                                 },
                                 modifier = Modifier.padding(end = 8.dp),
                                 text = stringRes(R.string.action__no),
-                                colors = ButtonDefaults.textButtonColors(contentColor = popupStyle.foreground.solidColor(context)),
+                                colors = ButtonDefaults.textButtonColors(
+                                    contentColor = popupStyle.foreground.solidColor(
+                                        context
+                                    )
+                                ),
                             )
                             FlorisTextButton(
                                 onClick = {
@@ -472,7 +481,11 @@ fun ClipboardInputLayout(
                                     showClearAllHistory = false
                                 },
                                 text = stringRes(R.string.action__yes),
-                                colors = ButtonDefaults.textButtonColors(contentColor = popupStyle.foreground.solidColor(context)),
+                                colors = ButtonDefaults.textButtonColors(
+                                    contentColor = popupStyle.foreground.solidColor(
+                                        context
+                                    )
+                                ),
                             )
                         }
                     }
