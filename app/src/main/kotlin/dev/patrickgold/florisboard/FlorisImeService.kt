@@ -111,13 +111,6 @@ import dev.patrickgold.florisboard.lib.devtools.flogError
 import dev.patrickgold.florisboard.lib.devtools.flogInfo
 import dev.patrickgold.florisboard.lib.devtools.flogWarning
 import dev.patrickgold.florisboard.lib.observeAsTransformingState
-import org.florisboard.lib.snygg.ui.SnyggSurface
-import org.florisboard.lib.snygg.ui.shape
-import org.florisboard.lib.snygg.ui.snyggBackground
-import org.florisboard.lib.snygg.ui.snyggBorder
-import org.florisboard.lib.snygg.ui.snyggShadow
-import org.florisboard.lib.snygg.ui.solidColor
-import org.florisboard.lib.snygg.ui.spSize
 import dev.patrickgold.florisboard.lib.util.ViewUtils
 import dev.patrickgold.florisboard.lib.util.debugSummarize
 import dev.patrickgold.florisboard.lib.util.launchActivity
@@ -129,6 +122,13 @@ import org.florisboard.lib.android.isOrientationPortrait
 import org.florisboard.lib.android.showShortToast
 import org.florisboard.lib.android.systemServiceOrNull
 import org.florisboard.lib.kotlin.collectLatestIn
+import org.florisboard.lib.snygg.ui.SnyggSurface
+import org.florisboard.lib.snygg.ui.shape
+import org.florisboard.lib.snygg.ui.snyggBackground
+import org.florisboard.lib.snygg.ui.snyggBorder
+import org.florisboard.lib.snygg.ui.snyggShadow
+import org.florisboard.lib.snygg.ui.solidColor
+import org.florisboard.lib.snygg.ui.spSize
 import java.lang.ref.WeakReference
 
 /**
@@ -290,10 +290,12 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
         super.installViewTreeOwners()
         // Instantiate and install bottom sheet host UI view
         val bottomSheetView = FlorisBottomSheetHostUiView()
-        window.window!!.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-        )
+        if (AndroidVersion.ATLEAST_API30_R) {
+            window.window!!.setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            )
+        }
         window.window!!.findViewById<ViewGroup>(android.R.id.content).addView(bottomSheetView)
         // Instantiate and return input view
         val composeView = ComposeInputView()
@@ -787,7 +789,10 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                             modifier = Modifier.fillMaxSize(),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            val fieldColor = fieldStyle.foreground.solidColor(context, FlorisImeTheme.fallbackContentColor())
+                            val fieldColor = fieldStyle.foreground.solidColor(
+                                context,
+                                FlorisImeTheme.fallbackContentColor()
+                            )
                             AndroidView(
                                 modifier = Modifier
                                     .padding(8.dp)
@@ -823,8 +828,14 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                                     ?: "ACTION",
                                 shape = actionStyle.shape.shape(),
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = actionStyle.background.solidColor(context, FlorisImeTheme.fallbackContentColor()),
-                                    contentColor = actionStyle.foreground.solidColor(context, FlorisImeTheme.fallbackSurfaceColor()),
+                                    containerColor = actionStyle.background.solidColor(
+                                        context,
+                                        FlorisImeTheme.fallbackContentColor()
+                                    ),
+                                    contentColor = actionStyle.foreground.solidColor(
+                                        context,
+                                        FlorisImeTheme.fallbackSurfaceColor()
+                                    ),
                                 ),
                             )
                         }
