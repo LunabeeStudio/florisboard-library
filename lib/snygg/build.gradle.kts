@@ -3,12 +3,18 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id(libs.plugins.agp.library.get().pluginId)
     id(libs.plugins.kotlin.android.get().pluginId)
+    `lunabee-publish`
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
 }
 
 val projectMinSdk: String by project
 val projectCompileSdk: String by project
+
+
+version = Versions.fullVersion
+description = "FlorisBoard snygg library"
+group = "studio.lunabee.florisboard"
 
 android {
     namespace = "org.florisboard.lib.snygg"

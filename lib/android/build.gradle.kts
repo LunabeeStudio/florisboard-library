@@ -2,12 +2,17 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id(libs.plugins.agp.library.get().pluginId)
+    `lunabee-publish`
     id(libs.plugins.kotlin.android.get().pluginId)
     alias(libs.plugins.kotlin.serialization)
 }
 
 val projectMinSdk: String by project
 val projectCompileSdk: String by project
+
+version = Versions.fullVersion
+description = "FlorisBoard Android library"
+group = "studio.lunabee.florisboard"
 
 android {
     namespace = "org.florisboard.lib.android"
