@@ -10,7 +10,7 @@ plugins {
 val projectMinSdk: String by project
 val projectCompileSdk: String by project
 
-version = Versions(rootProject).fullVersion
+version = Versions.fullVersion
 description = "FlorisBoard Android library"
 group = "studio.lunabee.florisboard"
 

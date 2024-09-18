@@ -6,7 +6,7 @@ plugins {
     `lunabee-publish`
 }
 
-version = Versions(rootProject).fullVersion
+version = Versions.fullVersion
 description = "FlorisBoard native library"
 group = "studio.lunabee.florisboard"
 

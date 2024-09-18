@@ -22,7 +22,7 @@ plugins {
     `lunabee-publish`
 }
 
-version = Versions(rootProject).fullVersion
+version = Versions.fullVersion
 description = "FlorisBoard Kotlin utilities"
 group = "studio.lunabee.florisboard"
 

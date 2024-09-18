@@ -17,7 +17,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.ByteArrayOutputStream
 
-version = Versions(rootProject).fullVersion
+version = Versions.fullVersion
 description = "FlorisBoard fork as library for oneSafe6 K"
 group = "studio.lunabee.florisboard"
 
