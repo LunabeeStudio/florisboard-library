@@ -26,9 +26,20 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+val projectMinSdk: String by project
+val projectTargetSdk: String by project
+val projectCompileSdk: String by project
+val projectBuildToolsVersion: String by project
+val projectNdkVersion: String by project
+val projectVersionCode: String by project
+val projectVersionName: String by project
+val projectVersionNameSuffix = projectVersionName.substringAfter("-", "")
+
 android {
     namespace = "dev.patrickgold.florisboard"
-    compileSdk = 34
+    compileSdk = projectCompileSdk.toInt()
+    buildToolsVersion = projectBuildToolsVersion
+    ndkVersion = projectNdkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -37,10 +48,10 @@ android {
 
     defaultConfig {
         applicationId = "dev.patrickgold.florisboard"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 90
-        versionName = "0.4.0"
+        minSdk = projectMinSdk.toInt()
+        targetSdk = projectTargetSdk.toInt()
+        versionCode = projectVersionCode.toInt()
+        versionName = projectVersionName.substringBefore("-")
 
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash()}\"")
 
@@ -65,6 +76,39 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+    }
+
+    buildTypes {
+        named("debug") {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug+${getGitCommitHash(short = true)}"
+
+            isDebuggable = true
+            isJniDebuggable = false
+        }
+
+        create("beta") {
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+
+        named("release") {
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+
+        create("benchmark") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+        }
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
     }
 }
 

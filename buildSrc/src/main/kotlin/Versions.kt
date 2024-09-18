@@ -1,5 +1,7 @@
-object Versions {
+import org.gradle.api.Project
+
+class Versions(project: Project) {
     private val lunabeeVersion: String = "1.0.1"
-    private val florisVersion = "0.4.0-rc02"
+    private val florisVersion: String = project.properties["version"] as String
     val fullVersion = "$florisVersion-$lunabeeVersion"
 }

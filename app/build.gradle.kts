@@ -17,7 +17,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.ByteArrayOutputStream
 
-version = Versions.fullVersion
+version = Versions(rootProject).fullVersion
 description = "FlorisBoard fork as library for oneSafe6 K"
 group = "studio.lunabee.florisboard"
 
@@ -33,13 +33,6 @@ plugins {
 }
 
 val projectMinSdk: String by project
-val projectTargetSdk: String by project
-val projectCompileSdk: String by project
-val projectBuildToolsVersion: String by project
-val projectNdkVersion: String by project
-val projectVersionCode: String by project
-val projectVersionName: String by project
-val projectVersionNameSuffix: String by project
 
 android {
     namespace = "dev.patrickgold.florisboard"
@@ -53,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        minSdk = 24
+        minSdk = projectMinSdk.toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -127,15 +120,6 @@ android {
 
     aboutLibraries {
         configPath = "app/src/main/config"
-    }
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-        unitTests.all {
-            it.useJUnitPlatform()
-        }
     }
 }
 tasks.withType<Test> {

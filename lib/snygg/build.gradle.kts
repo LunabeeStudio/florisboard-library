@@ -12,7 +12,7 @@ val projectMinSdk: String by project
 val projectCompileSdk: String by project
 
 
-version = Versions.fullVersion
+version = Versions(rootProject).fullVersion
 description = "FlorisBoard snygg library"
 group = "studio.lunabee.florisboard"
 
