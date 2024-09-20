@@ -29,7 +29,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import dev.patrickgold.florisboard.R
-import dev.patrickgold.florisboard.BuildConfig
 import dev.patrickgold.florisboard.lib.compose.observeAsState
 import dev.patrickgold.florisboard.lib.devtools.flogDebug
 import kotlinx.coroutines.delay
@@ -46,7 +45,7 @@ object InputMethodUtils {
         return if (AndroidVersion.ATLEAST_API34_U) {
             context.systemServiceOrNull(InputMethodManager::class)
                 ?.enabledInputMethodList
-                ?.any { it.packageName == BuildConfig.APPLICATION_ID } ?: false
+                ?.any { it.packageName == context.packageName } ?: false
         } else {
             val enabledImeList = AndroidSettings.Secure.getString(
                 context, Settings.Secure.ENABLED_INPUT_METHODS
@@ -59,7 +58,7 @@ object InputMethodUtils {
         return if (AndroidVersion.ATLEAST_API34_U) {
             context.systemServiceOrNull(InputMethodManager::class)
                 ?.currentInputMethodInfo
-                ?.packageName == BuildConfig.APPLICATION_ID
+                ?.packageName == context.packageName
         } else {
             val selectedIme = AndroidSettings.Secure.getString(
                 context, Settings.Secure.DEFAULT_INPUT_METHOD
