@@ -27,6 +27,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
@@ -39,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.ime.editor.EditorInstance
@@ -135,22 +137,24 @@ class DemoFlorisImeService : FlorisImeService() {
                     Text("Hello top UI")
                     textFieldValues.forEachIndexed { index, fieldValue ->
                         key(index) {
-                            TextField(
-                                value = fieldValue,
-                                onValueChange = { newField ->
-                                    textFieldValues.removeAt(index)
-                                    textFieldValues.add(index, newField)
-                                },
-                                modifier = Modifier
-                                    .keyboardTextfield(
-                                        { isKeyboardVisible },
-                                        toggleKeyboardVisibility,
-                                        { textFieldValues[index] }
-                                    ) { newField ->
+                            CompositionLocalProvider(LocalWindowInfo.provides(ForceFocusWindowInfo)) {
+                                TextField(
+                                    value = fieldValue,
+                                    onValueChange = { newField ->
                                         textFieldValues.removeAt(index)
                                         textFieldValues.add(index, newField)
                                     },
-                            )
+                                    modifier = Modifier
+                                        .keyboardTextfield(
+                                            { isKeyboardVisible },
+                                            toggleKeyboardVisibility,
+                                            { textFieldValues[index] }
+                                        ) { newField ->
+                                            textFieldValues.removeAt(index)
+                                            textFieldValues.add(index, newField)
+                                        },
+                                )
+                            }
                         }
                     }
                     Row(
