@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Patrick Goldinger
+ * Copyright (C) 2021-2025 The FlorisBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -113,7 +113,7 @@ fun LanguagePackManagerScreen(action: LanguagePackManagerScreenAction?) = Floris
             FlorisOutlinedBox(
                 modifier = Modifier.defaultFlorisOutlinedBox(),
             ) {
-                this@content.Preference(
+                Preference(
                     onClick = { navController.navigate(
                         Routes.Ext.Import(ExtensionImportScreenType.EXT_LANGUAGEPACK, null)
                     ) },

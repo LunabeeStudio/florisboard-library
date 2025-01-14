@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Patrick Goldinger
+ * Copyright (C) 2021-2025 The FlorisBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import dev.patrickgold.jetpref.datastore.model.observeAsState
 import dev.patrickgold.jetpref.datastore.ui.Preference
 import dev.patrickgold.jetpref.datastore.ui.PreferenceGroup
 import dev.patrickgold.jetpref.datastore.ui.SwitchPreference
+import org.florisboard.lib.android.AndroidVersion
 
 class DebugOnPurposeCrashException : Exception(
     "Success! The app crashed purposely to display this beautiful screen we all love :)"
@@ -61,12 +62,6 @@ fun DevtoolsScreen() = FlorisScreen {
 
         PreferenceGroup(title = stringRes(R.string.devtools__title)) {
             SwitchPreference(
-                prefs.devtools.showHeapMemoryStats,
-                title = stringRes(R.string.devtools__show_heap_memory_stats__label),
-                summary = stringRes(R.string.devtools__show_heap_memory_stats__summary),
-                enabledIf = { prefs.devtools.enabled isEqualTo true },
-            )
-            SwitchPreference(
                 prefs.devtools.showPrimaryClip,
                 title = stringRes(R.string.devtools__show_primary_clip__label),
                 summary = stringRes(R.string.devtools__show_primary_clip__summary),
@@ -83,6 +78,13 @@ fun DevtoolsScreen() = FlorisScreen {
                 title = stringRes(R.string.devtools__show_spelling_overlay__label),
                 summary = stringRes(R.string.devtools__show_spelling_overlay__summary),
                 enabledIf = { prefs.devtools.enabled isEqualTo true },
+            )
+            SwitchPreference(
+                prefs.devtools.showInlineAutofillOverlay,
+                title = stringRes(R.string.devtools__show_inline_autofill_overlay__label),
+                summary = stringRes(R.string.devtools__show_inline_autofill_overlay__summary),
+                enabledIf = { prefs.devtools.enabled isEqualTo true },
+                visibleIf = { AndroidVersion.ATLEAST_API30_R },
             )
             SwitchPreference(
                 prefs.devtools.showKeyTouchBoundaries,

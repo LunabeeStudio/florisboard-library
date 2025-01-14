@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Patrick Goldinger
+ * Copyright (C) 2021-2025 The FlorisBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package dev.patrickgold.florisboard.ime.text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -32,7 +31,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.R
 import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.ime.keyboard.KeyboardMode
@@ -74,7 +72,7 @@ fun TextInputLayout(
                         val indicatorStyle = FlorisImeTheme.style.get(FlorisImeUi.IncognitoModeIndicator)
                         Icon(
                             modifier = Modifier
-                                .requiredSize(192.dp)
+                                .matchParentSize()
                                 .align(Alignment.Center),
                             painter = painterResource(R.drawable.ic_incognito),
                             contentDescription = null,
@@ -83,8 +81,14 @@ fun TextInputLayout(
                             ),
                         )
                     }
+                    val debugLayoutResult by keyboardManager.layoutManager
+                        .debugLayoutComputationResultFlow.collectAsState()
                     if (state.keyboardMode != KeyboardMode.EDITING) {
-                        TextKeyboardLayout(evaluator = evaluator)
+                        if (debugLayoutResult?.allLayoutsSuccess() == true) {
+                            TextKeyboardLayout(evaluator = evaluator)
+                        } else {
+                            HowDidWeGetHere()
+                        }
                     } else {
                         HowDidWeGetHere()
                     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Patrick Goldinger
+ * Copyright (C) 2021-2025 The FlorisBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.LibraryBooks
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.outlined.LibraryBooks
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -323,17 +322,17 @@ private fun EditScreen(
         FlorisOutlinedBox(
             modifier = Modifier.defaultFlorisOutlinedBox(),
         ) {
-            this@content.Preference(
+            Preference(
                 onClick = { workspace.currentAction = EditorAction.ManageMetaData },
                 icon = Icons.Default.Code,
                 title = stringRes(R.string.ext__editor__metadata__title),
             )
-            this@content.Preference(
+            Preference(
                 onClick = { workspace.currentAction = EditorAction.ManageDependencies },
                 icon = Icons.AutoMirrored.Outlined.LibraryBooks,
                 title = stringRes(R.string.ext__editor__dependencies__title),
             )
-            this@content.Preference(
+            Preference(
                 onClick = { workspace.currentAction = EditorAction.ManageFiles },
                 icon = vectorResource(R.drawable.ic_file_blank),
                 title = stringRes(R.string.ext__editor__files__title),

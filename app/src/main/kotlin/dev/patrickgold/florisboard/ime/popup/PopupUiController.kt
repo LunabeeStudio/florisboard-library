@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Patrick Goldinger
+ * Copyright (C) 2021-2025 The FlorisBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,12 +48,13 @@ import dev.patrickgold.florisboard.lib.toIntOffset
 @Composable
 fun rememberPopupUiController(
     key1: Any?,
+    key2: Any?,
     boundsProvider: (key: Key) -> FlorisRect,
     isSuitableForBasicPopup: (key: Key) -> Boolean,
     isSuitableForExtendedPopup: (key: Key) -> Boolean,
 ): PopupUiController {
     val context = LocalContext.current
-    return remember(key1) {
+    return remember(key1, key2) {
         PopupUiController(context, boundsProvider, isSuitableForBasicPopup, isSuitableForExtendedPopup)
     }
 }

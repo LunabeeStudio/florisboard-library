@@ -42,6 +42,7 @@ captures/
 # Intellij
 *.iml
 .idea/
+!/.idea/copyright/
 
 # Keystore files
 *.jks

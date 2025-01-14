@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Patrick Goldinger
+ * Copyright (C) 2022-2025 The FlorisBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.ByteArrayOutputStream
 
@@ -124,6 +125,10 @@ android {
 }
 tasks.withType<Test> {
     useJUnitPlatform()
+composeCompiler {
+    // DO NOT ENABLE STRONG SKIPPING! This project currently relies on
+    // recomposition on parent state change to update the UI correctly.
+    featureFlags.add(ComposeFeatureFlag.StrongSkipping.disabled())
 }
 
 kotlin {
@@ -134,6 +139,8 @@ kotlin {
             "-Xjvm-default=all-compatibility",
         )
     }
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Patrick Goldinger
+ * Copyright (C) 2021-2025 The FlorisBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.Backspace
 import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ToggleOff
@@ -87,6 +88,8 @@ import dev.patrickgold.florisboard.ime.clipboard.provider.ClipboardFileStorage
 import dev.patrickgold.florisboard.ime.clipboard.provider.ClipboardItem
 import dev.patrickgold.florisboard.ime.clipboard.provider.ItemType
 import dev.patrickgold.florisboard.ime.keyboard.FlorisImeSizing
+import dev.patrickgold.florisboard.ime.media.KeyboardLikeButton
+import dev.patrickgold.florisboard.ime.text.keyboard.TextKeyData
 import dev.patrickgold.florisboard.ime.theme.FlorisImeTheme
 import dev.patrickgold.florisboard.ime.theme.FlorisImeUi
 import dev.patrickgold.florisboard.keyboardManager
@@ -193,6 +196,13 @@ fun ClipboardInputLayout(
                 iconColor = headerStyle.foreground.solidColor(context),
                 enabled = !deviceLocked && historyEnabled && !isPopupSurfaceActive(),
             )
+            KeyboardLikeButton(
+                inputEventDispatcher = keyboardManager.inputEventDispatcher,
+                keyData = TextKeyData.DELETE,
+                element = FlorisImeUi.ClipboardHeader,
+            ) {
+                Icon(Icons.AutoMirrored.Outlined.Backspace, null)
+            }
         }
     }
 
@@ -310,7 +320,7 @@ fun ClipboardInputLayout(
                             .fillMaxWidth()
                             .run { if (contentScrollInsteadOfClip) this.florisVerticalScroll() else this }
                             .padding(ItemPadding),
-                        text = text,
+                        text = item.displayText(),
                         style = TextStyle(textDirection = TextDirection.ContentOrLtr),
                         color = style.foreground.solidColor(context),
                         fontSize = style.fontSize.spSize(),
@@ -590,7 +600,7 @@ fun ClipboardInputLayout(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .height(FlorisImeSizing.imeUiHeight()),
     ) {
         HeaderRow()
         if (deviceLocked) {
