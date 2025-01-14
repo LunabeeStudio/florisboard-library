@@ -25,11 +25,11 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 open class BreakIteratorGroup {
-    private val charInstances = Cache.Builder().build<FlorisLocale, GuardedByLock<BreakIterator>>()
+    private val charInstances = Cache.Builder<FlorisLocale, GuardedByLock<BreakIterator>>().build()
 
-    private val wordInstances = Cache.Builder().build<FlorisLocale, GuardedByLock<BreakIterator>>()
+    private val wordInstances = Cache.Builder<FlorisLocale, GuardedByLock<BreakIterator>>().build()
 
-    private val sentenceInstances = Cache.Builder().build<FlorisLocale, GuardedByLock<BreakIterator>>()
+    private val sentenceInstances = Cache.Builder<FlorisLocale, GuardedByLock<BreakIterator>>().build()
 
     suspend fun <R> character(locale: FlorisLocale, action: (BreakIterator) -> R): R {
         contract {

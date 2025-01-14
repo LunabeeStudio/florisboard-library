@@ -37,8 +37,8 @@ val projectMinSdk: String by project
 
 android {
     namespace = "dev.patrickgold.florisboard"
-    compileSdk = 34
-    buildToolsVersion = "34.0.0"
+    compileSdk = 35
+    buildToolsVersion = "35.0.0"
     ndkVersion = "25.2.9519653"
 
     compileOptions {
@@ -123,8 +123,7 @@ android {
         configPath = "app/src/main/config"
     }
 }
-tasks.withType<Test> {
-    useJUnitPlatform()
+
 composeCompiler {
     // DO NOT ENABLE STRONG SKIPPING! This project currently relies on
     // recomposition on parent state change to update the UI correctly.
@@ -139,6 +138,8 @@ kotlin {
             "-Xjvm-default=all-compatibility",
         )
     }
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }

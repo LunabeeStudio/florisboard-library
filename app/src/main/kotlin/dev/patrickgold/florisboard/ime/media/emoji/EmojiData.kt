@@ -18,9 +18,9 @@ package dev.patrickgold.florisboard.ime.media.emoji
 
 import android.content.Context
 import dev.patrickgold.florisboard.lib.FlorisLocale
-import org.florisboard.lib.android.bufferedReader
 import io.github.reactivecircus.cache4k.Cache
-import java.util.*
+import org.florisboard.lib.android.bufferedReader
+import java.util.EnumMap
 
 private typealias EmojiDataByCategoryImpl = EnumMap<EmojiCategory, MutableList<EmojiSet>>
 private typealias EmojiDataBySkinToneImpl = EnumMap<EmojiSkinTone, MutableList<Emoji>>
@@ -32,7 +32,7 @@ data class EmojiData(
     val bySkinTone: EmojiDataBySkinTone,
 ) {
     companion object {
-        private val cache = Cache.Builder().build<String, EmojiData>()
+        private val cache = Cache.Builder<String, EmojiData>().build()
         val Fallback = empty()
 
         private fun newByCategory(): EmojiDataByCategoryImpl {
