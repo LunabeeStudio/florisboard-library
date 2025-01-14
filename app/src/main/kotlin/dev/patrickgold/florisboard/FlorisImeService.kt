@@ -641,7 +641,6 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                                 .fillMaxWidth()
                                 .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
                                 .wrapContentHeight()
-                                .safeDrawingPadding()
                                 // FIXME: removing this fixes the Smartbar sizing but breaks one-handed-mode
                                 //.height(IntrinsicSize.Min)
                                 .padding(bottom = bottomOffset),
