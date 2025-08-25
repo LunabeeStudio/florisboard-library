@@ -51,6 +51,7 @@ import dev.patrickgold.florisboard.keyboardManager
 import dev.patrickgold.florisboard.lib.FlorisLocale
 import dev.patrickgold.florisboard.lib.observeAsNonNullState
 import dev.patrickgold.florisboard.nlpManager
+import dev.patrickgold.florisboard.preferenceStoreLoaded
 import dev.patrickgold.florisboard.themeManager
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import java.text.SimpleDateFormat
@@ -74,7 +75,7 @@ fun DevtoolsOverlay(modifier: Modifier = Modifier) {
     val showInputStateOverlay by prefs.devtools.showInputStateOverlay.observeAsState()
     val showSpellingOverlay by prefs.devtools.showSpellingOverlay.observeAsState()
     val showInlineAutofillOverlay by prefs.devtools.showInlineAutofillOverlay.observeAsState()
-    val prefsLoaded by appContext.preferenceStoreLoaded.collectAsState()
+    val prefsLoaded by appContext.preferenceStoreLoaded().collectAsState()
 
     val debugLayoutResult by keyboardManager.layoutManager.debugLayoutComputationResultFlow.collectAsState()
     val themeInfo by themeManager.activeThemeInfo.collectAsState()

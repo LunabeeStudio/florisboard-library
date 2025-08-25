@@ -46,6 +46,10 @@ import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.ime.editor.EditorInstance
 import dev.patrickgold.florisboard.ime.theme.ThemeManager
 import dev.patrickgold.florisboard.lib.devtools.flogDebug
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class DemoFlorisImeService : FlorisImeService() {
 
@@ -90,6 +94,7 @@ class DemoFlorisImeService : FlorisImeService() {
         return 0
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @Composable
     private fun AboveKeyboardUi(
         modifier: Modifier,
@@ -181,14 +186,18 @@ class DemoFlorisImeService : FlorisImeService() {
                             Text(text = if (isKeyboardVisible) "Hide keyboard" else "Show keyboard")
                         }
                         Button(onClick = {
-                            themeManager.updateActiveTheme(forceNight = true)
+                            GlobalScope.launch {
+                                themeManager.updateActiveTheme(forceNight = true)
+                            }
                         }) {
                             Text(text = "Force night")
                         }
                         Button(
                             modifier = Modifier.padding(end = 8.dp),
                             onClick = {
-                                themeManager.updateActiveTheme()
+                                GlobalScope.launch {
+                                    themeManager.updateActiveTheme()
+                                }
                             },
                         ) {
                             Text(text = "Update theme")

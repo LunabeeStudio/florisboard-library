@@ -23,11 +23,11 @@ import org.florisboard.lib.kotlin.GuardedByLock
 import org.florisboard.lib.kotlin.guardedByLock
 
 open class BreakIteratorGroup {
-    private val charInstances = Cache.Builder<FlorisLocale, GuardedByLock<BreakIterator>>().build()
+    private val charInstances: Cache<FlorisLocale, GuardedByLock<BreakIterator>> = Cache<FlorisLocale, GuardedByLock<BreakIterator>>.Builder().build()
 
-    private val wordInstances = Cache.Builder<FlorisLocale, GuardedByLock<BreakIterator>>().build()
+    private val wordInstances: Cache<FlorisLocale, GuardedByLock<BreakIterator>> = Cache<FlorisLocale, GuardedByLock<BreakIterator>>.Builder().build()
 
-    private val sentenceInstances = Cache.Builder<FlorisLocale, GuardedByLock<BreakIterator>>().build()
+    private val sentenceInstances: Cache<FlorisLocale, GuardedByLock<BreakIterator>> = Cache<FlorisLocale, GuardedByLock<BreakIterator>>.Builder().build()
 
     suspend fun <R> character(locale: FlorisLocale, action: (BreakIterator) -> R): R {
         val instance = charInstances.get(locale) {

@@ -50,6 +50,7 @@ import org.florisboard.lib.kotlin.io.deleteContentsRecursively
 import org.florisboard.lib.kotlin.tryOrNull
 import org.florisboard.libnative.dummyAdd
 import java.lang.ref.WeakReference
+import kotlin.getValue
 
 /**
  * Global weak reference for the [FlorisManager] class. This is needed as in certain scenarios an application
@@ -78,7 +79,7 @@ class FlorisManager(
         }
     }
 
-    private val mainHandler by lazy { Handler(mainLooper) }
+    private val mainHandler by lazy { Handler(context.value.mainLooper) }
     private val scope = CoroutineScope(Dispatchers.Default)
     val preferenceStoreLoaded = MutableStateFlow(false)
 
@@ -178,3 +179,4 @@ fun Context.nlpManager() = this.florisManager().nlpManager
 fun Context.subtypeManager() = this.florisManager().subtypeManager
 
 fun Context.themeManager() = this.florisManager().themeManager
+fun Context.preferenceStoreLoaded() = this.florisManager().preferenceStoreLoaded

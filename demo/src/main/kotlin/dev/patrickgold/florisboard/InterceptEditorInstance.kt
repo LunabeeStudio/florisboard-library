@@ -2,6 +2,7 @@ package dev.patrickgold.florisboard
 
 import android.content.Context
 import dev.patrickgold.florisboard.ime.editor.EditorInstance
+import dev.patrickgold.florisboard.ime.editor.OperationUnit
 
 class InterceptEditorInstance(context: Context) : EditorInstance(context) {
 
@@ -31,14 +32,14 @@ class InterceptEditorInstance(context: Context) : EditorInstance(context) {
         }
     }
 
-    override fun deleteBackwards(): Boolean {
+    override fun deleteBackwards(unit: OperationUnit): Boolean {
         return when {
             deleteBackwards != null -> {
                 deleteBackwards?.invoke()
                 true
             }
             blockInput -> true
-            else -> super.deleteBackwards()
+            else -> super.deleteBackwards(unit)
         }
     }
 }

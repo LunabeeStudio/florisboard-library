@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.stream.Collectors
 import android.content.Context
+import android.icu.text.BreakIterator
 import dev.patrickgold.florisboard.app.FlorisPreferenceStore
 import dev.patrickgold.florisboard.ime.core.Subtype
 import dev.patrickgold.florisboard.ime.editor.EditorContent
@@ -28,6 +29,7 @@ import dev.patrickgold.florisboard.ime.nlp.SuggestionCandidate
 import dev.patrickgold.florisboard.ime.nlp.SuggestionProvider
 import dev.patrickgold.florisboard.lib.FlorisLocale
 import io.github.reactivecircus.cache4k.Cache
+import org.florisboard.lib.kotlin.GuardedByLock
 
 /**
  * Provides emoji suggestions within a text input context.
@@ -44,7 +46,7 @@ class EmojiSuggestionProvider(private val context: Context) : SuggestionProvider
     private val prefs by FlorisPreferenceStore
     private val lettersRegex = "^[A-Za-z]*$".toRegex()
 
-    private val cachedEmojiMappings = Cache.Builder<FlorisLocale, EmojiDataBySkinTone>().build()
+    private val cachedEmojiMappings: Cache<FlorisLocale, EmojiDataBySkinTone> = Cache<FlorisLocale, EmojiDataBySkinTone>.Builder().build()
 
     override suspend fun create() {
     }

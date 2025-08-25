@@ -53,6 +53,7 @@ import dev.patrickgold.florisboard.lib.compose.LocalPreviewFieldController
 import dev.patrickgold.florisboard.lib.compose.PreviewKeyboardField
 import dev.patrickgold.florisboard.lib.compose.rememberPreviewFieldController
 import dev.patrickgold.florisboard.lib.util.AppVersionUtils
+import dev.patrickgold.florisboard.preferenceStoreLoaded
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import dev.patrickgold.jetpref.datastore.ui.ProvideDefaultDialogPrefStrings
 import org.florisboard.lib.android.AndroidVersion
@@ -78,7 +79,7 @@ val LocalNavController = staticCompositionLocalOf<NavController> {
 
 class FlorisAppActivity : ComponentActivity() {
     private val prefs by FlorisPreferenceStore
-    private val appContext by appContext()
+//    private val appContext by appContext()
     private val cacheManager by cacheManager()
     private var appTheme by mutableStateOf(AppTheme.AUTO)
     private var showAppIcon = true
@@ -88,7 +89,7 @@ class FlorisAppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // Splash screen should be installed before calling super.onCreate()
         installSplashScreen().apply {
-            setKeepOnScreenCondition { !appContext.preferenceStoreLoaded.value }
+            setKeepOnScreenCondition { !applicationContext.preferenceStoreLoaded().value }
         }
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -110,7 +111,7 @@ class FlorisAppActivity : ComponentActivity() {
 
         // We defer the setContent call until the datastore model is loaded, until then the splash screen stays drawn
         val isModelLoaded = AtomicBoolean(false)
-        appContext.preferenceStoreLoaded.collectIn(lifecycleScope) { loaded ->
+        applicationContext.preferenceStoreLoaded().collectIn(lifecycleScope) { loaded ->
             if (!loaded || isModelLoaded.getAndSet(true)) return@collectIn
             // Check if android 13+ is running and the NotificationPermission is not set
             if (AndroidVersion.ATLEAST_API33_T &&

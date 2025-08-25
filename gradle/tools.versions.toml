@@ -1,5 +1,5 @@
 [versions]
-cmake = "4.0.2"
+cmake = "4.1.0"
 jdk = "17"
 ndk = "26.1.10909125"
 rustup = "1.24.3"
