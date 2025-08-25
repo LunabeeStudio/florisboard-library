@@ -3,7 +3,7 @@
     <string name="app_name">FlorisBoard</string>
     <string name="key__phone_pause" comment="Label for the Pause key in the telephone keyboard layout">Pauze</string>
     <string name="key__phone_wait" comment="Label for the Wait key in the telephone keyboard layout">Wacht</string>
-    <string name="key_popup__threedots_alt" comment="Content description for the three-dots icon in a key popup">Drie-punts pictogram. Geeft, indien zichtbaar, aan dat er meer letters kunnen worden gebruikt bij lang drukken.</string>
+    <string name="key_popup__threedots_alt" comment="Content description for the three-dots icon in a key popup">Pictogram met drie puntjes. Indien zichtbaar, geeft dit aan dat er meer letters gebruikt kunnen worden als u de toets langer ingedrukt houdt.</string>
     <!-- One-handed strings -->
     <string name="one_handed__close_btn_content_description" comment="Content description for the one-handed close button">Sluit eenhandige modus.</string>
     <string name="one_handed__move_start_btn_content_description" comment="Content description for the one-handed move to left button">Toetsenbord naar links verplaatsen.</string>
@@ -13,8 +13,8 @@
     <string name="media__tab__emojis" comment="Tab description for emojis in the media UI">Emoji\'s</string>
     <string name="media__tab__emoticons" comment="Tab description for emoticons in the media UI">Emoticons</string>
     <string name="media__tab__kaomoji" comment="Tab description for kaomoji in the media UI">Kaomoji</string>
-    <string name="prefs__media__emoji_preferred_skin_tone">Voorkeur emoji huidskleur</string>
-    <string name="prefs__media__emoji_preferred_hair_style">Voorkeur emoji haarstijl</string>
+    <string name="prefs__media__emoji_preferred_skin_tone">Gewenste emoji-huidskleur</string>
+    <string name="prefs__media__emoji_preferred_hair_style">Gewenste emoji-kapsel</string>
     <string name="prefs__media__emoji_history__title" comment="Preference group title">Emoji-geschiedenis</string>
     <string name="prefs__media__emoji_history_enabled" comment="Preference title">Emoji-geschiedenis inschakelen</string>
     <string name="prefs__media__emoji_history_enabled__summary" comment="Preference summary">Recent gebruikte emoji\'s bewaren voor snelle toegang</string>
@@ -50,51 +50,55 @@
     <string name="emoji__history__pinned">Vastgemaakt</string>
     <string name="emoji__history__recent">Recent</string>
     <!-- Quick action strings -->
-    <string name="quick_action__arrow_up" maxLength="12">Pijl omhoog</string>
+    <string name="quick_action__arrow_up" comment="Please mind the limited available space for the quick action strings">Pijl omhoog</string>
     <string name="quick_action__arrow_up__tooltip">Pijl omhoog uitvoeren</string>
-    <string name="quick_action__arrow_down" maxLength="12">Pijl omlaag</string>
+    <string name="quick_action__arrow_down" comment="Please mind the limited available space for the quick action strings">Pijl omlaag</string>
     <string name="quick_action__arrow_down__tooltip">Pijl omlaag uitvoeren</string>
-    <string name="quick_action__arrow_left" maxLength="12">Pijl links</string>
+    <string name="quick_action__arrow_left" comment="Please mind the limited available space for the quick action strings">Pijl links</string>
     <string name="quick_action__arrow_left__tooltip">Pijl naar links uitvoeren</string>
-    <string name="quick_action__arrow_right" maxLength="12">Pijl rechts</string>
+    <string name="quick_action__arrow_right" comment="Please mind the limited available space for the quick action strings">Pijl rechts</string>
     <string name="quick_action__arrow_right__tooltip">Pijl naar rechts uitvoeren</string>
+    <string name="quick_action__clipboard_clear_primary_clip" comment="Please mind the limited available space for the quick action strings">Wis klembord</string>
     <string name="quick_action__clipboard_clear_primary_clip__tooltip">Primaire klembord wissen</string>
-    <string name="quick_action__clipboard_copy" maxLength="12">Kopiëren</string>
+    <string name="quick_action__clipboard_copy" comment="Please mind the limited available space for the quick action strings">Kopiëren</string>
     <string name="quick_action__clipboard_copy__tooltip">Klembord kopiëren</string>
-    <string name="quick_action__clipboard_cut" maxLength="12">Knippen</string>
+    <string name="quick_action__clipboard_cut" comment="Please mind the limited available space for the quick action strings">Knippen</string>
     <string name="quick_action__clipboard_cut__tooltip">Klembord knippen uitvoeren</string>
-    <string name="quick_action__clipboard_paste" maxLength="12">Plakken</string>
+    <string name="quick_action__clipboard_paste" comment="Please mind the limited available space for the quick action strings">Plakken</string>
     <string name="quick_action__clipboard_paste__tooltip">Plakken van klembord uitvoeren</string>
-    <string name="quick_action__clipboard_select_all" maxLength="12">Alles selec.</string>
+    <string name="quick_action__clipboard_select_all" comment="Please mind the limited available space for the quick action strings">Alles selec.</string>
     <string name="quick_action__clipboard_select_all__tooltip">Alles selecteren op klembord</string>
-    <string name="quick_action__ime_ui_mode_clipboard" maxLength="12">Klembord</string>
+    <string name="quick_action__ime_ui_mode_clipboard" comment="Please mind the limited available space for the quick action strings">Klembord</string>
     <string name="quick_action__ime_ui_mode_clipboard__tooltip">Klembordgeschiedenis openen</string>
-    <string name="quick_action__ime_ui_mode_media" maxLength="12">Emoji</string>
+    <string name="quick_action__ime_ui_mode_media" comment="Please mind the limited available space for the quick action strings">Emoji</string>
     <string name="quick_action__ime_ui_mode_media__tooltip">Emoji-paneel openen</string>
-    <string name="quick_action__settings" maxLength="12">Instellingen</string>
+    <string name="quick_action__language_switch" comment="Please mind the limited available space for the quick action strings">Wijzig taal</string>
+    <string name="quick_action__settings" comment="Please mind the limited available space for the quick action strings">Instellingen</string>
     <string name="quick_action__settings__tooltip">Instellingen openen</string>
-    <string name="quick_action__undo" maxLength="12">Annuleren</string>
+    <string name="quick_action__undo" comment="Please mind the limited available space for the quick action strings">Annuleren</string>
     <string name="quick_action__undo__tooltip">De laatste invoer ongedaan maken</string>
-    <string name="quick_action__redo" maxLength="12">Opnieuw</string>
+    <string name="quick_action__redo" comment="Please mind the limited available space for the quick action strings">Opnieuw</string>
     <string name="quick_action__redo__tooltip">De laatste invoer opnieuw uitvoeren</string>
-    <string name="quick_action__toggle_actions_overflow" maxLength="12">Meer acties</string>
+    <string name="quick_action__toggle_actions_overflow" comment="Please mind the limited available space for the quick action strings">Meer acties</string>
     <string name="quick_action__toggle_actions_overflow__tooltip">Extra acties tonen of verbergen</string>
-    <string name="quick_action__toggle_incognito_mode" maxLength="12">Incognito</string>
+    <string name="quick_action__toggle_incognito_mode" comment="Please mind the limited available space for the quick action strings">Incognito</string>
     <string name="quick_action__toggle_incognito_mode__tooltip">Incognitomodus schakelen</string>
-    <string name="quick_action__toggle_autocorrect" maxLength="12">Autocorrect.</string>
+    <string name="quick_action__toggle_autocorrect" comment="Please mind the limited available space for the quick action strings">Autocorrect.</string>
     <string name="quick_action__toggle_autocorrect__tooltip">Autocorrectie schakelen</string>
-    <string name="quick_action__voice_input" maxLength="12">Spraakinvoer</string>
+    <string name="quick_action__voice_input" comment="Please mind the limited available space for the quick action strings">Spraakinvoer</string>
     <string name="quick_action__voice_input__tooltip" comment="IME stands for Input Method Editor and is indirectly equivalent to 'keyboard'.">Spraakinvoerprovider openen</string>
-    <string name="quick_action__one_handed_mode" maxLength="12">Met één hand</string>
+    <string name="quick_action__one_handed_mode" comment="Please mind the limited available space for the quick action strings">Met één hand</string>
     <string name="quick_action__one_handed_mode__tooltip">Bediening met één hand schakelen</string>
+    <string name="quick_action__drag_marker" comment="This action is only used as a placeholder in the actions editor drag and drop screen and only visible in debug mode">Sleepmarker</string>
     <string name="quick_action__drag_marker__tooltip" comment="This action is only used as a placeholder in the actions editor drag and drop screen and only visible in debug mode">Huidige positie van de sleepmarkering</string>
-    <string name="quick_action__noop" maxLength="12" comment="Noop=no operation; this action is only used as a placeholder in the actions editor drag and drop screen">Geen</string>
+    <string name="quick_action__noop" comment="Noop=no operation; this action is only used as a placeholder in the actions editor drag and drop screen">Geen</string>
     <string name="quick_action__noop__tooltip" comment="Noop=no operation; this action is only used as a placeholder in the actions editor drag and drop screen">Geen actie</string>
     <string name="quick_actions_overflow__customize_actions_button">Acties opnieuw ordenen</string>
     <string name="quick_actions_editor__header">Volgorde van acties aanpassen</string>
     <string name="quick_actions_editor__subheader_sticky_action">Plakactie ({n})</string>
     <string name="quick_actions_editor__subheader_dynamic_actions">Dynamische acties ({n})</string>
     <string name="quick_actions_editor__subheader_hidden_actions">Verborgen acties ({n})</string>
+    <string name="select_subtype_panel__header">Selecteer subtype</string>
     <!-- Incognito mode strings -->
     <string name="incognito_mode__toast_after_enabled">De incognitomodus is nu ingeschakeld\n\n{app_name} leert geen woorden van uw invoer terwijl deze modus actief is</string>
     <string name="incognito_mode__toast_after_disabled">Incognito modus is nu standaard uitgeschakeld</string>
@@ -109,6 +113,7 @@
     <string name="settings__home__ime_not_selected" comment="Warning message shown in Home fragment when FlorisBoard is not selected as the default keyboard">FlorisBoard is niet geselecteerd als de standaard invoermethode. Klik hier om dit probleem op te lossen.</string>
     <string name="settings__localization__title" comment="Title of languages and Layout screen">Talen &amp; Indelingen</string>
     <string name="settings__localization__display_language_names_in__label" comment="Label of Display language names in preference">Taalnamen weergeven in</string>
+    <string name="settings__localization__display_keyboard_labels_in_subtype_language" comment="Label of Display keyboard labels in subtype language preference">Toetsenbordlabels weergeven in subtypetaal</string>
     <string name="settings__localization__group_subtypes__label" comment="Label of subtypes group">Indelingen</string>
     <string name="settings__localization__subtype_add_title" comment="Title of subtype dialog when adding a new subtype">Indeling toevoegen</string>
     <string name="settings__localization__language_pack_title" comment="Title of the language pack manager screen for managing installed and custom language packs">Geïnstalleerde taalpakketten beheren</string>
@@ -157,21 +162,18 @@
     <string name="settings__theme_manager__title_night" comment="Title of the theme manager screen for night theme selection">Selecteer nachtthema</string>
     <string name="settings__theme_editor__fine_tune__title">Afstemmings editor</string>
     <string name="settings__theme_editor__fine_tune__level">Afstemmings niveau</string>
-    <string name="settings__theme_editor__fine_tune__display_colors_as">Kleuren weergeven als</string>
     <string name="settings__theme_editor__fine_tune__display_kbd_after_dialogs">Toetsenbord weergeven na dialogen</string>
     <string name="settings__theme_editor__add_rule">Regel toevoegen</string>
     <string name="settings__theme_editor__edit_rule">Regel bewerken</string>
     <string name="settings__theme_editor__no_rules_defined">Deze stylesheet heeft geen regels gedefinieerd. Voeg een regel toe om deze stylesheet aan te passen.</string>
     <string name="settings__theme_editor__rule_already_exists">Deze stylesheet regel is al gedefinieerd.</string>
-    <string name="settings__theme_editor__rule_element">Doelwit element</string>
+    <string name="settings__theme_editor__rule_name">Element / Annotatie</string>
     <string name="settings__theme_editor__rule_codes">Doelwit sleutelcode</string>
     <string name="settings__theme_editor__rule_groups">Groepen</string>
-    <string name="settings__theme_editor__rule_shift_states">Shift staten</string>
     <string name="settings__theme_editor__rule_selectors">Selectors</string>
     <string name="settings__theme_editor__add_code">Sleutelcode toevoegen</string>
     <string name="settings__theme_editor__edit_code">Sleutelcode bewerken</string>
     <string name="settings__theme_editor__no_codes_defined">Regel toepassen op alle doelwit elementen.</string>
-    <string name="settings__theme_editor__codes_defined">Pas regel alleen toe op doelelementen met de volgende sleutelcodes:</string>
     <string name="settings__theme_editor__code_already_exists">Deze sleutelcode is al gedefinieerd.</string>
     <string name="settings__theme_editor__code_invalid">Deze sleutelcode is niet geldig. Zorg ervoor dat de sleutelcode binnen het bereik van {c_min} tot {c_max} voor tekens of {i_min} tot {i_max} voor interne speciale sleutels valt.</string>
     <string name="settings__theme_editor__code_help_text">Als alternatief helpen de volgende links u om de bijbehorende sleutelcode te vinden:</string>
@@ -188,26 +190,26 @@
     <string name="settings__theme_editor__property_value">Eigendoms-waarde</string>
     <string name="settings__theme_editor__property_value_shape_apply_for_all_corners">Solliciteer voor alle hoeken</string>
     <string name="settings__theme_editor__property_value_color_dialog_title">Kleurreeks bewerken</string>
+    <string name="settings__theme_editor__file_selector_dialog_title">Bestand selecteren</string>
     <string name="settings__theme_editor__component_meta_is_night_theme">Is nacht thema</string>
     <string name="settings__theme_editor__component_meta_is_borderless">Is grenzeloos</string>
     <string name="settings__theme_editor__component_meta_stylesheet_path">Stylesheet-pad</string>
-    <string name="snygg__rule_element__defines">Variabelen</string>
-    <string name="snygg__rule_element__defines_description">Definieer variabelen binnen deze regel om algemene kleuren of formaten in uw stylesheet te hergebruiken.</string>
-    <string name="snygg__rule_element__keyboard">Toetsenbordvenster</string>
+    <string name="snygg__rule_annotation__defines">Variabelen</string>
+    <string name="snygg__rule_annotation__font">Lettertype</string>
+    <string name="snygg__rule_annotation__font_name">Lettertypenaam</string>
+    <string name="snygg__rule_element__window">Venster</string>
     <string name="snygg__rule_element__key">Sleutel</string>
     <string name="snygg__rule_element__key_hint">Sleutel hint</string>
-    <string name="snygg__rule_element__key_popup">Toets pop-up</string>
     <string name="snygg__rule_element__clipboard_header">Klembordkoptekst</string>
+    <string name="snygg__rule_element__clipboard_content">Klembordinhoud</string>
     <string name="snygg__rule_element__clipboard_item">Klemborditem</string>
     <string name="snygg__rule_element__clipboard_item_popup">Pop-up met klemborditem</string>
-    <string name="snygg__rule_element__emoji_key">Emoji-toets</string>
-    <string name="snygg__rule_element__emoji_key_popup">Emoji-toets pop-up</string>
-    <string name="snygg__rule_element__emoji_key_tab">Emoji-tabblad</string>
     <string name="snygg__rule_element__extracted_landscape_input_layout">Liggende invoerlay-out</string>
     <string name="snygg__rule_element__extracted_landscape_input_field">Invoerveld Liggend</string>
     <string name="snygg__rule_element__extracted_landscape_input_action">Landschap invoeractie</string>
     <string name="snygg__rule_element__glide_trail">Glijpad</string>
     <string name="snygg__rule_element__incognito_mode_indicator">Incognito modus-indicator</string>
+    <string name="snygg__rule_element__media">Media</string>
     <string name="snygg__rule_element__one_handed_panel">Paneel met één hand</string>
     <string name="snygg__rule_element__smartbar">Slimme balk</string>
     <string name="snygg__rule_element__smartbar_shared_actions_row">Rij voor gedeelde acties op de smartbar</string>
@@ -225,24 +227,26 @@
     <string name="snygg__rule_element__smartbar_candidate_word">Smartbar kandidaat woord</string>
     <string name="snygg__rule_element__smartbar_candidate_clip">Smartbar kandidaat clip</string>
     <string name="snygg__rule_element__smartbar_candidate_spacer">Smartbar kandidaat spacer</string>
-    <string name="snygg__rule_element__system_nav_bar">Systeemnavigatiebalk</string>
     <string name="snygg__rule_selector__pressed">ingedrukt</string>
     <string name="snygg__rule_selector__focus">Gefocust</string>
     <string name="snygg__rule_selector__disabled">Gehandicapt</string>
-    <string name="snygg__property_name__width">Breedte</string>
-    <string name="snygg__property_name__height">Hoogte</string>
     <string name="snygg__property_name__background">Achtergrond</string>
     <string name="snygg__property_name__foreground">Voorgrond</string>
+    <string name="snygg__property_name__background_image">Achtergrondafbeelding</string>
     <string name="snygg__property_name__border_color">Rand kleur</string>
     <string name="snygg__property_name__border_style">Randstijl</string>
     <string name="snygg__property_name__border_width">Grensbreedte</string>
     <string name="snygg__property_name__font_family">Lettertypefamilie</string>
     <string name="snygg__property_name__font_size">Lettertypegrootte</string>
     <string name="snygg__property_name__font_style">Lettertype</string>
-    <string name="snygg__property_name__font_variant">Lettertypevariant</string>
     <string name="snygg__property_name__font_weight">Lettertype dikte</string>
+    <string name="snygg__property_name__letter_spacing">Ruimte tussen letters</string>
+    <string name="snygg__property_name__margin">Marge</string>
+    <string name="snygg__property_name__shadow_color">Schaduwkleur</string>
     <string name="snygg__property_name__shadow_elevation">Schaduwhoogte</string>
     <string name="snygg__property_name__shape">Vorm geven aan</string>
+    <string name="snygg__property_name__src">Bron</string>
+    <string name="snygg__property_name__text_align">Uitlijning</string>
     <string name="snygg__property_name__var_primary">Primaire kleur</string>
     <string name="snygg__property_name__var_primary_variant">Primaire kleur (variant)</string>
     <string name="snygg__property_name__var_secondary">Secundaire kleur</string>
@@ -258,10 +262,13 @@
     <string name="snygg__property_name__var_shape">gemeenschappelijke vorm</string>
     <string name="snygg__property_name__var_shape_variant">Gemeenschappelijke vorm (variant)</string>
     <string name="snygg__property_value__explicit_inherit">Erven</string>
+    <string name="snygg__property_value__defined_var">Was referentie</string>
+    <string name="snygg__property_value__yes">Ja</string>
+    <string name="snygg__property_value__no">Nee</string>
     <string name="snygg__property_value__solid_color">Effen kleur</string>
     <string name="snygg__property_value__material_you_light_color">Material You kleur (licht)</string>
     <string name="snygg__property_value__material_you_dark_color">Material You kleur (donker)</string>
-    <string name="snygg__property_value__image_ref">Afbeeldingsreferentie</string>
+    <string name="snygg__property_value__font_style">Lettertype</string>
     <string name="snygg__property_value__rectangle_shape">Rechthoekige vorm</string>
     <string name="snygg__property_value__circle_shape">cirkelvorm</string>
     <string name="snygg__property_value__cut_corner_shape_dp">Gesneden hoekvorm (dp)</string>
@@ -271,7 +278,6 @@
     <string name="snygg__property_value__dp_size">Maat (dp)</string>
     <string name="snygg__property_value__sp_size">Maat (sp)</string>
     <string name="snygg__property_value__percentage_size">Maat (%)</string>
-    <string name="snygg__property_value__defined_var">Was referentie</string>
     <string name="settings__input_feedback__title" comment="Title of Input Feedback screen">Geluiden &amp; Trilling</string>
     <string name="pref__input_feedback__group_audio__label" comment="Preference group title">Audio feedback /Geluiden</string>
     <string name="pref__input_feedback__audio_enabled__label" comment="Preference title">Aanraakgeluiden inschakelen</string>
@@ -290,7 +296,6 @@
     <string name="pref__input_feedback__haptic_vibration_strength__label" comment="Preference title">Trilsterkte</string>
     <string name="pref__input_feedback__haptic_vibration_strength__summary_no_vibrator" comment="Preference summary">Deze functie vereist een hardwarevibrator, die op dit apparaat lijkt te ontbreken</string>
     <string name="pref__input_feedback__haptic_vibration_strength__summary_no_amplitude_ctrl" comment="Preference summary">Deze functie vereist hardwarematige besturing van de trillingssterkte, en wordt niet ondersteund door uw apparaat</string>
-    <string name="pref__input_feedback__haptic_vibration_strength__summary_unsupported_android_version" comment="Preference summary">Deze functie vereist hardwarematige besturing van de trillingssterkte, en is alleen beschikbaar op Android 8.0 of nieuwer</string>
     <string name="pref__input_feedback__haptic_feat_key_press__label" comment="Preference title">Trillen bij toetsaanslag</string>
     <string name="pref__input_feedback__haptic_feat_key_long_press__label" comment="Preference title">Trilling voor langdurige toetsaanslag</string>
     <string name="pref__input_feedback__haptic_feat_key_repeated_action__label" comment="Preference title">Trilling voor herhaalde toetsaanslagen</string>
@@ -346,11 +351,8 @@
     <string name="pref__suggestion__enabled__summary" comment="Preference summary">Geeft suggesties bij het typen</string>
     <string name="pref__suggestion__display_mode__label" comment="Preference title">Suggesties weergavemodus:</string>
     <string name="pref__suggestion__block_possibly_offensive__label" comment="Preference title">Blokkeer mogelijk aanstootgevende woorden</string>
-    <string name="pref__suggestion__clipboard_content_enabled__label" comment="Preference title">Suggesties voor de klembordinhoud</string>
-    <string name="pref__suggestion__clipboard_content_enabled__summary" comment="Preference summary">Eerder gekopieerde klembordinhoud voorstellen</string>
-    <string name="pref__suggestion__clipboard_content_timeout__label" comment="Preference title; Translators: This should form a sentence together with `pref__suggestion__clipboard_content_timeout__summary` and is the first part">Beperk klembordsuggesties tot</string>
-    <string name="pref__suggestion__clipboard_content_timeout__summary" comment="Preference summary; Translators: This should form a sentence together with `pref__suggestion__clipboard_content_timeout__label` and is the second part">Items gekopieerd in de laatste {v} s</string>
     <string name="pref__suggestion__api30_inline_suggestions_enabled__summary" comment="Preference summary">Inline suggesties weergeven van services voor automatisch aanvullen</string>
+    <string name="pref__suggestion__incognito_mode__label" comment="Label of Incognito mode preference in Typing">Incognitomodus</string>
     <string name="pref__correction__title" comment="Preference group title">Verbeteringen</string>
     <string name="pref__correction__auto_capitalization__label" comment="Preference title">Auto-kapitalisatie</string>
     <string name="pref__correction__auto_capitalization__summary" comment="Preference summary">Woorden kapitaliseren op basis van de huidige invoercontext</string>
@@ -424,17 +426,17 @@
     <string name="pref__gestures__delete_key_long_press__label" comment="Preference title">Verwijder toets lang indrukken</string>
     <string name="pref__gestures__swipe_velocity_threshold__label" comment="Preference title">Drempelwaarde voor swipe-snelheid</string>
     <string name="pref__gestures__swipe_distance_threshold__label" comment="Preference title">Drempelwaarde voor swipe-afstand</string>
-    <string name="settings__advanced__title" comment="Title of Advanced settings">Geavanceerd</string>
-    <string name="pref__advanced__settings_theme__label" comment="Label of Settings theme preference in Advanced">Thema-instellingen</string>
-    <string name="pref__advanced__settings_theme__auto_amoled" comment="Possible value of Settings theme preference in Advanced">Systeemstandaard (AMOLED)</string>
-    <string name="pref__advanced__settings_theme__light" comment="Possible value of Settings theme preference in Advanced">Licht</string>
-    <string name="pref__advanced__settings_theme__dark" comment="Possible value of Settings theme preference in Advanced">Donker</string>
-    <string name="pref__advanced__settings_theme__amoled_dark" comment="Possible value of Settings theme preference in Advanced">AMOLED Donker</string>
-    <string name="pref__advanced__settings_material_you__label" comment="Label of Material You preference in Advanced">Material You gebruiken</string>
-    <string name="pref__advanced__settings_language__label" comment="Label of Settings language preference in Advanced">Instellingen taal</string>
-    <string name="pref__advanced__show_app_icon__label" comment="Label of Show app icon preference in Advanced">App-pictogram in launcher tonen</string>
-    <string name="pref__advanced__show_app_icon__summary_atleast_q" comment="Summary of Show app icon preference in Advanced for Android 10+">Altijd ingeschakeld op Android 10 vanwege systeembeperkingen</string>
-    <string name="pref__advanced__incognito_mode__label" comment="Label of Incognito mode preference in Advanced">Incognitomodus</string>
+    <string name="settings__other__title" comment="Title of Other settings">Overige</string>
+    <string name="pref__other__settings_theme__label" comment="Label of Settings theme preference in Other">Thema-instellingen</string>
+    <string name="pref__other__settings_theme__auto_amoled" comment="Possible value of Settings theme preference in Other">Systeemstandaard (AMOLED)</string>
+    <string name="pref__other__settings_theme__light" comment="Possible value of Settings theme preference in Other">Licht</string>
+    <string name="pref__other__settings_theme__dark" comment="Possible value of Settings theme preference in Other">Donker</string>
+    <string name="pref__other__settings_theme__amoled_dark" comment="Possible value of Settings theme preference in Other">AMOLED Donker</string>
+    <string name="pref__other__settings_accent_color__label" comment="Label of accent color preference in Other">        Instellingen accentkleur
+    </string>
+    <string name="pref__other__settings_language__label" comment="Label of Settings language preference in Other">Instellingen taal</string>
+    <string name="pref__other__show_app_icon__label" comment="Label of Show app icon preference in Other">App-pictogram weergeven in launcher</string>
+    <string name="pref__other__show_app_icon__summary_atleast_q" comment="Summary of Show app icon preference in Other for Android 10+">Altijd ingeschakeld op Android 10+ vanwege systeembeperkingen</string>
     <!-- About UI strings -->
     <string name="about__title" comment="Title of About activity">Over</string>
     <string name="about__app_icon_content_description" comment="Content description of app icon in About">App-pictogram van FlorisBoard</string>
@@ -476,6 +478,9 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="setup__finish_up__description_p1">{app_name} is nu ingeschakeld in het systeem en kan door jou worden aangepast.</string>
     <string name="setup__finish_up__description_p2">Als je problemen, bugs, crashes tegenkomt of gewoon een suggestie wilt doen, bekijk dan de projectrepository vanaf het about-scherm!</string>
     <string name="setup__finish_up__finish_btn">Begin met aanpassen</string>
+    <!-- Physical keyboard -->
+    <string name="physical_keyboard__title">Fysiek toetsenbord</string>
+    <string name="physical_keyboard__system_settings__summary_not_attached">Enkel beschikbaar wanneer toetsenbord is aangesloten</string>
     <!-- Back up & Restore -->
     <string name="backup_and_restore__title">Back-up &amp; Herstel</string>
     <string name="backup_and_restore__back_up__title">Back-upgegevens</string>
@@ -546,7 +551,6 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="clipboard__cleared_primary_clip">Primaire clip gewist</string>
     <string name="clipboard__cleared_history">Geschiedenis gewist</string>
     <string name="clipboard__cleared_full_history">Volledige geschiedenis gewist</string>
-    <string name="clipboard__confirm_clear_history__message">Weet je zeker dat je je klembordgeschiedenis wilt wissen?</string>
     <string name="settings__clipboard__title">Klembord</string>
     <string name="pref__clipboard__use_internal_clipboard__label">Gebruik intern klembord</string>
     <string name="pref__clipboard__use_internal_clipboard__summary">Gebruik een intern klembord in plaats van het systeemklembord</string>
@@ -554,6 +558,11 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="pref__clipboard__sync_from_system_clipboard__summary">Systeemklembord ververst ook het FlorisBoard-klembord</string>
     <string name="pref__clipboard__sync_to_system_clipboard__label">Synchroniseer met systeemklembord</string>
     <string name="pref__clipboard__sync_to_system_clipboard__summary">Floris-klembord ververst ook het systeemklembord</string>
+    <string name="pref__clipboard__group_clipboard_suggestion__label">Suggesties voor de klembord</string>
+    <string name="pref__clipboard__suggestion_enabled__label" comment="Preference title">Suggesties voor de klembordinhoud</string>
+    <string name="pref__clipboard__suggestion_enabled__summary" comment="Preference summary">Eerder gekopieerde klembordinhoud voorstellen</string>
+    <string name="pref__clipboard__suggestion_timeout__label" comment="Preference title; Translators: This should form a sentence together with `pref__clipboard__suggestion_timeout__summary` and is the first part">Beperk klembordsuggesties tot</string>
+    <string name="pref__clipboard__suggestion_timeout__summary" comment="Preference summary; Translators: This should form a sentence together with `pref__clipboard__suggestion_timeout__label` and is the second part">Items gekopieerd in de laatste {v} s</string>
     <string name="pref__clipboard__group_clipboard_history__label">Klembordgeschiedenis</string>
     <string name="pref__clipboard__enable_clipboard_history__label">Schakel klembordgeschiedenis in</string>
     <string name="pref__clipboard__enable_clipboard_history__summary">Bewaar klemborditems voor snelle toegang</string>
@@ -567,8 +576,6 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="pref__clipboard__clear_primary_clip_deletes_last_item__summary">Als u de primaire clip wist, wordt ook het laatste geschiedenisitem verwijderd</string>
     <string name="send_to_clipboard__unknown_error">Een onbekende fout is opgetreden. Probeer het alstublieft opnieuw!</string>
     <string name="send_to_clipboard__type_not_supported_error">Dit mediatype wordt niet ondersteund.</string>
-    <string name="send_to_clipboard__android_version_to_old_error">De versie van Android is te oud voor deze functie.
-    </string>
     <string name="send_to_clipboard__description__copied_image_to_clipboard">Onderstaande afbeelding gekopieerd naar klembord.</string>
     <!-- Devtools strings -->
     <string name="devtools__title" comment="Title of Devtools screen. Translators: treat this string as 'Developer tools' for translation, except a similar short term is available for your language.">Devtools</string>
@@ -636,6 +643,8 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="ext__editor__metadata__message_invalid">De metagegevens voor deze extensie zijn niet geldig, controleer de metagegevenseditor voor details!</string>
     <string name="ext__editor__dependencies__title">Afhankelijkheden beheren</string>
     <string name="ext__editor__files__title">Archiefbestanden beheren</string>
+    <string name="ext__editor__files__type_fonts">Lettertypes</string>
+    <string name="ext__editor__files__type_images">Afbeeldingen</string>
     <string name="ext__editor__create_component__title">Component maken</string>
     <string name="ext__editor__create_component__title_theme">Thema maken</string>
     <string name="ext__editor__create_component__from_empty">Leeg</string>
@@ -674,7 +683,6 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="ext__validation__error_stylesheet_path">Voer een geldig stylesheet-pad in dat overeenkomt met {stylesheet_path_regex}</string>
     <string name="ext__validation__enter_property">Voer de naam van een variabele in</string>
     <string name="ext__validation__error_property">Voer een geldige variabelenaam in die overeenkomt met {variable_name_regex}</string>
-    <string name="ext__validation__hint_property" tools:ignore="TypographyDashes">Volgens afspraak begint de naam van een FlorisCSS-variabele met twee streepjes (--)</string>
     <string name="ext__validation__enter_color">Voer een kleurenreeks in</string>
     <string name="ext__validation__error_color">Voer een geldige kleurreeks in</string>
     <string name="ext__validation__enter_dp_size">Voer een dp-grootte in</string>
@@ -710,7 +718,11 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="action__discard_confirm_message">Weet u zeker dat u uw niet-opgeslagen wijzigingen wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt nadat deze is uitgevoerd.</string>
     <string name="action__edit">Bewerk</string>
     <string name="action__export">Exporteren</string>
+    <string name="action__export_file">Bestand importeren</string>
+    <string name="action__export_files">Bestanden importeren</string>
     <string name="action__import">Importeren</string>
+    <string name="action__import_file">Bestand importeren</string>
+    <string name="action__import_files">Bestanden importeren</string>
     <string name="action__no">Nee</string>
     <string name="action__ok">Oké</string>
     <string name="action__restore">Herstellen</string>
@@ -732,6 +744,9 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="general__no_browser_app_found_for_url">Geen browser app gevonden voor het afhandelen van URL {url}</string>
     <string name="general__select_dropdown_value_placeholder">- selecteer -</string>
     <string name="general__unlimited">Onbeperkt</string>
+    <string name="general__file_name">Bestandsnaam</string>
+    <string name="general__properties">Eigenschappen</string>
+    <string name="general__auto" comment="Generic shorthand for 'Automatic' value">Auto</string>
     <!-- Screen orientation strings -->
     <string name="screen_orientation__portrait">Staand</string>
     <string name="screen_orientation__landscape">Liggend</string>
@@ -750,8 +765,8 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="enum__candidates_display_mode__dynamic_scrollable" comment="Enum value label">Dynamische breedte</string>
     <string name="enum__capitalization_behavior__capslock_by_double_tap" comment="Enum value label">Capslock inschakelen door tweemaal op shift te tikken</string>
     <string name="enum__capitalization_behavior__capslock_by_cycle" comment="Enum value label">Telkens wanneer de shift-toets wordt ingedrukt, overschakelen naar de volgende hoofdletterstap</string>
-    <string name="enum__display_colors_as__hex8" comment="Enum value label">Hexadecimaal</string>
-    <string name="enum__display_colors_as__rgba" comment="Enum value label">Rood Groen Blauw Alfa</string>
+    <string name="enum__color_representation__hex" comment="Enum value label">Hexadecimaal</string>
+    <string name="enum__color_representation__rgb" comment="Enum value label">Rood Groen Blauw</string>
     <string name="enum__display_kbd_after_dialogs__always" comment="Enum value label">Altijd weergeven</string>
     <string name="enum__display_kbd_after_dialogs__always__description" comment="Enum value description">Het toetsenbord altijd weergeven na het sluiten van een editor-dialoogvenster</string>
     <string name="enum__display_kbd_after_dialogs__never" comment="Enum value label">Nooit weergeven</string>
@@ -817,10 +832,16 @@ Deze toestemming kan op elk moment worden gewijzigd in de systeeminstellingen.  
     <string name="enum__input_shift_state__shifted_manual" comment="Enum value label">Verschoven (handmatig)</string>
     <string name="enum__input_shift_state__shifted_automatic" comment="Enum value label">geschakeld (automatisch)</string>
     <string name="enum__input_shift_state__caps_lock" comment="Enum value label">Caps Lock</string>
+    <string name="enum__keyboard_mode__characters" comment="Enum value label">Tekens</string>
+    <string name="enum__keyboard_mode__symbols" comment="Enum value label">Symbolen</string>
+    <string name="enum__keyboard_mode__symbols2" comment="Enum value label">Symbolen 2</string>
+    <string name="enum__keyboard_mode__numeric" comment="Enum value label">Numeriek</string>
+    <string name="enum__keyboard_mode__numeric_advanced" comment="Enum value label">Numeriek geavanceerd</string>
+    <string name="enum__keyboard_mode__phone" comment="Enum value label">Telefoon</string>
+    <string name="enum__keyboard_mode__phone2" comment="Enum value label">Telefoon 2</string>
     <string name="enum__landscape_input_ui_mode__never_show" comment="Enum value label">Nooit tonen</string>
     <string name="enum__landscape_input_ui_mode__always_show" comment="Enum value label">Altijd tonen</string>
     <string name="enum__landscape_input_ui_mode__dynamically_show" comment="Enum value label">Dynamisch tonen</string>
-    <string name="enum__one_handed_mode__off" comment="Enum value label">Uit</string>
     <string name="enum__one_handed_mode__start" comment="Enum value label">Linkshandige modus</string>
     <string name="enum__one_handed_mode__end" comment="Enum value label">Rechtshandige modus</string>
     <string name="enum__shape_corner__top_start" comment="Enum value label">Top start</string>

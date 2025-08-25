@@ -21,8 +21,8 @@ plugins {
     id(libs.plugins.kotlin.android.get().pluginId) apply false
     id(libs.plugins.kotlin.jvm.get().pluginId) apply false
     alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.kotlinx.kover) apply false
     alias(libs.plugins.ksp) apply false
-    alias(libs.plugins.mannodermaus.android.junit5) apply false
     alias(libs.plugins.mikepenz.aboutlibraries) apply false
     alias(libs.plugins.compose.compiler) apply false
 }

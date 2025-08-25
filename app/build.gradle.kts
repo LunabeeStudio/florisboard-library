@@ -28,18 +28,17 @@ plugins {
     id(libs.plugins.kotlin.android.get().pluginId)
     id(libs.plugins.kotlin.serialization.get().pluginId)
     id(libs.plugins.ksp.get().pluginId)
-    id(libs.plugins.mannodermaus.android.junit5.get().pluginId)
     id(libs.plugins.mikepenz.aboutlibraries.get().pluginId)
     alias(libs.plugins.compose.compiler)
 }
 
 val projectMinSdk: String by project
+val projectCompileSdk: String by project
 
 android {
     namespace = "dev.patrickgold.florisboard"
-    compileSdk = 35
-    buildToolsVersion = "35.0.0"
-    ndkVersion = "25.2.9519653"
+    compileSdk = projectCompileSdk.toInt()
+    ndkVersion = tools.versions.ndk.get()
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -120,14 +119,14 @@ android {
     }
 
     aboutLibraries {
-        configPath = "app/src/main/config"
+        collect {
+            configPath = file("src/main/config")
+        }
     }
-}
 
-composeCompiler {
-    // DO NOT ENABLE STRONG SKIPPING! This project currently relies on
-    // recomposition on parent state change to update the UI correctly.
-    featureFlags.add(ComposeFeatureFlag.StrongSkipping.disabled())
+    lint {
+        baseline = file("lint.xml")
+    }
 }
 
 kotlin {
@@ -146,10 +145,16 @@ tasks.withType<Test> {
 
 
 dependencies {
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    // testImplementation(composeBom)
+    // androidTestImplementation(composeBom)
+
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.autofill)
     implementation(libs.androidx.collection.ktx)
+    implementation(libs.androidx.compose.material.icons)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.ui)
@@ -159,32 +164,30 @@ dependencies {
     implementation(libs.androidx.emoji2)
     implementation(libs.androidx.emoji2.views)
     implementation(libs.androidx.exifinterface)
-    implementation(libs.androidx.material.icons)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.profileinstaller)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.cache4k)
+    implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.coroutines)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.mikepenz.aboutlibraries.core)
     implementation(libs.mikepenz.aboutlibraries.compose)
     implementation(libs.patrickgold.compose.tooltip)
     implementation(libs.patrickgold.jetpref.datastore.model)
+    ksp(libs.patrickgold.jetpref.datastore.model.processor)
     implementation(libs.patrickgold.jetpref.datastore.ui)
     implementation(libs.patrickgold.jetpref.material.ui)
 
     implementation(project(":lib:android"))
+    implementation(project(":lib:color"))
+    implementation(project(":lib:compose"))
     implementation(project(":lib:kotlin"))
     implementation(project(":lib:native"))
     implementation(project(":lib:snygg"))
 
-    testImplementation(libs.equalsverifier)
-    testImplementation(libs.kotest.assertions.core)
-    testImplementation(libs.kotest.extensions.roboelectric)
-    testImplementation(libs.kotest.property)
-    testImplementation(libs.kotest.runner.junit5)
-
+    testImplementation(libs.kotlin.test.junit5)
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.androidx.test.espresso.core)
 }

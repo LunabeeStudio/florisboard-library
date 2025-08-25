@@ -28,12 +28,11 @@ group = "studio.lunabee.florisboard"
 
 val projectMinSdk: String by project
 val projectCompileSdk: String by project
-val projectNdkVersion: String by project
 
 android {
     namespace = "org.florisboard.libnative"
     compileSdk = projectCompileSdk.toInt()
-    ndkVersion = projectNdkVersion
+    ndkVersion = tools.versions.ndk.get()
 
     defaultConfig {
         minSdk = projectMinSdk.toInt()
@@ -42,7 +41,7 @@ android {
             cmake {
                 targets("fl_native")
                 arguments(
-                    "-DCMAKE_ANDROID_API=" + minSdk.toString(),
+                    "-DCMAKE_ANDROID_API=$minSdk",
                 )
             }
         }
@@ -81,6 +80,7 @@ android {
 
     externalNativeBuild {
         cmake {
+            version = tools.versions.cmake.get()
             path("src/main/rust/CMakeLists.txt")
         }
     }

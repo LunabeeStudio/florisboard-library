@@ -36,8 +36,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsCompat
 import dev.patrickgold.florisboard.R
-import dev.patrickgold.florisboard.app.florisPreferenceModel
-import dev.patrickgold.florisboard.ime.onehanded.OneHandedMode
+import dev.patrickgold.florisboard.app.FlorisPreferenceStore
 import dev.patrickgold.florisboard.ime.smartbar.ExtendedActionsPlacement
 import dev.patrickgold.florisboard.ime.smartbar.SmartbarLayout
 import dev.patrickgold.florisboard.ime.text.keyboard.TextKeyboard
@@ -80,7 +79,7 @@ object FlorisImeSizing {
 
     @Composable
     fun smartbarUiHeight(): Dp {
-        val prefs by florisPreferenceModel()
+        val prefs by FlorisPreferenceStore
         val smartbarEnabled by prefs.smartbar.enabled.observeAsState()
         val smartbarLayout by prefs.smartbar.layout.observeAsState()
         val extendedActionsExpanded by prefs.smartbar.extendedActionsExpanded.observeAsState()
@@ -113,13 +112,13 @@ object FlorisImeSizing {
 
 @Composable
 fun ProvideKeyboardRowBaseHeight(content: @Composable () -> Unit) {
-    val prefs by florisPreferenceModel()
+    val prefs by FlorisPreferenceStore
     val resources = LocalContext.current.resources
     val configuration = LocalConfiguration.current
 
     val heightFactorPortrait by prefs.keyboard.heightFactorPortrait.observeAsTransformingState { it.toFloat() / 100f }
     val heightFactorLandscape by prefs.keyboard.heightFactorLandscape.observeAsTransformingState { it.toFloat() / 100f }
-    val oneHandedMode by prefs.keyboard.oneHandedMode.observeAsState()
+    val oneHandedMode by prefs.keyboard.oneHandedModeEnabled.observeAsState()
     val oneHandedModeScaleFactor by prefs.keyboard.oneHandedModeScaleFactor.observeAsTransformingState { it.toFloat() / 100f }
 
     // Only set systemBarHeights on api 35 or later because https://developer.android.com/about/versions/15/behavior-changes-15#stable-configuration
@@ -134,7 +133,7 @@ fun ProvideKeyboardRowBaseHeight(content: @Composable () -> Unit) {
     ) {
         calcInputViewHeight(resources, systemBarHeights) * when {
             configuration.isOrientationLandscape() -> heightFactorLandscape
-            else -> heightFactorPortrait * (if (oneHandedMode != OneHandedMode.OFF) oneHandedModeScaleFactor else 1f)
+            else -> heightFactorPortrait * (if (oneHandedMode) oneHandedModeScaleFactor else 1f)
         }
     }
     val smartbarHeight = baseRowHeight * 0.753f

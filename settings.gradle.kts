@@ -29,14 +29,24 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         // Uncomment the following if testing snapshots from Maven Central
-        //maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
+        // maven("https://central.sonatype.com/repository/maven-snapshots/")
+        // Uncomment the following if testing snapshots from Maven Local
+        // mavenLocal()
+    }
+
+    versionCatalogs {
+        create("tools") {
+            from(files("gradle/tools.versions.toml"))
+        }
     }
 }
 
 include(":florisboard-library")
 project(":florisboard-library").projectDir = file("app")
-include(":benchmark")
+//include(":benchmark")
 include(":lib:android")
+include(":lib:color")
+include(":lib:compose")
 include(":lib:kotlin")
 include(":lib:native")
 include(":lib:snygg")

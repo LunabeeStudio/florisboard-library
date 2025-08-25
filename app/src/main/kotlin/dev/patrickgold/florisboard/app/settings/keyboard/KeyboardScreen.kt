@@ -29,13 +29,13 @@ import dev.patrickgold.florisboard.ime.smartbar.IncognitoDisplayMode
 import dev.patrickgold.florisboard.ime.text.key.KeyHintMode
 import dev.patrickgold.florisboard.ime.text.key.UtilityKeyAction
 import dev.patrickgold.florisboard.lib.compose.FlorisScreen
-import dev.patrickgold.florisboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
 import dev.patrickgold.jetpref.datastore.ui.ExperimentalJetPrefDatastoreUi
 import dev.patrickgold.jetpref.datastore.ui.ListPreference
 import dev.patrickgold.jetpref.datastore.ui.Preference
 import dev.patrickgold.jetpref.datastore.ui.PreferenceGroup
 import dev.patrickgold.jetpref.datastore.ui.SwitchPreference
+import org.florisboard.lib.compose.stringRes
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
@@ -107,8 +107,10 @@ fun KeyboardScreen() = FlorisScreen {
         PreferenceGroup(title = stringRes(R.string.pref__keyboard__group_layout__label)) {
             ListPreference(
                 prefs.keyboard.oneHandedMode,
+                prefs.keyboard.oneHandedModeEnabled,
                 title = stringRes(R.string.pref__keyboard__one_handed_mode__label),
                 entries = enumDisplayEntriesOf(OneHandedMode::class),
+                summarySwitchDisabled = stringRes(R.string.state__disabled),
             )
             DialogSliderPreference(
                 prefs.keyboard.oneHandedModeScaleFactor,
@@ -117,7 +119,7 @@ fun KeyboardScreen() = FlorisScreen {
                 min = 70,
                 max = 90,
                 stepIncrement = 1,
-                enabledIf = { prefs.keyboard.oneHandedMode isNotEqualTo OneHandedMode.OFF },
+                enabledIf = { prefs.keyboard.oneHandedModeEnabled.isTrue() },
             )
             ListPreference(
                 prefs.keyboard.landscapeInputUiMode,

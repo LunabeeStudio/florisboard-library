@@ -19,8 +19,10 @@ package dev.patrickgold.florisboard.ime.keyboard
 import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
+import androidx.compose.material.icons.automirrored.filled.Backspace
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardBackspace
 import androidx.compose.material.icons.automirrored.filled.KeyboardReturn
 import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -55,7 +57,8 @@ import dev.patrickgold.florisboard.ime.input.InputShiftState
 import dev.patrickgold.florisboard.ime.text.key.KeyCode
 import dev.patrickgold.florisboard.ime.text.key.KeyType
 import dev.patrickgold.florisboard.lib.FlorisLocale
-import dev.patrickgold.jetpref.datastore.ui.vectorResource
+import dev.patrickgold.florisboard.lib.compose.vectorResource
+import org.florisboard.lib.compose.icons.ForwardDelete
 
 interface ComputingEvaluator {
     val version: Int
@@ -206,8 +209,8 @@ fun ComputingEvaluator.computeImageVector(data: KeyData): ImageVector? {
             Icons.Default.DeleteSweep
         }
         KeyCode.COMPACT_LAYOUT_TO_LEFT,
-        KeyCode.COMPACT_LAYOUT_TO_RIGHT
-        -> {
+        KeyCode.COMPACT_LAYOUT_TO_RIGHT,
+        KeyCode.TOGGLE_COMPACT_LAYOUT -> {
             context()?.vectorResource(id = R.drawable.ic_accessibility_one_handed)
         }
         KeyCode.VOICE_INPUT -> {
@@ -233,6 +236,9 @@ fun ComputingEvaluator.computeImageVector(data: KeyData): ImageVector? {
                     ImeOptions.Action.UNSPECIFIED -> Icons.AutoMirrored.Filled.KeyboardReturn
                 }
             }
+        }
+        KeyCode.FORWARD_DELETE -> {
+            Icons.AutoMirrored.Default.ForwardDelete
         }
         KeyCode.IME_UI_MODE_MEDIA -> {
             Icons.Default.SentimentSatisfiedAlt

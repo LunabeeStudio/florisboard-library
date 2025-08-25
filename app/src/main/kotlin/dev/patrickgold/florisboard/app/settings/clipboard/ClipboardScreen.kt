@@ -18,14 +18,15 @@ package dev.patrickgold.florisboard.app.settings.clipboard
 
 import androidx.compose.runtime.Composable
 import dev.patrickgold.florisboard.R
+import dev.patrickgold.florisboard.ime.clipboard.CLIPBOARD_HISTORY_NUM_GRID_COLUMNS_AUTO
 import dev.patrickgold.florisboard.lib.compose.FlorisScreen
-import dev.patrickgold.florisboard.lib.compose.pluralsRes
-import dev.patrickgold.florisboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
 import dev.patrickgold.jetpref.datastore.ui.ExperimentalJetPrefDatastoreUi
 import dev.patrickgold.jetpref.datastore.ui.PreferenceGroup
 import dev.patrickgold.jetpref.datastore.ui.SwitchPreference
 import org.florisboard.lib.android.AndroidVersion
+import org.florisboard.lib.compose.pluralsRes
+import org.florisboard.lib.compose.stringRes
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
@@ -52,11 +53,46 @@ fun ClipboardScreen() = FlorisScreen {
             enabledIf = { prefs.clipboard.useInternalClipboard isEqualTo true },
         )
 
+        PreferenceGroup(title = stringRes(R.string.pref__clipboard__group_clipboard_suggestion__label)) {
+            SwitchPreference(
+                prefs.clipboard.suggestionEnabled,
+                title = stringRes(R.string.pref__clipboard__suggestion_enabled__label),
+                summary = stringRes(R.string.pref__clipboard__suggestion_enabled__summary),
+            )
+            DialogSliderPreference(
+                prefs.clipboard.suggestionTimeout,
+                title = stringRes(R.string.pref__clipboard__suggestion_timeout__label),
+                valueLabel = { stringRes(R.string.pref__clipboard__suggestion_timeout__summary, "v" to it) },
+                min = 30,
+                max = 300,
+                stepIncrement = 5,
+                enabledIf = { prefs.clipboard.suggestionEnabled isEqualTo true },
+            )
+        }
+
         PreferenceGroup(title = stringRes(R.string.pref__clipboard__group_clipboard_history__label)) {
             SwitchPreference(
                 prefs.clipboard.historyEnabled,
                 title = stringRes(R.string.pref__clipboard__enable_clipboard_history__label),
                 summary = stringRes(R.string.pref__clipboard__enable_clipboard_history__summary),
+            )
+            DialogSliderPreference(
+                primaryPref = prefs.clipboard.numHistoryGridColumnsPortrait,
+                secondaryPref = prefs.clipboard.numHistoryGridColumnsLandscape,
+                title = stringRes(R.string.pref__clipboard__num_history_grid_columns__label),
+                primaryLabel = stringRes(R.string.screen_orientation__portrait),
+                secondaryLabel = stringRes(R.string.screen_orientation__landscape),
+                valueLabel = { numGridColumns ->
+                    if (numGridColumns == CLIPBOARD_HISTORY_NUM_GRID_COLUMNS_AUTO) {
+                        stringRes(R.string.general__auto)
+                    } else {
+                        numGridColumns.toString()
+                    }
+                },
+                min = 0,
+                max = 10,
+                stepIncrement = 1,
+                enabledIf = { prefs.clipboard.historyEnabled isEqualTo true },
             )
             SwitchPreference(
                 prefs.clipboard.cleanUpOld,
