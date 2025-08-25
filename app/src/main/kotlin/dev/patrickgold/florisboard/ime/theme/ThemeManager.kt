@@ -201,15 +201,11 @@ class ThemeManager(context: Context) {
                 prefs.theme.dayThemeId.get()
             }
             ThemeMode.FOLLOW_TIME -> {
-                if (AndroidVersion.ATLEAST_API26_O) {
-                    val current = LocalTime.now()
-                    val sunrise = prefs.theme.sunriseTime.get().javaLocalTime
-                    val sunset = prefs.theme.sunsetTime.get().javaLocalTime
-                    if (current in sunrise..sunset) {
-                        prefs.theme.dayThemeId.get()
-                    } else {
-                        prefs.theme.nightThemeId.get()
-                    }
+                val current = LocalTime.now()
+                val sunrise = prefs.theme.sunriseTime.get().javaLocalTime
+                val sunset = prefs.theme.sunsetTime.get().javaLocalTime
+                if (current in sunrise..sunset) {
+                    prefs.theme.dayThemeId.get()
                 } else {
                     prefs.theme.nightThemeId.get()
                 }

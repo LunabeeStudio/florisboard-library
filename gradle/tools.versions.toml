@@ -1,7 +1,7 @@
 [versions]
 cmake = "4.1.0"
 jdk = "17"
-ndk = "26.1.10909125"
+ndk = "29.0.13846066"
 rustup = "1.24.3"
 rustToolchain = "1.83.0"
 

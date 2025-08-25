@@ -21,10 +21,6 @@ import androidx.annotation.ChecksSdkIntAtLeast
 
 @Suppress("unused")
 object AndroidVersion {
-    /** Android 7.0 **/
-    inline val ATLEAST_API26_O
-        @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.O)
-        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
     /** Android 8.1 **/
     inline val ATLEAST_API27_O_MR1
         @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.O_MR1)
