@@ -64,7 +64,7 @@ import org.florisboard.lib.snygg.value.SnyggStaticColorValue
 import org.florisboard.lib.snygg.value.SnyggUriValue
 import org.florisboard.lib.snygg.value.SnyggValue
 
-internal val LocalSnyggTheme: ProvidableCompositionLocal<SnyggTheme> =
+val LocalSnyggTheme: ProvidableCompositionLocal<SnyggTheme> =
     compositionLocalOf {
         error("ProvideSnyggTheme not called.")
     }
@@ -191,7 +191,7 @@ fun ProvideSnyggTheme(
 }
 
 @Composable
-internal fun ProvideSnyggStyle(
+fun ProvideSnyggStyle(
     elementName: String?,
     attributes: SnyggQueryAttributes,
     selector: SnyggSelector?,
@@ -241,7 +241,7 @@ fun rememberSnyggThemeQuery(
 }
 
 @Composable
-internal fun SnyggTheme.rememberQuery(
+fun SnyggTheme.rememberQuery(
     elementName: String?,
     attributes: SnyggQueryAttributes,
     selector: SnyggSelector? = null,

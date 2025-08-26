@@ -41,6 +41,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.inline.InlinePresentationSpec
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -60,6 +61,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -123,11 +125,14 @@ import org.florisboard.lib.android.showShortToastSync
 import org.florisboard.lib.android.systemServiceOrNull
 import org.florisboard.lib.compose.ProvideLocalizedResources
 import org.florisboard.lib.kotlin.collectIn
+import org.florisboard.lib.snygg.ui.LocalSnyggTheme
+import org.florisboard.lib.snygg.ui.ProvideSnyggStyle
 import org.florisboard.lib.snygg.ui.SnyggBox
 import org.florisboard.lib.snygg.ui.SnyggButton
 import org.florisboard.lib.snygg.ui.SnyggRow
 import org.florisboard.lib.snygg.ui.SnyggSurfaceView
 import org.florisboard.lib.snygg.ui.SnyggText
+import org.florisboard.lib.snygg.ui.rememberQuery
 import org.florisboard.lib.snygg.ui.rememberSnyggThemeQuery
 
 /**
@@ -660,50 +665,56 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                     } else {
                         prefs.keyboard.bottomOffsetLandscape
                     }.observeAsTransformingState { it.dp }
-                    Column {
-                        ThemeImeView()
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            // Apply system bars padding here (we already drew our keyboard background)
-                            .safeDrawingPadding()
-                            .padding(bottom = bottomOffset),
+
+                    // Dirty hack to force background color, normally it is set in the SnyggSurfaceView https://github.com/florisboard/florisboard/issues/3060
+                    val theme = LocalSnyggTheme.current
+                    val style = theme.rememberQuery(FlorisImeUi.Window.elementName, attributes, null)
+                    Column(
+                        modifier = Modifier.background(style.background(Color.Black))
                     ) {
-                        val oneHandedMode by prefs.keyboard.oneHandedMode.observeAsState()
-                        val oneHandedModeEnabled by prefs.keyboard.oneHandedModeEnabled.observeAsState()
-                        val oneHandedModeScaleFactor by prefs.keyboard.oneHandedModeScaleFactor.observeAsState()
-                        val keyboardWeight = when {
-                            !oneHandedModeEnabled || configuration.isOrientationLandscape() -> 1f
-                            else -> oneHandedModeScaleFactor / 100f
-                        }
-                        if (oneHandedModeEnabled && oneHandedMode == OneHandedMode.END && configuration.isOrientationPortrait()) {
-                            OneHandedPanel(
-                                panelSide = OneHandedMode.START,
-                                weight = 1f - keyboardWeight,
-                            )
-                        }
-                        CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
-                            Box(
-                                modifier = Modifier
-                                    .weight(keyboardWeight)
-                                    .wrapContentHeight(),
-                            ) {
-                                when (state.imeUiMode) {
-                                    ImeUiMode.TEXT -> TextInputLayout()
-                                    ImeUiMode.MEDIA -> MediaInputLayout()
-                                    ImeUiMode.CLIPBOARD -> ClipboardInputLayout()
+                        ThemeImeView()
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                // Apply system bars padding here (we already drew our keyboard background)
+                                .safeDrawingPadding()
+                                .padding(bottom = bottomOffset),
+                        ) {
+                            val oneHandedMode by prefs.keyboard.oneHandedMode.observeAsState()
+                            val oneHandedModeEnabled by prefs.keyboard.oneHandedModeEnabled.observeAsState()
+                            val oneHandedModeScaleFactor by prefs.keyboard.oneHandedModeScaleFactor.observeAsState()
+                            val keyboardWeight = when {
+                                !oneHandedModeEnabled || configuration.isOrientationLandscape() -> 1f
+                                else -> oneHandedModeScaleFactor / 100f
+                            }
+                            if (oneHandedModeEnabled && oneHandedMode == OneHandedMode.END && configuration.isOrientationPortrait()) {
+                                OneHandedPanel(
+                                    panelSide = OneHandedMode.START,
+                                    weight = 1f - keyboardWeight,
+                                )
+                            }
+                            CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
+                                Box(
+                                    modifier = Modifier
+                                        .weight(keyboardWeight)
+                                        .wrapContentHeight(),
+                                ) {
+                                    when (state.imeUiMode) {
+                                        ImeUiMode.TEXT -> TextInputLayout()
+                                        ImeUiMode.MEDIA -> MediaInputLayout()
+                                        ImeUiMode.CLIPBOARD -> ClipboardInputLayout()
+                                    }
                                 }
                             }
-                        }
-                        if (oneHandedModeEnabled && oneHandedMode == OneHandedMode.START && configuration.isOrientationPortrait()) {
-                            OneHandedPanel(
-                                panelSide = OneHandedMode.END,
-                                weight = 1f - keyboardWeight,
-                            )
+                            if (oneHandedModeEnabled && oneHandedMode == OneHandedMode.START && configuration.isOrientationPortrait()) {
+                                OneHandedPanel(
+                                    panelSide = OneHandedMode.END,
+                                    weight = 1f - keyboardWeight,
+                                )
+                            }
                         }
                     }
-                        }
                 }
             }
         }
