@@ -9,6 +9,10 @@ plugins {
 val projectMinSdk: String by project
 val projectCompileSdk: String by project
 
+version = Versions.fullVersion
+description = "FlorisBoard Color utilities"
+group = "studio.lunabee.florisboard"
+
 android {
     namespace = "org.florisboard.lib.color"
     compileSdk = projectCompileSdk.toInt()

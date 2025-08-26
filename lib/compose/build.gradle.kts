@@ -26,6 +26,10 @@ plugins {
 val projectMinSdk: String by project
 val projectCompileSdk: String by project
 
+version = Versions.fullVersion
+description = "FlorisBoard Compose utilities"
+group = "studio.lunabee.florisboard"
+
 android {
     namespace = "org.florisboard.lib.compose"
     compileSdk = projectCompileSdk.toInt()
