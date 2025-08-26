@@ -60,7 +60,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import org.florisboard.lib.android.AndroidVersion
 import org.florisboard.lib.kotlin.collectIn
 import org.florisboard.lib.kotlin.io.FsDir
 import org.florisboard.lib.kotlin.io.deleteContentsRecursively
@@ -68,7 +67,7 @@ import org.florisboard.lib.kotlin.io.subDir
 import org.florisboard.lib.kotlin.io.subFile
 import org.florisboard.lib.snygg.SnyggStylesheet
 import org.florisboard.lib.snygg.value.SnyggStaticColorValue
-import kotlin.text.get
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Core class which manages the keyboard theme. Note, that this does not affect the UI theme of the
@@ -81,8 +80,10 @@ class ThemeManager(context: Context) {
 
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
-    private val _indexedThemeConfigs = MutableStateFlow(mapOf<ExtensionComponentName, ThemeExtensionComponent>())
+    private val _indexedThemeConfigs = MutableStateFlow(mapOf<ExtensionComponentName, ThemeExtensionComponent>() to 0)
     val indexedThemeConfigs get() = _indexedThemeConfigs.asStateFlow()
+    private val indexedThemeConfigVersion = AtomicInteger(0)
+
     val previewThemeId = MutableStateFlow<ExtensionComponentName?>(null)
     val previewThemeInfo = MutableStateFlow<ThemeInfo?>(null)
     val configurationChangeCounter = MutableStateFlow(0)
@@ -94,13 +95,14 @@ class ThemeManager(context: Context) {
 
     init {
         extensionManager.themes.observeForever { themeExtensions ->
+            val version = indexedThemeConfigVersion.incrementAndGet()
             _indexedThemeConfigs.value = buildMap {
                 for (themeExtension in themeExtensions) {
                     for (themeComponent in themeExtension.themes) {
                         put(ExtensionComponentName(themeExtension.meta.id, themeComponent.id), themeComponent)
                     }
                 }
-            }
+            } to version
         }
         indexedThemeConfigs.collectIn(scope) {
             updateActiveTheme { cachedThemeInfos.clear() }
