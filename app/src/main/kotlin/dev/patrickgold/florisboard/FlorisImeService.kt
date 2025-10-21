@@ -115,7 +115,6 @@ import dev.patrickgold.florisboard.lib.util.ViewUtils
 import dev.patrickgold.florisboard.lib.util.debugSummarize
 import dev.patrickgold.florisboard.lib.util.launchActivity
 import dev.patrickgold.jetpref.datastore.model.observeAsState
-import java.lang.ref.WeakReference
 import kotlinx.coroutines.flow.update
 import org.florisboard.lib.android.AndroidInternalR
 import org.florisboard.lib.android.AndroidVersion
@@ -126,7 +125,6 @@ import org.florisboard.lib.android.systemServiceOrNull
 import org.florisboard.lib.compose.ProvideLocalizedResources
 import org.florisboard.lib.kotlin.collectIn
 import org.florisboard.lib.snygg.ui.LocalSnyggTheme
-import org.florisboard.lib.snygg.ui.ProvideSnyggStyle
 import org.florisboard.lib.snygg.ui.SnyggBox
 import org.florisboard.lib.snygg.ui.SnyggButton
 import org.florisboard.lib.snygg.ui.SnyggRow
@@ -134,6 +132,7 @@ import org.florisboard.lib.snygg.ui.SnyggSurfaceView
 import org.florisboard.lib.snygg.ui.SnyggText
 import org.florisboard.lib.snygg.ui.rememberQuery
 import org.florisboard.lib.snygg.ui.rememberSnyggThemeQuery
+import java.lang.ref.WeakReference
 
 /**
  * Global weak reference for the [FlorisImeService] class. This is needed as certain actions (request hide, switch to
@@ -620,11 +619,11 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
         visibleTopY: Int,
         needAdditionalOverlay: Boolean,
     ): Int {
-       return if (keyboardManager.activeState.isBottomSheetShowing() || keyboardManager.activeState.isSubtypeSelectionShowing()) {
-           0
-       } else {
-           visibleTopY - if (needAdditionalOverlay) FlorisImeSizing.Static.smartbarHeightPx else 0
-       }
+        return if (keyboardManager.activeState.isBottomSheetShowing() || keyboardManager.activeState.isSubtypeSelectionShowing()) {
+            0
+        } else {
+            visibleTopY - if (needAdditionalOverlay) FlorisImeSizing.Static.smartbarHeightPx else 0
+        }
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -651,21 +650,25 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                     clickAndSemanticsModifier = Modifier
                         // Do not remove below line or touch input may get stuck
                         .pointerInteropFilter { false },
-                    supportsBackgroundImage = false,
+                    supportsBackgroundImage = !AndroidVersion.ATLEAST_API30_R,
                     allowClip = false,
                 ) {
-                    SnyggSurfaceView(
-                        elementName = FlorisImeUi.Window.elementName,
-                        attributes = attributes,
-                        modifier = Modifier.matchParentSize(),
-                    )
+                    // The SurfaceView is used to render the background image under inline-autofill chips. These are only
+                    // available on Android >=11, and SurfaceView causes trouble on Android 8/9, thus we render the image
+                    // in the SurfaceView for Android >=11, and in the Compose View Tree for Android <=10.
+                    if (AndroidVersion.ATLEAST_API30_R) {
+                        SnyggSurfaceView(
+                            elementName = FlorisImeUi.Window.elementName,
+                            attributes = attributes,
+                            modifier = Modifier.matchParentSize(),
+                        )
+                    }
                     val configuration = LocalConfiguration.current
                     val bottomOffset by if (configuration.isOrientationPortrait()) {
                         prefs.keyboard.bottomOffsetPortrait
                     } else {
                         prefs.keyboard.bottomOffsetLandscape
                     }.observeAsTransformingState { it.dp }
-
                     // Dirty hack to force background color, normally it is set in the SnyggSurfaceView https://github.com/florisboard/florisboard/issues/3060
                     val theme = LocalSnyggTheme.current
                     val style = theme.rememberQuery(FlorisImeUi.Window.elementName, attributes, null)
@@ -754,6 +757,7 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
             return handled
         }
     }
+
     protected abstract fun onComposeViewTouchEvent(ev: MotionEvent?)
 
     private inner class FlorisBottomSheetHostUiView : AbstractComposeView(this) {
