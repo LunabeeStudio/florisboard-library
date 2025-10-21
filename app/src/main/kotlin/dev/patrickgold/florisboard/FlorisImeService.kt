@@ -45,11 +45,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -64,7 +66,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInteropFilter
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalConfiguration
@@ -646,7 +648,7 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .onGloballyPositioned { coords -> inputViewSize = coords.size },
+                        .onSizeChanged { size -> inputViewSize = size },
                     clickAndSemanticsModifier = Modifier
                         // Do not remove below line or touch input may get stuck
                         .pointerInteropFilter { false },
@@ -669,6 +671,7 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                     } else {
                         prefs.keyboard.bottomOffsetLandscape
                     }.observeAsTransformingState { it.dp }
+
                     // Dirty hack to force background color, normally it is set in the SnyggSurfaceView https://github.com/florisboard/florisboard/issues/3060
                     val theme = LocalSnyggTheme.current
                     val style = theme.rememberQuery(FlorisImeUi.Window.elementName, attributes, null)
@@ -681,7 +684,7 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                                 .fillMaxWidth()
                                 .wrapContentHeight()
                                 // Apply system bars padding here (we already drew our keyboard background)
-                                .safeDrawingPadding()
+                                .padding(bottom = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding())
                                 .padding(bottom = bottomOffset),
                         ) {
                             val oneHandedMode by prefs.keyboard.oneHandedMode.observeAsState()
