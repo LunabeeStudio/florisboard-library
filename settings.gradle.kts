@@ -25,6 +25,11 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
+    val artifactoryUsername: String = providers
+        .gradleProperty("artifactory_consumer_username").get()
+    val artifactoryPassword: String = providers
+        .gradleProperty("artifactory_consumer_api_key").get()
+
     repositories {
         google()
         mavenCentral()
@@ -32,6 +37,14 @@ dependencyResolutionManagement {
         // maven("https://central.sonatype.com/repository/maven-snapshots/")
         // Uncomment the following if testing snapshots from Maven Local
         // mavenLocal()
+
+        maven {
+            url = uri("https://artifactory.lunabee.studio/artifactory/jetpref-local/")
+            credentials {
+                username = artifactoryUsername
+                password = artifactoryPassword
+            }
+        }
     }
 
     versionCatalogs {

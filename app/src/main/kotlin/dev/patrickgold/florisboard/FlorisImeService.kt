@@ -45,11 +45,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -64,7 +66,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInteropFilter
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalConfiguration
@@ -115,7 +117,6 @@ import dev.patrickgold.florisboard.lib.util.ViewUtils
 import dev.patrickgold.florisboard.lib.util.debugSummarize
 import dev.patrickgold.florisboard.lib.util.launchActivity
 import dev.patrickgold.jetpref.datastore.model.observeAsState
-import java.lang.ref.WeakReference
 import kotlinx.coroutines.flow.update
 import org.florisboard.lib.android.AndroidInternalR
 import org.florisboard.lib.android.AndroidVersion
@@ -126,7 +127,6 @@ import org.florisboard.lib.android.systemServiceOrNull
 import org.florisboard.lib.compose.ProvideLocalizedResources
 import org.florisboard.lib.kotlin.collectIn
 import org.florisboard.lib.snygg.ui.LocalSnyggTheme
-import org.florisboard.lib.snygg.ui.ProvideSnyggStyle
 import org.florisboard.lib.snygg.ui.SnyggBox
 import org.florisboard.lib.snygg.ui.SnyggButton
 import org.florisboard.lib.snygg.ui.SnyggRow
@@ -134,6 +134,7 @@ import org.florisboard.lib.snygg.ui.SnyggSurfaceView
 import org.florisboard.lib.snygg.ui.SnyggText
 import org.florisboard.lib.snygg.ui.rememberQuery
 import org.florisboard.lib.snygg.ui.rememberSnyggThemeQuery
+import java.lang.ref.WeakReference
 
 /**
  * Global weak reference for the [FlorisImeService] class. This is needed as certain actions (request hide, switch to
@@ -620,11 +621,11 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
         visibleTopY: Int,
         needAdditionalOverlay: Boolean,
     ): Int {
-       return if (keyboardManager.activeState.isBottomSheetShowing() || keyboardManager.activeState.isSubtypeSelectionShowing()) {
-           0
-       } else {
-           visibleTopY - if (needAdditionalOverlay) FlorisImeSizing.Static.smartbarHeightPx else 0
-       }
+        return if (keyboardManager.activeState.isBottomSheetShowing() || keyboardManager.activeState.isSubtypeSelectionShowing()) {
+            0
+        } else {
+            visibleTopY - if (needAdditionalOverlay) FlorisImeSizing.Static.smartbarHeightPx else 0
+        }
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -647,18 +648,23 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .onGloballyPositioned { coords -> inputViewSize = coords.size },
+                        .onSizeChanged { size -> inputViewSize = size },
                     clickAndSemanticsModifier = Modifier
                         // Do not remove below line or touch input may get stuck
                         .pointerInteropFilter { false },
-                    supportsBackgroundImage = false,
+                    supportsBackgroundImage = !AndroidVersion.ATLEAST_API30_R,
                     allowClip = false,
                 ) {
-                    SnyggSurfaceView(
-                        elementName = FlorisImeUi.Window.elementName,
-                        attributes = attributes,
-                        modifier = Modifier.matchParentSize(),
-                    )
+                    // The SurfaceView is used to render the background image under inline-autofill chips. These are only
+                    // available on Android >=11, and SurfaceView causes trouble on Android 8/9, thus we render the image
+                    // in the SurfaceView for Android >=11, and in the Compose View Tree for Android <=10.
+                    if (AndroidVersion.ATLEAST_API30_R) {
+                        SnyggSurfaceView(
+                            elementName = FlorisImeUi.Window.elementName,
+                            attributes = attributes,
+                            modifier = Modifier.matchParentSize(),
+                        )
+                    }
                     val configuration = LocalConfiguration.current
                     val bottomOffset by if (configuration.isOrientationPortrait()) {
                         prefs.keyboard.bottomOffsetPortrait
@@ -678,7 +684,7 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
                                 .fillMaxWidth()
                                 .wrapContentHeight()
                                 // Apply system bars padding here (we already drew our keyboard background)
-                                .safeDrawingPadding()
+                                .padding(bottom = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding())
                                 .padding(bottom = bottomOffset),
                         ) {
                             val oneHandedMode by prefs.keyboard.oneHandedMode.observeAsState()
@@ -754,6 +760,7 @@ abstract class FlorisImeService : LifecycleInputMethodService() {
             return handled
         }
     }
+
     protected abstract fun onComposeViewTouchEvent(ev: MotionEvent?)
 
     private inner class FlorisBottomSheetHostUiView : AbstractComposeView(this) {

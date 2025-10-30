@@ -46,9 +46,9 @@ import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.ime.editor.EditorInstance
 import dev.patrickgold.florisboard.ime.theme.ThemeManager
 import dev.patrickgold.florisboard.lib.devtools.flogDebug
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 class DemoFlorisImeService : FlorisImeService() {
@@ -57,6 +57,8 @@ class DemoFlorisImeService : FlorisImeService() {
     private val _editorInstance: EditorInstance by editorInstance()
     private val editorInstance: InterceptEditorInstance
         get() = _editorInstance as InterceptEditorInstance
+
+    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         flogDebug { "event = $event" }
@@ -94,7 +96,6 @@ class DemoFlorisImeService : FlorisImeService() {
         return 0
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     @Composable
     private fun AboveKeyboardUi(
         modifier: Modifier,
@@ -186,7 +187,7 @@ class DemoFlorisImeService : FlorisImeService() {
                             Text(text = if (isKeyboardVisible) "Hide keyboard" else "Show keyboard")
                         }
                         Button(onClick = {
-                            GlobalScope.launch {
+                            coroutineScope.launch {
                                 themeManager.updateActiveTheme(forceNight = true)
                             }
                         }) {
@@ -195,7 +196,7 @@ class DemoFlorisImeService : FlorisImeService() {
                         Button(
                             modifier = Modifier.padding(end = 8.dp),
                             onClick = {
-                                GlobalScope.launch {
+                                coroutineScope.launch {
                                     themeManager.updateActiveTheme()
                                 }
                             },
